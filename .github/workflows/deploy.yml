@@ -31,29 +31,54 @@ jobs:
             pm2 stop nodepeers.com || true
             pm2 delete nodepeers.com || true
             
-            # Install dependencies (remove --production to install devDependencies needed for build)
+            # Debug: Check current directory contents
+            echo "=== Current directory contents ==="
+            ls -la
+            
+            # Debug: Check package.json scripts
+            echo "=== Package.json scripts ==="
+            cat package.json | grep -A 10 '"scripts"' || echo "No scripts found"
+            
+            # Clean previous build
+            echo "=== Cleaning previous build ==="
+            rm -rf .next
+            rm -rf node_modules/.cache
+            
+            # Install dependencies
+            echo "=== Installing dependencies ==="
             npm install
             
-            # Build the application
-            echo "Building Next.js application..."
-            npm run build
+            # Debug: Check if critical dependencies are installed
+            echo "=== Checking Next.js installation ==="
+            npm list next || echo "Next.js not found in dependencies"
+            
+            # Build the application with verbose output
+            echo "=== Building Next.js application ==="
+            npm run build 2>&1 | tee build.log
+            
+            echo "=== Build log contents ==="
+            cat build.log
             
             # Check if build was successful
             if [ ! -d ".next" ]; then
-              echo "Build failed - .next directory not found"
+              echo "ERROR: Build failed - .next directory not found"
+              echo "Build output:"
+              cat build.log
               exit 1
             fi
             
-            echo "Build successful, starting application..."
+            echo "=== Build successful, checking .next contents ==="
+            ls -la .next/
             
+            echo "=== Starting application ==="
             # Start fresh PM2 process
             pm2 start npm --name "nodepeers.com" -- start
             
             # Save PM2 configuration
             pm2 save
             
-            # Check status and logs
-            sleep 2
+            # Wait a moment and check status
+            sleep 3
             pm2 status
-            pm2 logs nodepeers.com --lines 15
+            pm2 logs nodepeers.com --lines 10
           EOF

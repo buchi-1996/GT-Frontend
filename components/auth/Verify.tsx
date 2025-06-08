@@ -11,7 +11,7 @@ const Verify = () => {
     <div className='w-full flex flex-1 lg:flex-0 flex-col justify-between h-full'>
       <div className="flex justify-center mb-8">
         <InputOTP maxLength={6} value={value} onChange={(value) => setValue(value)}>
-          <InputOTPGroup className="gap-2">
+          <InputOTPGroup className="gap-2 sm:gap-4">
             <InputOTPSlot
               index={0}
               className="w-12 sm:w-18 h-12 sm:h-18 shadow-none text-sm sm:text-xl font-semibold border focus:border-[#0d9488] focus:ring-2 focus:ring-[#0d9488] focus:ring-offset-2 rounded-lg"
