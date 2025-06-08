@@ -2,10 +2,8 @@ name: Deploy Frontend
 
 on:
   push:
-    paths:
-      - "**" # Watch all files
     branches:
-      - main
+      - main  # Trigger on any push to main
 
 jobs:
   deploy:
@@ -24,7 +22,7 @@ jobs:
 
       - name: Deploy frontend to VPS
         run: |
-          rsync -avz --delete nodepeers.com/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
+          rsync -avz --delete --exclude 'node_modules' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
 
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /home/nodepeers/htdocs/nodepeers.com
