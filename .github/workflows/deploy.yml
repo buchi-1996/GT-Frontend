@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - main  # Trigger on push to main
+      - main
 
 jobs:
   deploy:
@@ -22,11 +22,28 @@ jobs:
 
       - name: Deploy frontend to VPS
         run: |
-          rsync -avz --delete --exclude 'node_modules' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
+          rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
 
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /home/nodepeers/htdocs/nodepeers.com
-            npm install
+            
+            # Install dependencies
+            npm install --production
+            
+            # Build the application
             npm run build
-            pm2 restart nodepeers.com || pm2 start npm --name nodepeers.com -- start --cwd /home/nodepeers/htdocs/nodepeers.com
+            
+            # Stop existing PM2 process if running
+            pm2 stop nodepeers.com || true
+            pm2 delete nodepeers.com || true
+            
+            # Start fresh PM2 process
+            pm2 start npm --name "nodepeers.com" -- start
+            
+            # Save PM2 configuration
+            pm2 save
+            
+            # Check status
+            pm2 status
+            pm2 logs nodepeers.com --lines 10
           EOF
