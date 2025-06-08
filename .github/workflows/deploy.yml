@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - main  # Trigger on any push to main
+      - main  # Trigger on push to main
 
 jobs:
   deploy:
@@ -28,5 +28,5 @@ jobs:
             cd /home/nodepeers/htdocs/nodepeers.com
             npm install
             npm run build
-            pm2 restart frontend-app || pm2 start npm --name frontend-app -- start
+            pm2 restart nodepeers.com || pm2 start npm --name nodepeers.com -- start --cwd /home/nodepeers/htdocs/nodepeers.com
           EOF
