@@ -18,7 +18,7 @@ const VerifyNotice = () => {
                             <div className="space-y-2">
                                 <h1 className="text-2xl md:text-4xl font-bold text-[#222222] mb-2">Verify your account</h1>
                                 <p className="text-[#626262]">
-                                    We'll send a verification code to your email.{" "}
+                                    We&apos;ll send a verification code to your email.{" "}
                                     <Link href="#" className="text-[#0d9488] underline hover:underline">
                                         Switch to phone number
                                     </Link>
@@ -33,7 +33,7 @@ const VerifyNotice = () => {
                                 <path d="M11.9961 16H12.0051" stroke="#626262" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
-                            <span className="text-[#222222]">We'll send a verification code to: mm***@gmail.com</span>
+                            <span className="text-[#222222]">We&apos;ll send a verification code to: mm***@gmail.com</span>
                         </div>
                         {/* Why verify info box */}
                         <div className="border-[#D4E6FF] bg-[#e7eff9] border-2 px-4 py-6 rounded-lg mb-8">
