@@ -1,72 +1,41 @@
-name: Deploy Frontend
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+# Just replace your "Deploy frontend to VPS" step with this:
 
       - name: Deploy frontend to VPS
         run: |
           rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
 
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /home/nodepeers/htdocs/nodepeers.com
             
-            # Completely stop all PM2 processes and clear logs
             echo "=== Stopping all PM2 processes ==="
-            pm2 kill
-            pm2 flush
+            pm2 kill 2>/dev/null || true
+            pm2 flush 2>/dev/null || true
             
-            # Clean previous build completely
             echo "=== Cleaning previous build ==="
             rm -rf .next
             rm -rf node_modules/.cache
             
-            # Install dependencies
             echo "=== Installing dependencies ==="
             npm install
             
-            # Build the application
             echo "=== Building Next.js application ==="
-            npm run build 2>&1 | tee build.log
+            npm run build
             
-            # Check if build was successful
-            if [ ! -d ".next" ]; then
-              echo "ERROR: Build failed - .next directory not found"
-              cat build.log
+            # Verify build
+            if [ ! -f ".next/BUILD_ID" ]; then
+              echo "ERROR: Build failed"
               exit 1
             fi
             
-            echo "=== Build successful, starting fresh PM2 process ==="
-            
-            # Start completely fresh PM2 process
-            pm2 start ecosystem.config.js
-            
-            # Save PM2 configuration
+            echo "=== Starting PM2 process ==="
+            pm2 delete nodepeers.com 2>/dev/null || true
+            pm2 start npm --name "nodepeers.com" -- start
             pm2 save
             
-            # Wait for startup and check
-            sleep 5
-            echo "=== Final status check ==="
+            # Brief wait and status check
+            sleep 3
             pm2 status
-            pm2 logs nodepeers.com --lines 5
             
-            # Test if the app is responding
-            echo "=== Testing application response ==="
-            curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "App not responding on port 3000"
+            echo "=== Deployment completed successfully ==="
+            exit 0
           EOF
