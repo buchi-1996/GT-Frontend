@@ -7,7 +7,7 @@ const VerifyAccount = () => {
     return (
 
         <main className='flex-1 min-h-[100dvh] flex flex-col py-6'>
-            <div className="container h-full mx-auto px-6">
+            <div className="container h-full mx-auto p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-5 min-h-screen gap-10 xl:gap-32 ">
                     <div className='lg:col-span-2'>
                         <AuthScreenBanner />

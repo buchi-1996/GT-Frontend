@@ -7,7 +7,7 @@ const Signup = () => {
     return (
         <main className='py-5'>
             <div className="container mx-auto p-6">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-10 xl:gap-32">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 xl:gap-32">
                     <div className='lg:col-span-2'>
                         <AuthScreenBanner />
                     </div>

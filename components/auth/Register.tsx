@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -42,7 +43,9 @@ const Register = () => {
             await new Promise((resolve) => setTimeout(resolve, 2000))
             console.log("Form submitted:", data)
             // Handle successful submission
-            alert("Account created successfully!")
+            toast.success("Account created successfully", {
+                id: "account-creation-success"
+            })
             router.push('/auth/verify-notice')
             form.reset()
         } catch (error) {
@@ -57,8 +60,8 @@ const Register = () => {
         <div className="w-full max-w-3xl">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-4 lg:space-y-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-baseline">
+                    <div className="space-y-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="fullName"
@@ -100,7 +103,7 @@ const Register = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-baseline">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="phoneNumber"

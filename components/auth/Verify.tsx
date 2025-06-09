@@ -1,11 +1,23 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, {useState } from 'react'
 import { Button } from '../ui/button'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const Verify = () => {
   const [value, setValue] = useState("")
+
+  const router = useRouter()
+
+  const handleVerifyCode = () => {
+    toast.success("Verification successful", {
+      id: "Verification-sucess"
+    })
+
+    router.push('/dashboard')
+  }
 
   return (
     <div className='w-full flex flex-1 lg:flex-0 flex-col justify-between h-full'>
@@ -41,8 +53,8 @@ const Verify = () => {
       </div>
 
       <div className='w-full max-w-md mx-auto mt-auto pb-4'>
-        <Button
-          className="w-full bg-[#0d9488] hover:bg-[#0b5f5a] text-white font-semibold shadow-none py-6 rounded-lg mb-4 disabled:opacity-50"
+        <Button onClick={handleVerifyCode}
+          className="w-full bg-[#0d9488] cursor-pointer hover:bg-[#0b5f5a] text-white font-semibold shadow-none py-6 rounded-lg mb-4 disabled:opacity-50"
           size="lg"
           disabled={value.length !== 6}
         >
@@ -50,7 +62,7 @@ const Verify = () => {
         </Button>
 
         <div className="text-center">
-          <button className="text-[#0d9488] hover:text-[#0b5f5a] font-medium">Resend Code</button>
+          <button className="text-[#0d9488] cursor-pointer hover:text-[#0b5f5a] font-medium">Resend Code</button>
         </div>
       </div>
     </div>
