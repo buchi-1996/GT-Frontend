@@ -60,8 +60,8 @@ const Register = () => {
         <div className="w-full max-w-3xl">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-baseline">
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="fullName"
@@ -103,7 +103,7 @@ const Register = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-baseline">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="phoneNumber"
