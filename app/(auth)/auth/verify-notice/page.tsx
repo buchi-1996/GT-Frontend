@@ -4,6 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+export const metadata = {
+  title: 'Send code | GTDev',
+};
+
+
 const VerifyNotice = () => {
     return (
         <main className='py-5'>
