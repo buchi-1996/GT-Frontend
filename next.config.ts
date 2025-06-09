@@ -9,9 +9,7 @@ const nextConfig: NextConfig = {
   
   // Disable x-powered-by header
   poweredByHeader: false,
-  
-  // Enable SWC minification
-  swcMinify: true,
+
 };
 
 export default nextConfig;
