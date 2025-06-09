@@ -25,61 +25,47 @@ jobs:
           rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
 
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd /home/nodepeers/htdocs/nodepeers.com
+            set -e
             
-            # Stop existing PM2 process if running
+            cd /home/nodepeers/htdocs/nodepeers.com
+
+            echo "🛑 Stopping existing PM2 process if it exists..."
             pm2 stop nodepeers.com || true
             pm2 delete nodepeers.com || true
-            
-            # Debug: Check current directory contents
-            echo "=== Current directory contents ==="
-            ls -la
-            
-            # Debug: Check package.json scripts
-            echo "=== Package.json scripts ==="
-            cat package.json | grep -A 10 '"scripts"' || echo "No scripts found"
-            
-            # Clean previous build
-            echo "=== Cleaning previous build ==="
+
+            echo "🧹 Cleaning previous builds and cache..."
             rm -rf .next
             rm -rf node_modules/.cache
-            
-            # Install dependencies
-            echo "=== Installing dependencies ==="
-            npm install
-            
-            # Debug: Check if critical dependencies are installed
-            echo "=== Checking Next.js installation ==="
-            npm list next || echo "Next.js not found in dependencies"
-            
-            # Build the application with verbose output
-            echo "=== Building Next.js application ==="
-            npm run build 2>&1 | tee build.log
-            
-            echo "=== Build log contents ==="
-            cat build.log
-            
-            # Check if build was successful
-            if [ ! -d ".next" ]; then
-              echo "ERROR: Build failed - .next directory not found"
-              echo "Build output:"
-              cat build.log
+
+            echo "📦 Installing dependencies..."
+            npm ci
+
+            echo "🛠️ Building application..."
+            if ! npm run build 2>&1 | tee build.log; then
+              echo "❌ Build failed. Check build.log for details."
               exit 1
             fi
-            
-            echo "=== Build successful, checking .next contents ==="
-            ls -la .next/
-            
-            echo "=== Starting application ==="
-            # Start fresh PM2 process
-            pm2 start npm --name "nodepeers.com" -- start
-            
-            # Save PM2 configuration
-            pm2 save
-            
-            # Wait a moment and check status
-            sleep 3
-            pm2 status || true
-            pm2 logs nodepeers.com --lines 10 || true
 
+            if [ ! -d ".next" ]; then
+              echo "❌ .next directory missing after build!"
+              exit 1
+            fi
+
+            echo "✅ Build succeeded, contents of .next:"
+            ls -la .next
+
+            echo "🚀 Starting PM2 process..."
+            pm2 start npm --name "nodepeers.com" -- start
+
+            echo "💾 Saving PM2 config..."
+            pm2 save
+
+            echo "⏳ Waiting for PM2 to settle..."
+            sleep 3
+
+            echo "📊 PM2 status:"
+            pm2 status || true
+
+            echo "📄 Last 10 lines of logs:"
+            pm2 logs nodepeers.com --lines 10 || true
           EOF
