@@ -79,6 +79,7 @@ jobs:
             
             # Wait a moment and check status
             sleep 3
-            pm2 status
-            pm2 logs nodepeers.com --lines 10
+            pm2 status || true
+            pm2 logs nodepeers.com --lines 10 || true
+
           EOF
