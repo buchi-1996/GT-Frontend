@@ -55,7 +55,7 @@ jobs:
             echo "=== Build successful, starting fresh PM2 process ==="
             
             # Start completely fresh PM2 process
-            pm2 start npm --name "nodepeers.com" -- start
+            pm2 start ecosystem.config.js
             
             # Save PM2 configuration
             pm2 save
