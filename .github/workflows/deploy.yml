@@ -29,50 +29,75 @@ jobs:
             
             cd /home/nodepeers/htdocs/nodepeers.com
 
-            # Stop existing PM2 process if running
-            pm2 stop nodepeers.com || true
-            pm2 delete nodepeers.com || true
+            echo "🛑 Stopping existing PM2 processes..."
+            pm2 stop nodepeers.com 2>/dev/null || true
+            pm2 delete nodepeers.com 2>/dev/null || true
 
-            echo "=== Current directory contents ==="
-            ls -la
-
-            echo "=== Package.json scripts ==="
-            cat package.json | grep -A 10 '"scripts"' || echo "No scripts found"
-
-            echo "=== Cleaning previous build ==="
+            echo "🧹 Cleaning previous builds and cache..."
             rm -rf .next
             rm -rf node_modules/.cache
 
-            echo "=== Installing dependencies ==="
-            npm install
+            echo "📦 Installing dependencies..."
+            npm ci
 
-            echo "=== Checking Next.js installation ==="
-            npm list next || echo "Next.js not found in dependencies"
-
-            echo "=== Building Next.js application ==="
-            npm run build 2>&1 | tee build.log
-
-            echo "=== Build log contents ==="
-            cat build.log
-
-            # Check if build was successful
-            if [ ! -d ".next" ]; then
-              echo "ERROR: Build failed - .next directory not found"
-              echo "Build output:"
+            echo "🛠️ Building application with standalone output..."
+            if ! npm run build 2>&1 | tee build.log; then
+              echo "❌ Build failed. Check build.log for details."
               cat build.log
               exit 1
             fi
 
-            echo "=== Build successful, checking .next contents ==="
-            ls -la .next/
+            echo "🔍 Verifying standalone build..."
+            if [ -f ".next/standalone/server.js" ]; then
+              echo "✅ Standalone server created successfully"
+              ls -la .next/standalone/
+            else
+              echo "❌ Standalone build failed - server.js not found"
+              echo "Contents of .next directory:"
+              ls -la .next/ || echo "No .next directory found"
+              exit 1
+            fi
 
-            echo "=== Starting application ==="
-            pm2 start npm --name "nodepeers.com" -- start
+            echo "📁 Copying static files to standalone directory..."
+            # Copy public and static files to standalone directory
+            if [ -d "public" ]; then
+              cp -r public .next/standalone/
+            fi
+            if [ -d ".next/static" ]; then
+              cp -r .next/static .next/standalone/.next/
+            fi
+
+            echo "🚀 Starting PM2 with standalone server..."
+            # Use the standalone server directly (eliminates race condition!)
+            pm2 start .next/standalone/server.js --name "nodepeers.com" --env production
+
+            echo "💾 Saving PM2 config..."
             pm2 save
 
-            echo "=== Checking PM2 status ==="
-            sleep 3
-            pm2 status || true
-            pm2 logs nodepeers.com --lines 10 || true
+            echo "⏳ Waiting for application to start..."
+            sleep 5
 
+            echo "📊 PM2 status:"
+            pm2 status
+
+            echo "🔧 Testing application response..."
+            # Test if the application is responding
+            for i in {1..10}; do
+              if curl -s --max-time 5 http://localhost:3000 > /dev/null; then
+                echo "✅ Application is responding successfully!"
+                break
+              elif [ $i -eq 10 ]; then
+                echo "❌ Application not responding after 10 attempts"
+                echo "📄 Recent logs:"
+                pm2 logs nodepeers.com --lines 20
+                exit 1
+              else
+                echo "⏳ Attempt $i: Waiting for application to start..."
+                sleep 2
+              fi
+            done
+
+            echo "🎉 Deployment completed successfully!"
+            echo "📄 Final status:"
+            pm2 status nodepeers.com
           EOF

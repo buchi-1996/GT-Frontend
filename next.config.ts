@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // CRITICAL: Use standalone output to prevent PM2 race conditions
+  output: 'standalone',
+  
+  // Optimize for production
+  compress: true,
+  
+  // Disable x-powered-by header
+  poweredByHeader: false,
+  
+  // Enable SWC minification
+  swcMinify: true,
 };
 
 export default nextConfig;
