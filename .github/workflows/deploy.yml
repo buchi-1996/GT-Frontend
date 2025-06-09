@@ -1,41 +1,84 @@
-# Just replace your "Deploy frontend to VPS" step with this:
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy frontend to VPS
         run: |
           rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/nodepeers/htdocs/nodepeers.com/
 
-          ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /home/nodepeers/htdocs/nodepeers.com
             
-            echo "=== Stopping all PM2 processes ==="
-            pm2 kill 2>/dev/null || true
-            pm2 flush 2>/dev/null || true
+            # Stop existing PM2 process if running
+            pm2 stop nodepeers.com || true
+            pm2 delete nodepeers.com || true
             
+            # Debug: Check current directory contents
+            echo "=== Current directory contents ==="
+            ls -la
+            
+            # Debug: Check package.json scripts
+            echo "=== Package.json scripts ==="
+            cat package.json | grep -A 10 '"scripts"' || echo "No scripts found"
+            
+            # Clean previous build
             echo "=== Cleaning previous build ==="
             rm -rf .next
             rm -rf node_modules/.cache
             
+            # Install dependencies
             echo "=== Installing dependencies ==="
             npm install
             
-            echo "=== Building Next.js application ==="
-            npm run build
+            # Debug: Check if critical dependencies are installed
+            echo "=== Checking Next.js installation ==="
+            npm list next || echo "Next.js not found in dependencies"
             
-            # Verify build
-            if [ ! -f ".next/BUILD_ID" ]; then
-              echo "ERROR: Build failed"
+            # Build the application with verbose output
+            echo "=== Building Next.js application ==="
+            npm run build 2>&1 | tee build.log
+            
+            echo "=== Build log contents ==="
+            cat build.log
+            
+            # Check if build was successful
+            if [ ! -d ".next" ]; then
+              echo "ERROR: Build failed - .next directory not found"
+              echo "Build output:"
+              cat build.log
               exit 1
             fi
             
-            echo "=== Starting PM2 process ==="
-            pm2 delete nodepeers.com 2>/dev/null || true
+            echo "=== Build successful, checking .next contents ==="
+            ls -la .next/
+            
+            echo "=== Starting application ==="
+            # Start fresh PM2 process
             pm2 start npm --name "nodepeers.com" -- start
+            
+            # Save PM2 configuration
             pm2 save
             
-            # Brief wait and status check
+            # Wait a moment and check status
             sleep 3
             pm2 status
-            
-            echo "=== Deployment completed successfully ==="
-            exit 0
+            pm2 logs nodepeers.com --lines 10
           EOF
