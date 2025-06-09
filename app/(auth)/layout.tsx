@@ -24,7 +24,7 @@ export default function AuthLayout({
 }>): React.ReactNode {
     return (
         <html lang="en">
-            <body className={`${inter.variable} min-h-screen flex flex-col  antialiased`}>
+            <body className={`${inter.variable} flex flex-col  antialiased`}>
                 <Providers>
                     <CreateAccountHeader />
                     {children}
