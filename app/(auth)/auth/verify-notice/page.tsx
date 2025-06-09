@@ -67,4 +67,4 @@ const VerifyNotice = () => {
     )
 }
 
-export default VerifyNotice
+export default VerifyNotice 

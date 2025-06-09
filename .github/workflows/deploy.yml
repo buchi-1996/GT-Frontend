@@ -27,19 +27,12 @@ jobs:
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /home/nodepeers/htdocs/nodepeers.com
             
-            # Stop existing PM2 process if running
-            pm2 stop nodepeers.com || true
-            pm2 delete nodepeers.com || true
+            # Completely stop all PM2 processes and clear logs
+            echo "=== Stopping all PM2 processes ==="
+            pm2 kill
+            pm2 flush
             
-            # Debug: Check current directory contents
-            echo "=== Current directory contents ==="
-            ls -la
-            
-            # Debug: Check package.json scripts
-            echo "=== Package.json scripts ==="
-            cat package.json | grep -A 10 '"scripts"' || echo "No scripts found"
-            
-            # Clean previous build
+            # Clean previous build completely
             echo "=== Cleaning previous build ==="
             rm -rf .next
             rm -rf node_modules/.cache
@@ -48,37 +41,32 @@ jobs:
             echo "=== Installing dependencies ==="
             npm install
             
-            # Debug: Check if critical dependencies are installed
-            echo "=== Checking Next.js installation ==="
-            npm list next || echo "Next.js not found in dependencies"
-            
-            # Build the application with verbose output
+            # Build the application
             echo "=== Building Next.js application ==="
             npm run build 2>&1 | tee build.log
-            
-            echo "=== Build log contents ==="
-            cat build.log
             
             # Check if build was successful
             if [ ! -d ".next" ]; then
               echo "ERROR: Build failed - .next directory not found"
-              echo "Build output:"
               cat build.log
               exit 1
             fi
             
-            echo "=== Build successful, checking .next contents ==="
-            ls -la .next/
+            echo "=== Build successful, starting fresh PM2 process ==="
             
-            echo "=== Starting application ==="
-            # Start fresh PM2 process
+            # Start completely fresh PM2 process
             pm2 start npm --name "nodepeers.com" -- start
             
             # Save PM2 configuration
             pm2 save
             
-            # Wait a moment and check status
-            sleep 3
+            # Wait for startup and check
+            sleep 5
+            echo "=== Final status check ==="
             pm2 status
-            pm2 logs nodepeers.com --lines 10
+            pm2 logs nodepeers.com --lines 5
+            
+            # Test if the app is responding
+            echo "=== Testing application response ==="
+            curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "App not responding on port 3000"
           EOF
