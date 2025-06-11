@@ -16,7 +16,7 @@ const Verify = () => {
       id: "Verification-sucess"
     })
 
-    router.push('/dashboard')
+    router.push('/dashboard/overview')
   }
 
   return (

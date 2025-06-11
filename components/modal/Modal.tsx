@@ -13,10 +13,10 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useModal } from "@/hooks/useModal";
+import { useAppState } from "@/hooks/useAppState";
 
 export default function Modal() {
-  const { isOpen, modalContent, closeModal } = useModal();
+  const { isOpen, modalContent, closeModal } = useAppState();
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
   if (isDesktop) {

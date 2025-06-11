@@ -1,10 +1,10 @@
 "use client";
 
+import { AppContext } from "@/context/appstore/AppContext";
 import { useContext } from "react";
-import { ModalContext } from "@/context/modal/ModalContext";
 
-export function useModal() {
-  const context = useContext(ModalContext);
+export function useAppState() {
+  const context = useContext(AppContext);
   if (!context) {
     throw new Error("useModal must be used within a ModalProvider");
   }

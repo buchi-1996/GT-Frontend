@@ -2,18 +2,21 @@
 
 import { createContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
-interface ModalContextType {
+interface AppContextType {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>
   modalContent: ReactNode;
   openModal: (content: ReactNode) => void;
   closeModal: () => void;
+  sidebarOpen: boolean;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const ModalContext = createContext<ModalContextType | undefined>(undefined);
+export const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export function ModalProvider({ children }: { children: ReactNode }) {
+export function AppStateProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [modalContent, setModalContent] = useState<ReactNode>(null);
 
   const openModal = (content: ReactNode) => {
@@ -26,10 +29,12 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     setModalContent(null);
   };
 
+
+
   return (
-    <ModalContext.Provider value={{ isOpen, modalContent, openModal, closeModal, setIsOpen }}>
+    <AppContext.Provider value={{ sidebarOpen, setSidebarOpen, isOpen, modalContent, openModal, closeModal, setIsOpen }}>
       {children}
-    </ModalContext.Provider>
+    </AppContext.Provider>
   );
 }
 
