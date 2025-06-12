@@ -49,7 +49,7 @@ const Dashboard = () => {
                 {/* Left Column */}
                 <div className="lg:col-span-3 space-y-6">
                     {/* Recent Activity */}
-                    <Card className="bg-[#FAFAFA] shadow-none border-0">
+                    <Card className="bg-[F9FAFB] shadow-none border-0">
                         <CardHeader>
                             <CardTitle className="text-[#222222]">Recent Activity</CardTitle>
                         </CardHeader>
@@ -60,7 +60,7 @@ const Dashboard = () => {
                 </div>
                 <div className=" lg:col-span-2 space-y-6">
                     {/* Your Badges */}
-                    <Card className="bg-[#FAFAFA] border-0 shadow-none">
+                    <Card className="bg-[#F9FAFB] border-0 shadow-none">
                         <CardHeader>
                             <CardTitle className="text-[#222222]">Your Badges</CardTitle>
                         </CardHeader>
@@ -70,7 +70,7 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-            <ScrollArea className="border rounded-lg whitespace-nowrap py-6 pl-6 pr-0 md:pr-6">
+            <ScrollArea className="border rounded-lg whitespace-nowrap p-6 ">
                 <h2 className="text-xl font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card className="bg-[#e6f8f4] shadow-none h-auto shrink-0 border-0">

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import MenuItem from './MenuItem'
@@ -8,6 +8,8 @@ import { Card, CardContent } from '../ui/card'
 import { ChevronRight, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useAppState } from '@/hooks/useAppState'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import User from '../header/User'
 
 
 const navigationData: NavigationSection[] = [
@@ -136,80 +138,113 @@ const navigationData: NavigationSection[] = [
 const MenuSidebar = () => {
 
   const pathname = usePathname()
-  const {sidebarOpen} = useAppState()
+  const { sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useAppState()
+  const [overlay, setOverlay] = useState(false)
 
-  console.log(sidebarOpen)
+  const isMobile = useMediaQuery('768px')
 
-  console.log(pathname)
+
+  useEffect(() => {
+    const handleSidebarResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarCollapsed(false)
+        setOverlay(true)
+      }else{
+        setOverlay(false)
+      }
+
+    }
+
+
+    // Call once on mount
+    handleSidebarResize()
+
+    // Attach resize listener
+    window.addEventListener('resize', handleSidebarResize)
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('resize', handleSidebarResize)
+    }
+  }, [window.innerWidth]) // 
 
   return (
-    <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} absolute bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-auto scrollbar-hide min-w-72 md:sticky top-0 h-screen shadow-xl shrink-0 z-50 border-r`}>
-      <div className='flex sticky top-0 bg-white py-5 px-4 items-center justify-between'>
-        <Link href="/">
-          <div className="text-2xl font-bold text-[#0d9488]">GT</div>
-        </Link>
-        <Button variant="ghost" size="icon" asChild className='hover:bg-transparent cursor-pointer w-6 h-6'>
-          <svg className='shrink-0' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12C2 8.31087 2 6.4663 2.81382 5.15877C3.1149 4.67502 3.48891 4.25427 3.91891 3.91554C5.08116 3 6.72077 3 10 3H14C17.2792 3 18.9188 3 20.0811 3.91554C20.5111 4.25427 20.8851 4.67502 21.1862 5.15877C22 6.4663 22 8.31087 22 12C22 15.6891 22 17.5337 21.1862 18.8412C20.8851 19.325 20.5111 19.7457 20.0811 20.0845C18.9188 21 17.2792 21 14 21H10C6.72077 21 5.08116 21 3.91891 20.0845C3.48891 19.7457 3.1149 19.325 2.81382 18.8412C2 17.5337 2 15.6891 2 12Z" stroke="#141B34" strokeWidth="1.5" />
-            <path d="M9.5 3V21" stroke="#141B34" strokeWidth="1.5" strokeLinejoin="round" />
-            <path d="M5 7H6M5 10H6" stroke="#141B34" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Button>
-      </div>
-      {/* Menu Items */}
-      <div className='py-3 px-4 flex flex-col items-start justify-between'>
-        <div className='w-full grid gap-2 divide-y'>
-          <ul className='list-none grid gap-2 pb-5'>
-            <Button className="flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center justify-between gap-2 shadow-none">
-              <div className='flex items-center gap-4'>
-                <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2.84553 12.5631C2.99545 13.6767 3.91775 14.549 5.0401 14.6006C5.98451 14.644 6.94386 14.6667 8.00033 14.6667C9.05679 14.6667 10.0161 14.644 10.9605 14.6006C12.0829 14.549 13.0052 13.6767 13.1551 12.5631C13.253 11.8365 13.3337 11.0917 13.3337 10.3333C13.3337 9.57493 13.253 8.8302 13.1551 8.10353C13.0052 6.99 12.0829 6.11766 10.9605 6.06606C10.0161 6.02265 9.05679 6 8.00033 6C6.94386 6 5.98451 6.02265 5.0401 6.06606C3.91775 6.11766 2.99545 6.99 2.84553 8.10353C2.74769 8.8302 2.66699 9.57493 2.66699 10.3333C2.66699 11.0917 2.74769 11.8365 2.84553 12.5631Z" stroke="white" />
-                  <path d="M5 5.99992V4.33325C5 2.6764 6.34315 1.33325 8 1.33325C9.65687 1.33325 11 2.6764 11 4.33325V5.99992" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M7.99707 10.3333H8.00307" stroke="white" strokeWidth="2.66667" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                </span>
-                <p>Complete setup</p>
-              </div>
-              <ChevronRight className="w-6 h-6" />
-            </Button>
-            {navigationData[0].items.map(menuItem => (
-              <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
-            ))}
-          </ul>
-          <ul className='list-none grid gap-2 pt-5'>
-            {navigationData[1].items.map(menuItem => (
-              <MenuItem key={menuItem.id} {...menuItem} />
-            ))}
-          </ul>
+    <>
+      <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen ${isMobile ? 'shadow-none border-0' : 'shadow-xl'}  shrink-0 z-50 border-r flex flex-col`}>
+        <div className={`${sidebarCollapsed && 'flex-col'} z-20 flex sticky top-0 bg-white py-5 px-4 items-center justify-between`}>
+          <Link href="/">
+            <div className="text-2xl text-center w-full font-bold text-[#0d9488] self-center">GT</div>
+          </Link>
+          <Button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} variant="ghost" size="icon" asChild className={`${sidebarCollapsed ? 'invisible opacity-0 absolute transform scale-0' : 'visible'} hover:bg-transparent hidden md:block cursor-pointer w-6 h-6`}>
+            <svg className='shrink-0' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 12C2 8.31087 2 6.4663 2.81382 5.15877C3.1149 4.67502 3.48891 4.25427 3.91891 3.91554C5.08116 3 6.72077 3 10 3H14C17.2792 3 18.9188 3 20.0811 3.91554C20.5111 4.25427 20.8851 4.67502 21.1862 5.15877C22 6.4663 22 8.31087 22 12C22 15.6891 22 17.5337 21.1862 18.8412C20.8851 19.325 20.5111 19.7457 20.0811 20.0845C18.9188 21 17.2792 21 14 21H10C6.72077 21 5.08116 21 3.91891 20.0845C3.48891 19.7457 3.1149 19.325 2.81382 18.8412C2 17.5337 2 15.6891 2 12Z" stroke="#141B34" strokeWidth="1.5" />
+              <path d="M9.5 3V21" stroke="#141B34" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M5 7H6M5 10H6" stroke="#141B34" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Button>
+          <button onClick={() => setSidebarOpen(false)} className='hover:bg-gray-50 rounded-md p-1 cursor-pointer block md:hidden'>
+            <X />
+          </button>
         </div>
-        <div className='grid gap-6 my-14 w-full'>
-          {/* Become a Receiver */}
-          <Card className="bg-[#f1f3de] shadow-none border-0 relative w-full h-auto">
-            <Button variant="ghost" size="icon" className="absolute top-4 right-3 w-8 h-8">
-              <X className="w-4 h-4" />
-            </Button>
-            <CardContent className="px-5">
-              <h3 className="font-semibold text-[#222222] mb-2">Become a Receiver</h3>
-              <p className="text-sm text-[#626262] mb-4">Receive items from others</p>
-              <Button className="bg-[#0d9488] hover:bg-[#14ae7d] cursor-pointer text-white w-full">Get Started</Button>
-            </CardContent>
-          </Card>
-
-          {/* Need Help */}
-          <Card className="bg-[#ffffff] shadow-none border w-full h-auto border-gray-200">
-            <CardContent className="px-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-[#222222] mb-1">Need Help?</h3>
-                  <p className="text-sm text-[#626262]">Visit our Help centre</p>
+        {/* Menu Items */}
+        <div className='py-3 px-4 flex flex-col flex-1  items-start justify-between'>
+          <div className='w-full flex flex-col justify-between h-full gap-6'>
+            <div className='pl-3 borderl block md:hidden'>
+              <User />
+            </div>
+            <ul className='list-none grid gap-2 pb-5'>
+              <Button className={`flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}  gap-2 shadow-none`}>
+                <div className='flex items-center gap-4'>
+                  <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.84553 12.5631C2.99545 13.6767 3.91775 14.549 5.0401 14.6006C5.98451 14.644 6.94386 14.6667 8.00033 14.6667C9.05679 14.6667 10.0161 14.644 10.9605 14.6006C12.0829 14.549 13.0052 13.6767 13.1551 12.5631C13.253 11.8365 13.3337 11.0917 13.3337 10.3333C13.3337 9.57493 13.253 8.8302 13.1551 8.10353C13.0052 6.99 12.0829 6.11766 10.9605 6.06606C10.0161 6.02265 9.05679 6 8.00033 6C6.94386 6 5.98451 6.02265 5.0401 6.06606C3.91775 6.11766 2.99545 6.99 2.84553 8.10353C2.74769 8.8302 2.66699 9.57493 2.66699 10.3333C2.66699 11.0917 2.74769 11.8365 2.84553 12.5631Z" stroke="white" />
+                    <path d="M5 5.99992V4.33325C5 2.6764 6.34315 1.33325 8 1.33325C9.65687 1.33325 11 2.6764 11 4.33325V5.99992" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M7.99707 10.3333H8.00307" stroke="white" strokeWidth="2.66667" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  </span>
+                  <p className={`${sidebarCollapsed && 'hidden'}`} >Complete setup</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-[#626262]" />
-              </div>
-            </CardContent>
-          </Card>
+                <ChevronRight className={`${sidebarCollapsed && 'hidden'} w-6 h-6`} />
+              </Button>
+              {navigationData[0].items.map(menuItem => (
+                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
+              ))}
+            </ul>
+            <ul className='list-none grid gap-2 pt-5'>
+              {navigationData[1].items.map(menuItem => (
+                <MenuItem key={menuItem.id} {...menuItem} />
+              ))}
+            </ul>
+          </div>
+          <div className={`${sidebarCollapsed && 'hidden'} grid gap-6 my-14 w-full`}>
+            {/* Become a Receiver */}
+            <Card className="bg-[#f1f3de] shadow-none border-0 relative w-full h-auto">
+              <Button variant="ghost" size="icon" className="absolute top-4 right-3 w-8 h-8">
+                <X className="w-4 h-4" />
+              </Button>
+              <CardContent className="px-5">
+                <h3 className="font-semibold text-[#222222] mb-2">Become a Receiver</h3>
+                <p className="text-sm text-[#626262] mb-4">Receive items from others</p>
+                <Button className="bg-[#0d9488] hover:bg-[#14ae7d] cursor-pointer text-white w-full">Get Started</Button>
+              </CardContent>
+            </Card>
+
+            {/* Need Help */}
+            <Card className="bg-[#ffffff] shadow-none border w-full h-auto border-gray-200">
+              <CardContent className="px-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-[#222222] mb-1">Need Help?</h3>
+                    <p className="text-sm text-[#626262]">Visit our Help centre</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-[#626262]" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+      <div onClick={() => setSidebarOpen(false)} className={`${overlay && sidebarOpen ? 'block translate-x-0' : 'hidden'} z-30 transform duration-300 -translate-x-[100%] transition-all ease-in-out absolute inset-0  h-full w-full bg-black/10 backdrop-blur-md`} />
+    </>
   )
 }
 

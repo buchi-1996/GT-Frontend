@@ -10,6 +10,8 @@ interface AppContextType {
   closeModal: () => void;
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -17,6 +19,7 @@ export const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [modalContent, setModalContent] = useState<ReactNode>(null);
 
   const openModal = (content: ReactNode) => {
@@ -32,7 +35,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
 
   return (
-    <AppContext.Provider value={{ sidebarOpen, setSidebarOpen, isOpen, modalContent, openModal, closeModal, setIsOpen }}>
+    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, sidebarOpen, setSidebarOpen, isOpen, modalContent, openModal, closeModal, setIsOpen }}>
       {children}
     </AppContext.Provider>
   );

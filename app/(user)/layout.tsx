@@ -25,13 +25,13 @@ export default function AuthLayout({
 }>): React.ReactNode {
     return (
         <html lang="en">
-            <body className={`${inter.variable} flex flex-col min-h-screen antialiased`}>
+            <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <Providers>
                     <div className="relative flex h-full">
                         <MenuSidebar />
                         <div className="flex-1 h-full">
                             <DashboardHeader />
-                            <div className="container mx-auto p-6 lg:p-12">
+                            <div className="md:container mx-auto p-6 lg:p-12">
                                 {children}
                             </div>
                         </div>
