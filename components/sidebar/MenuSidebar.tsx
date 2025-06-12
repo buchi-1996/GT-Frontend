@@ -8,7 +8,6 @@ import { Card, CardContent } from '../ui/card'
 import { ChevronRight, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useAppState } from '@/hooks/useAppState'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import User from '../header/User'
 
 
