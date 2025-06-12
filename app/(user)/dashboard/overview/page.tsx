@@ -72,7 +72,7 @@ const Dashboard = () => {
             <div className="border rounded-lg p-4 sm:p-6 ">
                 <h2 className="text-xl font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                    <Card className="bg-[#e6f8f4] shadow-none h-auto shrink-0 border-0">
+                    <Card className="bg-[#e6f8f4] w-full shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Leaf className="w-6 h-6 text-[#14AE7D] mx-auto mb-3" />
                             <div className="text-xl sm:text-3xl font-bold text-[#166534] mb-1">0 kg</div>
@@ -80,7 +80,7 @@ const Dashboard = () => {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-[#e7eff9] h-auto shrink-0 shadow-none border-0">
+                    <Card className="w-full bg-[#e7eff9] h-auto shrink-0 shadow-none border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Gift className="w-6 h-6 text-[#3a66f5] mx-auto mb-3 " />
                             <div className="text-xl sm:text-3xl font-bold text-[#1E40AF] mb-1">0</div>
@@ -88,14 +88,14 @@ const Dashboard = () => {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-[#F6EAFD] shadow-none h-auto shrink-0 border-0">
+                    <Card className="w-full bg-[#F6EAFD] shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Handshake className="w-6 h-6 text-[#8E6ADD] mx-auto mb-3" />
                             <div className="text-xl sm:text-3xl font-bold text-[#4C21A8] mb-1">0</div>
                             <div className="text-xs sm:text-sm text-[#626262]">Connections Made</div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-[#FFEDE1] shadow-none h-auto shrink-0 border-0">
+                    <Card className="w-full bg-[#FFEDE1] shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6 text-center">
                                 <svg className="h-6 w-6 mx-auto mb-3" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3.5 5.11296C3.5 4.56029 3.5 4.28395 3.54289 4.05373C3.73304 3.03312 4.52565 2.23473 5.53889 2.0432C5.76745 2 6.04179 2 6.59048 2H18.4095C18.9582 2 19.2325 2 19.4611 2.0432C20.4743 2.23473 21.267 3.03312 21.4571 4.05373C21.5 4.28395 21.5 4.56029 21.5 5.11296C21.5 5.6552 21.5 5.92631 21.4685 6.17771C21.3309 7.27541 20.7512 8.26781 19.8654 8.92208C19.6625 9.07192 19.4272 9.20359 18.9566 9.46692L16.3851 10.9059C14.4861 11.9686 13.5365 12.5 12.5 12.5C11.4635 12.5 10.5139 11.9686 8.61486 10.9059L6.04338 9.46692C5.5728 9.20359 5.33752 9.07192 5.13465 8.92208C4.24885 8.26781 3.66914 7.27541 3.53152 6.17771C3.5 5.92631 3.5 5.6552 3.5 5.11296Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
