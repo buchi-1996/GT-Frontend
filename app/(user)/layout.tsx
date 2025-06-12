@@ -31,7 +31,7 @@ export default function AuthLayout({
                         <MenuSidebar />
                         <div className="flex-1 h-full">
                             <DashboardHeader />
-                            <div className="md:container mx-auto p-6 lg:p-12">
+                            <div className="md:container mx-auto px-4 py-6 md:px-6 lg:p-12">
                                 {children}
                             </div>
                         </div>

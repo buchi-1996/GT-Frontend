@@ -11,7 +11,7 @@ const DashboardHeader = () => {
 
 
   return (
-    <header className=" h-18 sticky top-0 mx-auto  px-6 lg:px-12 bg-[#ffffff] border-b border-gray-200 py-4 flex items-center justify-between">
+    <header className=" h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-[#ffffff] border-b border-gray-200 py-4 flex items-center justify-between">
       <div className='flex items-center gap-4'>
         <button onClick={() => setSidebarOpen(true)} className='block md:hidden shrink-0 cursor-pointer'>
           <Menu />
@@ -57,7 +57,7 @@ const DashboardHeader = () => {
               </span>
             </button>
           </div>
-          <div className='hidden md:block'>
+          <div className='pl-4 border-l hidden md:block'>
             <User />
           </div>
         </div>

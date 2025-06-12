@@ -170,8 +170,8 @@ const MenuSidebar = () => {
 
   return (
     <>
-      <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen ${isMobile ? 'shadow-none border-0' : 'shadow-xl'}  shrink-0 z-50 border-r flex flex-col`}>
-        <div className={`${sidebarCollapsed && 'flex-col'} z-20 flex sticky top-0 bg-white py-5 px-4 items-center justify-between`}>
+      <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen sm:shadow-xl shrink-0 z-50 sm:border-r flex flex-col`}>
+        <div className={`${sidebarCollapsed && 'flex-col'} hidden  z-20 md:flex sticky top-0 bg-white py-5 px-4 items-center justify-between`}>
           <Link href="/">
             <div className="text-2xl text-center w-full font-bold text-[#0d9488] self-center">GT</div>
           </Link>
@@ -188,12 +188,13 @@ const MenuSidebar = () => {
         </div>
         {/* Menu Items */}
         <div className='py-3 px-4 flex flex-col flex-1  items-start justify-between'>
-          <div className='w-full flex flex-col justify-between h-full gap-6'>
-            <div className='pl-3 borderl block md:hidden'>
+          <div className='w-full flex flex-col justify-between h-full gap-6 divide-y'>
+            
+            <ul className='list-none grid gap-1 sm:gap-2 pb-5'>
+              <div className='py-4 borderl block md:hidden'>
               <User />
             </div>
-            <ul className='list-none grid gap-2 pb-5'>
-              <Button className={`flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}  gap-2 shadow-none`}>
+              <Button className={`flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}  gap-2 shadow-none mb-2`}>
                 <div className='flex items-center gap-4'>
                   <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.84553 12.5631C2.99545 13.6767 3.91775 14.549 5.0401 14.6006C5.98451 14.644 6.94386 14.6667 8.00033 14.6667C9.05679 14.6667 10.0161 14.644 10.9605 14.6006C12.0829 14.549 13.0052 13.6767 13.1551 12.5631C13.253 11.8365 13.3337 11.0917 13.3337 10.3333C13.3337 9.57493 13.253 8.8302 13.1551 8.10353C13.0052 6.99 12.0829 6.11766 10.9605 6.06606C10.0161 6.02265 9.05679 6 8.00033 6C6.94386 6 5.98451 6.02265 5.0401 6.06606C3.91775 6.11766 2.99545 6.99 2.84553 8.10353C2.74769 8.8302 2.66699 9.57493 2.66699 10.3333C2.66699 11.0917 2.74769 11.8365 2.84553 12.5631Z" stroke="white" />
@@ -209,28 +210,28 @@ const MenuSidebar = () => {
                 <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
               ))}
             </ul>
-            <ul className='list-none grid gap-2 pt-5'>
+            <ul className='list-none grid gap-1 sm:gap-2 '>
               {navigationData[1].items.map(menuItem => (
                 <MenuItem key={menuItem.id} {...menuItem} />
               ))}
             </ul>
           </div>
-          <div className={`${sidebarCollapsed && 'hidden'} grid gap-6 my-14 w-full`}>
+          <div className={`${sidebarCollapsed && 'hidden'} grid gap-6 my-8 w-full`}>
             {/* Become a Receiver */}
-            <Card className="bg-[#f1f3de] shadow-none border-0 relative w-full h-auto">
-              <Button variant="ghost" size="icon" className="absolute top-4 right-3 w-8 h-8">
+            <Card className="bg-[#f1f3de] shadow-none border-0 relative w-full py-5 h-auto">
+              <Button variant="ghost" size="icon" className="absolute top-3 right-3 w-8 h-8">
                 <X className="w-4 h-4" />
               </Button>
-              <CardContent className="px-5">
-                <h3 className="font-semibold text-[#222222] mb-2">Become a Receiver</h3>
+              <CardContent className="px-3 sm:px-5">
+                <h3 className="font-semibold text-[#222222] mb-1">Become a Receiver</h3>
                 <p className="text-sm text-[#626262] mb-4">Receive items from others</p>
                 <Button className="bg-[#0d9488] hover:bg-[#14ae7d] cursor-pointer text-white w-full">Get Started</Button>
               </CardContent>
             </Card>
 
             {/* Need Help */}
-            <Card className="bg-[#ffffff] shadow-none border w-full h-auto border-gray-200">
-              <CardContent className="px-5">
+            <Card className="bg-[#ffffff] shadow-none border w-full h-auto py-3 border-gray-200">
+              <CardContent className="px-3 sm:px-5">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold text-[#222222] mb-1">Need Help?</h3>
@@ -243,7 +244,7 @@ const MenuSidebar = () => {
           </div>
         </div>
       </div>
-      <div onClick={() => setSidebarOpen(false)} className={`${overlay && sidebarOpen ? 'block translate-x-0' : 'hidden'} z-30 transform duration-300 -translate-x-[100%] transition-all ease-in-out absolute inset-0  h-full w-full bg-black/10 backdrop-blur-md`} />
+      <div onClick={() => setSidebarOpen(false)} className={`${overlay && sidebarOpen ? 'block translate-x-0' : 'hidden'} z-30 transform duration-300 -translate-x-[100%] transition-all ease-in-out absolute inset-0  min-h-screen w-full bg-black/40 backdrop-blur-md`} />
     </>
   )
 }

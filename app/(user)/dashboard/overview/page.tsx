@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import StatsCard from "@/components/usercard/StatsCard"
 import { Users, Package, Star, Leaf, Gift, Handshake } from "lucide-react"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 
 
@@ -11,7 +10,7 @@ const Dashboard = () => {
     return (
         <main className="grid gap-10">
             {/* Metrics Cards */}
-            <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 xl:gap-8">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 sm:gap-6 xl:gap-8">
                 <StatsCard
                     title="Item Listed"
                     count={0}
@@ -49,7 +48,7 @@ const Dashboard = () => {
                 {/* Left Column */}
                 <div className="lg:col-span-3 space-y-6">
                     {/* Recent Activity */}
-                    <Card className="bg-[F9FAFB] shadow-none border-0">
+                    <Card className="bg-[#F9FAFB] shadow-none border-0">
                         <CardHeader>
                             <CardTitle className="text-[#222222]">Recent Activity</CardTitle>
                         </CardHeader>
@@ -70,30 +69,30 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-            <ScrollArea className="border rounded-lg whitespace-nowrap p-6 ">
+            <div className="border rounded-lg p-4 sm:p-6 ">
                 <h2 className="text-xl font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                     <Card className="bg-[#e6f8f4] shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Leaf className="w-6 h-6 text-[#14AE7D] mx-auto mb-3" />
-                            <div className="text-3xl font-bold text-[#166534] mb-1">0 kg</div>
-                            <div className="text-sm text-[#626262]">Waste Diverted</div>
+                            <div className="text-xl sm:text-3xl font-bold text-[#166534] mb-1">0 kg</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Waste Diverted</div>
                         </CardContent>
                     </Card>
 
                     <Card className="bg-[#e7eff9] h-auto shrink-0 shadow-none border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Gift className="w-6 h-6 text-[#3a66f5] mx-auto mb-3 " />
-                            <div className="text-3xl font-bold text-[#1E40AF] mb-1">0</div>
-                            <div className="text-sm text-[#626262]">Items Shared</div>
+                            <div className="text-xl sm:text-3xl font-bold text-[#1E40AF] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Items Shared</div>
                         </CardContent>
                     </Card>
 
                     <Card className="bg-[#F6EAFD] shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Handshake className="w-6 h-6 text-[#8E6ADD] mx-auto mb-3" />
-                            <div className="text-3xl font-bold text-[#4C21A8] mb-1">0</div>
-                            <div className="text-sm text-[#626262]">Connections Made</div>
+                            <div className="text-xl sm:text-3xl font-bold text-[#4C21A8] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Connections Made</div>
                         </CardContent>
                     </Card>
                     <Card className="bg-[#FFEDE1] shadow-none h-auto shrink-0 border-0">
@@ -103,13 +102,12 @@ const Dashboard = () => {
                                     <path d="M8.5 5V6M12.5 5V8M16.5 5V6" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
                                     <path d="M13.2774 13.6499L14.0693 15.2468C14.1773 15.4691 14.4653 15.6823 14.7083 15.7231L16.1436 15.9636C17.0615 16.1178 17.2775 16.7893 16.6161 17.4516L15.5002 18.5767C15.3112 18.7673 15.2077 19.1347 15.2662 19.3979L15.5857 20.7906C15.8377 21.893 15.2572 22.3195 14.2898 21.7433L12.9445 20.9403C12.7015 20.7952 12.301 20.7952 12.0536 20.9403L10.7082 21.7433C9.74533 22.3195 9.16039 21.8885 9.41236 20.7906L9.73183 19.3979C9.79032 19.1347 9.68683 18.7673 9.49785 18.5767L8.38198 17.4516C7.72505 16.7893 7.93653 16.1178 8.85443 15.9636L10.2898 15.7231C10.5282 15.6823 10.8162 15.4691 10.9242 15.2468L11.7161 13.6499C12.1481 12.7834 12.85 12.7834 13.2774 13.6499Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                            <div className="text-3xl font-bold text-[#C2410C] mb-1">0</div>
-                            <div className="text-sm text-[#626262]">Badges Earned</div>
+                            <div className="text-xl sm:text-3xl font-bold text-[#C2410C] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Badges Earned</div>
                         </CardContent>
                     </Card>
                 </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            </div>
         </main >
     )
 }
