@@ -166,7 +166,7 @@ const MenuSidebar = () => {
     return () => {
       window.removeEventListener('resize', handleSidebarResize)
     }
-  }, [window.innerWidth]) // 
+  }, [setSidebarCollapsed]) // 
 
   return (
     <>
