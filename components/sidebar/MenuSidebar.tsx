@@ -141,7 +141,6 @@ const MenuSidebar = () => {
   const { sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useAppState()
   const [overlay, setOverlay] = useState(false)
 
-  const isMobile = useMediaQuery('768px')
 
 
   useEffect(() => {
