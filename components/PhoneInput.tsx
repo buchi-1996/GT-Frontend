@@ -8,7 +8,7 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
+//   CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -78,7 +78,6 @@ type CountrySelectProps = {
   options: CountryEntry[];
   onChange: (country: RPNInput.Country) => void;
 };
-const ALLOWED_COUNTRIES = ["NL", "GB", "DE", "BE"];
 
 const CountrySelect = ({
   disabled,
@@ -87,7 +86,7 @@ const CountrySelect = ({
   onChange,
 }: CountrySelectProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
-  const [searchValue, setSearchValue] = React.useState("");
+//   const [searchValue, setSearchValue] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (

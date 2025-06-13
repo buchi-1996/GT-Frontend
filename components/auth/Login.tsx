@@ -32,7 +32,7 @@ const Login = () => {
         mode: "onChange", // ensures validation happens as user types
         defaultValues: {
             email: "",
-            password: "",
+            password: ""
         },
     })
 
