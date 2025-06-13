@@ -1,9 +1,12 @@
 import Register from '@/components/auth/Register'
+import OnboardingHeader from '@/components/header/OnboardingHeader'
 import Link from 'next/link'
 import React from 'react'
 
 const Signup = () => {
     return (
+        <>
+        <OnboardingHeader hasActionButton title="Switch role" />
         <div className='py-5'>
             <div className="container mx-auto p-6">
                 <div className="grid max-w-2xl mx-auto">
@@ -24,6 +27,7 @@ const Signup = () => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

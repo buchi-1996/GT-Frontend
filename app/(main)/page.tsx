@@ -1,6 +1,7 @@
 "use client"
 
 
+import OnboardingHeader from "@/components/header/OnboardingHeader"
 import UserCard from "@/components/usercard/UserCard"
 import Image from "next/image"
 
@@ -10,6 +11,8 @@ export default function Home() {
 
 
   return (
+    <>
+    <OnboardingHeader hasActionButton={false} />
     <div className="h-full flex flex-col max-w-5xl mx-auto">
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-20">
@@ -67,6 +70,7 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

@@ -86,7 +86,7 @@ const Login = () => {
                                 name="password"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-gray-500">Password - <span className="text-xs sm:text-sm text-gray-400">Must be at-least 8 characters, a number and a character</span></FormLabel>
+                                        <FormLabel className="text-gray-500">Password</FormLabel>
                                         <FormControl>
                                             <div className="relative">
                                                 <Input

@@ -1,9 +1,12 @@
 import Login from '@/components/auth/Login'
+import OnboardingHeader from '@/components/header/OnboardingHeader'
 import Link from 'next/link'
 import React from 'react'
 
 const login = () => {
   return (
+    <>
+    <OnboardingHeader hasActionButton={false} />
     <div className='py-5'>
                 <div className="container mx-auto p-6">
                     <div className="grid max-w-2xl mx-auto">
@@ -24,6 +27,8 @@ const login = () => {
                     </div>
                 </div>
             </div>
+    </>
+
   )
 }
 
