@@ -12,7 +12,7 @@ const login = () => {
                                 <div className="space-y-2 flex flex-col items-center sm:items-start">
                                     <h1 className="text-2xl md:text-4xl font-bold text-[#222222] mb-2">Sign In</h1>
                                     <p className="text-sm sm:text-[1rem] text-[#626262]">
-                                        Don't have an account?{" "}
+                                        Don&apos;t have an account?{" "}
                                         <Link href="/" className="text-[#0d9488] hover:underline">
                                             Sign Up
                                         </Link>

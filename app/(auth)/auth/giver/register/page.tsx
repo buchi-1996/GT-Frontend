@@ -1,4 +1,3 @@
-import AuthScreenBanner from '@/components/auth/AuthScreenBanner'
 import Register from '@/components/auth/Register'
 import Link from 'next/link'
 import React from 'react'
