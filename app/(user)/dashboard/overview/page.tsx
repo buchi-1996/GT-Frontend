@@ -1,6 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import StatsCard from "@/components/usercard/StatsCard"
 import { Users, Package, Star, Leaf, Gift, Handshake } from "lucide-react"
 
@@ -50,10 +51,10 @@ const Dashboard = () => {
                     {/* Recent Activity */}
                     <Card className="bg-[#F9FAFB] shadow-none border-0">
                         <CardHeader>
-                            <CardTitle className="text-[#222222]">Recent Activity</CardTitle>
+                            <CardTitle className="text-md sm:text-[1rem] text-[#222222]">Recent Activity</CardTitle>
                         </CardHeader>
                         <CardContent className="py-12">
-                            <div className="text-center text-[#626262]">No recent activity</div>
+                            <div className="text-center text-sm sm:text-md text-[#626262]">No recent activity</div>
                         </CardContent>
                     </Card>
                 </div>
@@ -61,17 +62,17 @@ const Dashboard = () => {
                     {/* Your Badges */}
                     <Card className="bg-[#F9FAFB] border-0 shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-[#222222]">Your Badges</CardTitle>
+                            <CardTitle className="text-md sm:text-[1rem] text-[#222222]">Your Badges</CardTitle>
                         </CardHeader>
                         <CardContent className="py-12">
-                            <div className="text-center text-[#626262]">No Badges</div>
+                            <div className="text-center text-sm sm:text-md text-[#626262]">No Badges</div>
                         </CardContent>
                     </Card>
                 </div>
             </div>
-            <div className="border rounded-lg p-4 sm:p-6 ">
-                <h2 className="text-xl font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
-                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="hidden xl:block border rounded-lg p-4 sm:p-6 ">
+                <h2 className="text-md sm:text-[1.2rem] font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
+                <div className="grid grid-cols-4 gap-4">
                     <Card className="bg-[#e6f8f4] w-full shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6  text-center">
                             <Leaf className="w-6 h-6 text-[#14AE7D] mx-auto mb-3" />
@@ -97,11 +98,50 @@ const Dashboard = () => {
                     </Card>
                     <Card className="w-full bg-[#FFEDE1] shadow-none h-auto shrink-0 border-0">
                         <CardContent className="py-4 px-6 text-center">
-                                <svg className="h-6 w-6 mx-auto mb-3" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.5 5.11296C3.5 4.56029 3.5 4.28395 3.54289 4.05373C3.73304 3.03312 4.52565 2.23473 5.53889 2.0432C5.76745 2 6.04179 2 6.59048 2H18.4095C18.9582 2 19.2325 2 19.4611 2.0432C20.4743 2.23473 21.267 3.03312 21.4571 4.05373C21.5 4.28395 21.5 4.56029 21.5 5.11296C21.5 5.6552 21.5 5.92631 21.4685 6.17771C21.3309 7.27541 20.7512 8.26781 19.8654 8.92208C19.6625 9.07192 19.4272 9.20359 18.9566 9.46692L16.3851 10.9059C14.4861 11.9686 13.5365 12.5 12.5 12.5C11.4635 12.5 10.5139 11.9686 8.61486 10.9059L6.04338 9.46692C5.5728 9.20359 5.33752 9.07192 5.13465 8.92208C4.24885 8.26781 3.66914 7.27541 3.53152 6.17771C3.5 5.92631 3.5 5.6552 3.5 5.11296Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
-                                    <path d="M8.5 5V6M12.5 5V8M16.5 5V6" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
-                                    <path d="M13.2774 13.6499L14.0693 15.2468C14.1773 15.4691 14.4653 15.6823 14.7083 15.7231L16.1436 15.9636C17.0615 16.1178 17.2775 16.7893 16.6161 17.4516L15.5002 18.5767C15.3112 18.7673 15.2077 19.1347 15.2662 19.3979L15.5857 20.7906C15.8377 21.893 15.2572 22.3195 14.2898 21.7433L12.9445 20.9403C12.7015 20.7952 12.301 20.7952 12.0536 20.9403L10.7082 21.7433C9.74533 22.3195 9.16039 21.8885 9.41236 20.7906L9.73183 19.3979C9.79032 19.1347 9.68683 18.7673 9.49785 18.5767L8.38198 17.4516C7.72505 16.7893 7.93653 16.1178 8.85443 15.9636L10.2898 15.7231C10.5282 15.6823 10.8162 15.4691 10.9242 15.2468L11.7161 13.6499C12.1481 12.7834 12.85 12.7834 13.2774 13.6499Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                            <svg className="h-6 w-6 mx-auto mb-3" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.5 5.11296C3.5 4.56029 3.5 4.28395 3.54289 4.05373C3.73304 3.03312 4.52565 2.23473 5.53889 2.0432C5.76745 2 6.04179 2 6.59048 2H18.4095C18.9582 2 19.2325 2 19.4611 2.0432C20.4743 2.23473 21.267 3.03312 21.4571 4.05373C21.5 4.28395 21.5 4.56029 21.5 5.11296C21.5 5.6552 21.5 5.92631 21.4685 6.17771C21.3309 7.27541 20.7512 8.26781 19.8654 8.92208C19.6625 9.07192 19.4272 9.20359 18.9566 9.46692L16.3851 10.9059C14.4861 11.9686 13.5365 12.5 12.5 12.5C11.4635 12.5 10.5139 11.9686 8.61486 10.9059L6.04338 9.46692C5.5728 9.20359 5.33752 9.07192 5.13465 8.92208C4.24885 8.26781 3.66914 7.27541 3.53152 6.17771C3.5 5.92631 3.5 5.6552 3.5 5.11296Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
+                                <path d="M8.5 5V6M12.5 5V8M16.5 5V6" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
+                                <path d="M13.2774 13.6499L14.0693 15.2468C14.1773 15.4691 14.4653 15.6823 14.7083 15.7231L16.1436 15.9636C17.0615 16.1178 17.2775 16.7893 16.6161 17.4516L15.5002 18.5767C15.3112 18.7673 15.2077 19.1347 15.2662 19.3979L15.5857 20.7906C15.8377 21.893 15.2572 22.3195 14.2898 21.7433L12.9445 20.9403C12.7015 20.7952 12.301 20.7952 12.0536 20.9403L10.7082 21.7433C9.74533 22.3195 9.16039 21.8885 9.41236 20.7906L9.73183 19.3979C9.79032 19.1347 9.68683 18.7673 9.49785 18.5767L8.38198 17.4516C7.72505 16.7893 7.93653 16.1178 8.85443 15.9636L10.2898 15.7231C10.5282 15.6823 10.8162 15.4691 10.9242 15.2468L11.7161 13.6499C12.1481 12.7834 12.85 12.7834 13.2774 13.6499Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <div className="text-xl sm:text-3xl font-bold text-[#C2410C] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Badges Earned</div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+            <div className="block xl:hidden border w-full overflow-x-hidden rounded-lg py-6 ">
+                <h2 className="mx-4 sm:mx-6 text-md sm:text-[1.2rem] font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
+                <div className="flex flex-row items-center ml-4 gap-4 overflow-x-auto scrollbar-hide">
+                    <Card className="bg-[#e6f8f4]  w-72 shadow-none h-auto shrink-0 border-0">
+                        <CardContent className="py-4 px-6  text-center">
+                            <Leaf className="w-6 h-6 text-[#14AE7D] mx-auto mb-3" />
+                            <div className="text-xl sm:text-3xl font-bold text-[#166534] mb-1">0 kg</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Waste Diverted</div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="w-72  bg-[#e7eff9] h-auto shrink-0 shadow-none border-0">
+                        <CardContent className="py-4 px-6  text-center">
+                            <Gift className="w-6 h-6 text-[#3a66f5] mx-auto mb-3 " />
+                            <div className="text-xl sm:text-3xl font-bold text-[#1E40AF] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Items Shared</div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="w-72  bg-[#F6EAFD] shadow-none h-auto shrink-0 border-0">
+                        <CardContent className="py-4 px-6  text-center">
+                            <Handshake className="w-6 h-6 text-[#8E6ADD] mx-auto mb-3" />
+                            <div className="text-xl sm:text-3xl font-bold text-[#4C21A8] mb-1">0</div>
+                            <div className="text-xs sm:text-sm text-[#626262]">Connections Made</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="w-72 mr-4 bg-[#FFEDE1] shadow-none h-auto shrink-0 border-0">
+                        <CardContent className="py-4 px-6 text-center">
+                            <svg className="h-6 w-6 mx-auto mb-3" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.5 5.11296C3.5 4.56029 3.5 4.28395 3.54289 4.05373C3.73304 3.03312 4.52565 2.23473 5.53889 2.0432C5.76745 2 6.04179 2 6.59048 2H18.4095C18.9582 2 19.2325 2 19.4611 2.0432C20.4743 2.23473 21.267 3.03312 21.4571 4.05373C21.5 4.28395 21.5 4.56029 21.5 5.11296C21.5 5.6552 21.5 5.92631 21.4685 6.17771C21.3309 7.27541 20.7512 8.26781 19.8654 8.92208C19.6625 9.07192 19.4272 9.20359 18.9566 9.46692L16.3851 10.9059C14.4861 11.9686 13.5365 12.5 12.5 12.5C11.4635 12.5 10.5139 11.9686 8.61486 10.9059L6.04338 9.46692C5.5728 9.20359 5.33752 9.07192 5.13465 8.92208C4.24885 8.26781 3.66914 7.27541 3.53152 6.17771C3.5 5.92631 3.5 5.6552 3.5 5.11296Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
+                                <path d="M8.5 5V6M12.5 5V8M16.5 5V6" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" />
+                                <path d="M13.2774 13.6499L14.0693 15.2468C14.1773 15.4691 14.4653 15.6823 14.7083 15.7231L16.1436 15.9636C17.0615 16.1178 17.2775 16.7893 16.6161 17.4516L15.5002 18.5767C15.3112 18.7673 15.2077 19.1347 15.2662 19.3979L15.5857 20.7906C15.8377 21.893 15.2572 22.3195 14.2898 21.7433L12.9445 20.9403C12.7015 20.7952 12.301 20.7952 12.0536 20.9403L10.7082 21.7433C9.74533 22.3195 9.16039 21.8885 9.41236 20.7906L9.73183 19.3979C9.79032 19.1347 9.68683 18.7673 9.49785 18.5767L8.38198 17.4516C7.72505 16.7893 7.93653 16.1178 8.85443 15.9636L10.2898 15.7231C10.5282 15.6823 10.8162 15.4691 10.9242 15.2468L11.7161 13.6499C12.1481 12.7834 12.85 12.7834 13.2774 13.6499Z" stroke="#F97311" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                             <div className="text-xl sm:text-3xl font-bold text-[#C2410C] mb-1">0</div>
                             <div className="text-xs sm:text-sm text-[#626262]">Badges Earned</div>
                         </CardContent>

@@ -155,7 +155,7 @@ body {
 .gradient-image-bg {
   background: 
     linear-gradient(135deg, #CCECE911 0%, #E4E9CF11 100%),
-    url('/assets/backgrounds/lending.png');
+    url('/assets/backgrounds/giving.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
