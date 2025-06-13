@@ -1,7 +1,6 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import StatsCard from "@/components/usercard/StatsCard"
 import { Users, Package, Star, Leaf, Gift, Handshake } from "lucide-react"
 
