@@ -93,7 +93,6 @@ const Login = () => {
                                                     {...field}
                                                     type={showPassword ? "text" : "password"}
                                                     id="password"
-                                                    placeholder="Password"
                                                     className="py-6 rounded-lg shadow-none pr-10"
                                                 />
                                                 <button

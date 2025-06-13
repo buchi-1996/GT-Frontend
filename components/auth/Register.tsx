@@ -65,7 +65,7 @@ const Register = () => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <div className="grid gap-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
+                        <div className="grid grid-cols-2 gap-2 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="firstName"
@@ -77,7 +77,6 @@ const Register = () => {
                                                 {...field}
                                                 type="text"
                                                 id="fullName"
-                                                placeholder="Full Name"
                                                 className="py-6 rounded-lg shadow-none"
                                             />
                                         </FormControl>
@@ -96,7 +95,6 @@ const Register = () => {
                                                 {...field}
                                                 type="text"
                                                 id="fullName"
-                                                placeholder="Full Name"
                                                 className="py-6 rounded-lg shadow-none"
                                             />
                                         </FormControl>
@@ -108,7 +106,7 @@ const Register = () => {
                             
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6 md:gap-4 items-baseline">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -120,7 +118,6 @@ const Register = () => {
                                                 {...field}
                                                 type="email"
                                                 id="email"
-                                                placeholder="Email Address"
                                                 className="py-6 rounded-lg shadow-none"
                                             />
                                         </FormControl>
