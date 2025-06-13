@@ -108,7 +108,7 @@ const Register = () => {
                             
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
+                        <div className="grid grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="email"
