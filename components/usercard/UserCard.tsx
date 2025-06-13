@@ -8,21 +8,20 @@ interface UserCardProps {
     description: string;
     imageIcon: string; // should be a string path or StaticImport
     href: string;
-    color: string;
+    color?: string;
 }
 
 
-const UserCard = ({ title, description, imageIcon, href, color }: UserCardProps) => {
+const UserCard = ({ title, description, imageIcon, href }: UserCardProps) => {
     
     return (
-        <Link href={href} className="w-full min-h-full">
-            <Card className="bg-[#ffffff] shadow-none border cursor-pointer">
-                <CardContent className="flex gap-4 md:flex-col  items-center md:items-start  md:p-8">
-                    <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center md:mb-4`}>
+        <Link href={href} className="w-full min-h-full hover:scale-105 transition-transform duration-300 ease-in-out">
+            <Card className="bg-[#ffffff] py-6 shadow-none border cursor-pointer">
+                <CardContent className="flex items-center gap-6">
                         <Image src={imageIcon} alt="gift icon" width={100} height={100} className="w-8 h-8" />
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-semibold text-[#222222] mb-2">{title}</h3>
+                    <div className='flex items-center-safe gap-2'>
+                        <h3 className="text-[1rem] font-semibold text-[#222222]">{title}</h3>
+                        <span>-</span>
                         <p className="text-[#626262] text-sm">{description}</p>
                     </div>
                 </CardContent>

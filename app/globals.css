@@ -9,6 +9,7 @@
   --color-app-base: var(--app-base);
   --color-banner-bg: var(--banner-background);
   --text-heading-text: var(--heading-text);
+ 
 
 
   --color-background: var(--background);
@@ -149,4 +150,13 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}
+
+.gradient-image-bg {
+  background: 
+    linear-gradient(135deg, #CCECE911 0%, #E4E9CF11 100%),
+    url('/assets/backgrounds/lending.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

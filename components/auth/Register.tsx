@@ -17,18 +17,22 @@ import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { PhoneInput } from "../PhoneInput";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const router = useRouter()
+    const isMobile = useMediaQuery("(768px)")
 
     const form = useForm({
         resolver: zodResolver(registerGiverSchema),
         mode: "onChange", // ensures validation happens as user types
         defaultValues: {
-            fullName: "",
+            firstName: "",
+            lastName: "",
             email: "",
             phoneNumber: "",
             password: "",
@@ -46,7 +50,7 @@ const Register = () => {
             toast.success("Account created successfully", {
                 id: "account-creation-success"
             })
-            router.push('/auth/verify-notice')
+            router.push('/auth/verify')
             form.reset()
         } catch (error) {
             console.error("Submission error:", error)
@@ -60,14 +64,33 @@ const Register = () => {
         <div className="w-full max-w-3xl">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-6">
+                    <div className="grid gap-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
-                                name="fullName"
+                                name="firstName"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-gray-500">Full Name</FormLabel>
+                                        <FormLabel className="text-gray-500">First Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="text"
+                                                id="fullName"
+                                                placeholder="Full Name"
+                                                className="py-6 rounded-lg shadow-none"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                             <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-500">Last Name</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
@@ -82,6 +105,10 @@ const Register = () => {
                                 )}
                             />
 
+                            
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -101,9 +128,6 @@ const Register = () => {
                                     </FormItem>
                                 )}
                             />
-                        </div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-4 items-baseline">
                             <FormField
                                 control={form.control}
                                 name="phoneNumber"
@@ -111,20 +135,16 @@ const Register = () => {
                                     <FormItem>
                                         <FormLabel className="text-gray-500">Phone Number</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                {...field}
-                                                type="tel"
-                                                id="phoneNumber"
-                                                placeholder="Phone Number"
-                                                className="py-6 rounded-lg shadow-none"
-                                            />
+                                            <PhoneInput placeholder="+31" defaultCountry="NL" countries={[ "GB", "DE", "BE", "NL"]} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
 
-                            <FormField
+                            
+                        </div>
+                        <FormField
                                 control={form.control}
                                 name="password"
                                 render={({ field }) => (
@@ -152,7 +172,6 @@ const Register = () => {
                                     </FormItem>
                                 )}
                             />
-                        </div>
                     </div>
 
                     <Button
@@ -166,17 +185,7 @@ const Register = () => {
 
                 </form>
             </Form>
-            <p className="text-center text-sm text-[#626262] mt-4">
-                By continuing, you agree to our{" "}
-                <Link href="#" className="text-[#0d9488] hover:underline">
-                    Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="text-[#0d9488] hover:underline">
-                    Privacy Policy
-                </Link>
-                .
-            </p>
+            
             <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -188,8 +197,9 @@ const Register = () => {
             <div className="grid grid-cols-2 gap-4">
                 <Button
                     type="button"
-                    variant="outline"
-                    className="border shadow-none cursor-pointer hover:bg-[#f9f9f9] text-[#383838] py-6"
+                    variant="secondary"
+                    size={isMobile ? "icon" : "default"}
+                    className="shadow-none cursor-pointer hover:bg-[#f9f9f9] text-[#383838] py-6"
                     disabled={isSubmitting}
                 >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -214,17 +224,29 @@ const Register = () => {
                 </Button>
                 <Button
                     type="button"
-                    variant="outline"
-                    className="border shadow-none cursor-pointer hover:bg-[#f9f9f9] text-[#383838] py-6"
+                    variant="secondary"
+                    size={isMobile ? "icon" : "default"}
+                    className="shadow-none cursor-pointer hover:bg-[#f9f9f9] text-[#383838] py-6"
                     disabled={isSubmitting}
                 >
-                    <svg className="text-2xl" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="text-2xl" width="44" height="44" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21.25 11C21.25 16.796 16.5512 21.5 10.75 21.5C4.94875 21.5 0.25 16.796 0.25 11C0.25 5.19875 4.94875 0.5 10.75 0.5C16.5512 0.5 21.25 5.19875 21.25 11Z" fill="#333333" />
                         <path d="M15.6716 8.34304C15.6143 8.37646 14.2503 9.08186 14.2503 10.6459C14.3146 12.4296 15.9716 13.0551 16 13.0551C15.9716 13.0885 15.7498 13.9072 15.093 14.7654C14.5717 15.5047 13.9932 16.25 13.1146 16.25C12.2789 16.25 11.9789 15.7573 11.0146 15.7573C9.97902 15.7573 9.68601 16.25 8.89315 16.25C8.01458 16.25 7.39315 15.4647 6.84345 14.7324C6.12932 13.7739 5.52233 12.2698 5.5009 10.8256C5.48646 10.0603 5.64392 9.30802 6.04361 8.66904C6.60774 7.77699 7.61489 7.17143 8.71473 7.15146C9.55744 7.12498 10.3074 7.6906 10.8217 7.6906C11.3146 7.6906 12.236 7.15146 13.2786 7.15146C13.7286 7.1519 14.9286 7.27822 15.6716 8.34304ZM10.7505 6.99866C10.6005 6.29978 11.0146 5.60089 11.4003 5.15508C11.8932 4.61594 12.6716 4.25 13.3429 4.25C13.3857 4.94889 13.1141 5.63432 12.6287 6.13352C12.1932 6.67266 11.4432 7.07853 10.7505 6.99866Z" fill="white" />
                     </svg>
                     <span className="hidden md:block">Continue with Apple</span>
                 </Button>
             </div>
+            <p className="text-center text-sm text-[#626262] mt-8">
+                By continuing, you agree to our{" "}
+                <Link href="#" className="text-gray-500 underline">
+                    Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link href="#" className="text-gray-500 underline">
+                    Privacy Policy
+                </Link>
+                .
+            </p>
         </div>
     )
 }
