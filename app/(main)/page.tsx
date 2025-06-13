@@ -14,7 +14,7 @@ export default function Home() {
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-20">
         {/* Gift Icon */}
-        <div className="w-20 h-20 bg-[#ffffff] rounded-full flex items-center justify-center mb-8 shadow-sm">
+        <div className="w-20 h-20 bg-[#ffffff] rounded-full flex items-center justify-center mb-8 shadow-lg">
           <Image src='/assets/icons/gift.svg' alt="gift icon" width={100} height={100} className="w-10 h-10" />
         </div>
 
