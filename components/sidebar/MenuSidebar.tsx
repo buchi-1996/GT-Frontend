@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import MenuItem from './MenuItem'
@@ -9,6 +9,7 @@ import { ChevronRight, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useAppState } from '@/hooks/useAppState'
 import User from '../header/User'
+import CompleteProfile from '../profile/CompleteProfile'
 
 
 const navigationData: NavigationSection[] = [
@@ -137,8 +138,7 @@ const navigationData: NavigationSection[] = [
 const MenuSidebar = () => {
 
   const pathname = usePathname()
-  const { sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useAppState()
-  const [overlay, setOverlay] = useState(false)
+  const { openSheet, overlay, setOverlay, closeSidebar, sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useAppState()
 
 
 
@@ -166,6 +166,14 @@ const MenuSidebar = () => {
     }
   }, [setSidebarCollapsed]) // 
 
+
+  const handleProfileCompleteClick = ()=> {
+    closeSidebar()
+    openSheet(<CompleteProfile />)
+    // Navigate to profile completion page or open modal
+    // For example, you can use router.push('/profile/complete') if using Next.js
+  }
+
   return (
     <>
       <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen sm:shadow-xl shrink-0 z-50 sm:border-r flex flex-col`}>
@@ -192,7 +200,7 @@ const MenuSidebar = () => {
               <div className='py-4 borderl block md:hidden'>
               <User />
             </div>
-              <Button className={`flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}  gap-2 shadow-none mb-2`}>
+              <Button onClick={handleProfileCompleteClick} className={`flex lg:hidden bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-6 rounded-md items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}  gap-2 shadow-none mb-2`}>
                 <div className='flex items-center gap-4'>
                   <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.84553 12.5631C2.99545 13.6767 3.91775 14.549 5.0401 14.6006C5.98451 14.644 6.94386 14.6667 8.00033 14.6667C9.05679 14.6667 10.0161 14.644 10.9605 14.6006C12.0829 14.549 13.0052 13.6767 13.1551 12.5631C13.253 11.8365 13.3337 11.0917 13.3337 10.3333C13.3337 9.57493 13.253 8.8302 13.1551 8.10353C13.0052 6.99 12.0829 6.11766 10.9605 6.06606C10.0161 6.02265 9.05679 6 8.00033 6C6.94386 6 5.98451 6.02265 5.0401 6.06606C3.91775 6.11766 2.99545 6.99 2.84553 8.10353C2.74769 8.8302 2.66699 9.57493 2.66699 10.3333C2.66699 11.0917 2.74769 11.8365 2.84553 12.5631Z" stroke="white" />

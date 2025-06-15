@@ -9,6 +9,7 @@
   --color-app-base: var(--app-base);
   --color-banner-bg: var(--banner-background);
   --text-heading-text: var(--heading-text);
+  --color-app-black: var(--gray-text);
  
 
 
@@ -55,6 +56,7 @@
   --app-secondary: #989F42;
   --app-base: #626262;
   --large-text: 2rem;
+  --gray-text: #222222
 
 
   --banner-background: #F0F4F8;
