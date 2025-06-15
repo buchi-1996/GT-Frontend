@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { useAppState } from "@/hooks/useAppState";
 
 interface CircularProgressProps {
   value: number;
@@ -90,8 +91,7 @@ const CircularProgress = ({
 };
 
 export default function CircularProgressWithCustomLabelDemo() {
-  const [progress, setProgress] = React.useState([20]);
-
+const {progress} = useAppState()
   return (
     <div className="max-w-xs mx-auto w-full flex flex-col items-center">
       <CircularProgress

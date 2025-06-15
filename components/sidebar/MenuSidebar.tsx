@@ -164,7 +164,7 @@ const MenuSidebar = () => {
     return () => {
       window.removeEventListener('resize', handleSidebarResize)
     }
-  }, [setSidebarCollapsed]) // 
+  }, [setSidebarCollapsed, setOverlay]) // 
 
 
   const handleProfileCompleteClick = ()=> {

@@ -21,6 +21,8 @@ interface AppContextType {
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   sidebarCollapsed: boolean;
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>
+  progress: number[];
+  setProgress: Dispatch<SetStateAction<boolean>>
 
 }
 
@@ -34,6 +36,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [modalContent, setModalContent] = useState<ReactNode>(null);
   const [sheetContent, setSheetContent] = useState<ReactNode>(null);
   const [overlay, setOverlay] = useState(false)
+  const [progress, setProgress] = useState([20]);
+
   
 
   const openModal = (content: ReactNode) => {
@@ -86,6 +90,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     closeSidebar,
     overlay,
     setOverlay
+    progress,
+    setProgress
   }
 
 
