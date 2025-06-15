@@ -22,7 +22,7 @@ interface AppContextType {
   sidebarCollapsed: boolean;
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>
   progress: number[];
-  setProgress: Dispatch<SetStateAction<boolean>>
+  setProgress: Dispatch<SetStateAction<number[]>>
 
 }
 
