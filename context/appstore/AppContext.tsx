@@ -89,7 +89,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     openSidebar,
     closeSidebar,
     overlay,
-    setOverlay
+    setOverlay,
     progress,
     setProgress
   }
