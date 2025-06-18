@@ -12,6 +12,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer"
+import { ScrollArea } from "../ui/scroll-area";
+
 
 interface TimeSlotSelectProps {
   children: React.ReactNode;
@@ -42,7 +44,9 @@ const TimeSlotSelectModal = ({ children, open, onOpenChange }: TimeSlotSelectPro
         <DrawerHeader className="text-left">
           <DrawerTitle className="sr-only">Title</DrawerTitle>
         </DrawerHeader>
+        <ScrollArea>
           {children}
+          </ScrollArea>
       </DrawerContent>
     </Drawer>
   );

@@ -30,7 +30,7 @@ export default function PageDialog() {
 
     return (
         <Dialog open={isAddItemDialogOpen} onOpenChange={closeAddItem} >
-            <DialogContent className="min-w-full  h-screen px-0 sm:p-6 m-0 rounded-none">
+            <DialogContent className="min-w-full  h-screen p-0 sm:p-6 m-0 rounded-none">
                 <DialogHeader>
                     <DialogTitle className="sr-only">Title</DialogTitle>
                 </DialogHeader>
