@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Upload, MapPin, Package, Clock, X, PlusCircle } from "lucide-react"
@@ -52,10 +52,10 @@ const ListingForm = () => {
   const [viewSlotsDay, setViewSlotsDay] = useState("")
   const [isSpecificDateModalOpen, setIsSpecificDateModalOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
-  const [specificDateTimeSlots, setSpecificDateTimeSlots] = useState<string[]>([])
   const [selectedSpecificTimeSlots, setSelectedSpecificTimeSlots] = useState<string[]>([])
 
-  const [daysData, setDaysData] = useState([
+  // Initial days data
+  const initialDaysData = [
     { name: "Mondays", timeSlots: [] as string[] },
     { name: "Tuesdays", timeSlots: [] as string[] },
     { name: "Wednesdays", timeSlots: [] as string[] },
@@ -65,13 +65,18 @@ const ListingForm = () => {
     { name: "Sundays", timeSlots: [] as string[] },
     { name: "Weekdays", timeSlots: [] as string[] },
     { name: "Weekends", timeSlots: [] as string[] },
-  ])
+  ]
+
+  const [daysData, setDaysData] = useState(initialDaysData)
 
   // Updated structured data states
   const [structuredTimeSlots, setStructuredTimeSlots] = useState<Array<{ day: string; timeSlots: string[] }>>([])
   const [structuredSpecificDateSlots, setStructuredSpecificDateSlots] = useState<
     Array<{ date: string; timeSlots: string[] }>
   >([])
+
+  // Add a flag to track if initialization has been done
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const steps = [
     { title: "Basic Details", icon: Package, schema: basicDetailsSchema },
@@ -114,51 +119,88 @@ const ListingForm = () => {
     "Yukon",
   ]
 
-  // Initialize time slot data from context on component mount
+  // Helper function to ensure safe form data with correct types
+  const getSafeFormData = useCallback((): FormData => ({
+    title: typeof itemListingFormData.title === "string" ? itemListingFormData.title : "",
+    weight: typeof itemListingFormData.weight === "number" ? itemListingFormData.weight : "",
+    itemWorth: typeof itemListingFormData.itemWorth === "number" ? itemListingFormData.itemWorth : "",
+    description: typeof itemListingFormData.description === "string" ? itemListingFormData.description : "",
+    image: itemListingFormData.image || null,
+    category: typeof itemListingFormData.category === "string" ? itemListingFormData.category : "",
+    condition: typeof itemListingFormData.condition === "string" ? itemListingFormData.condition : "",
+    specificDate: Array.isArray(itemListingFormData.specificDate) ? itemListingFormData.specificDate : [],
+    timeSlots: Array.isArray(itemListingFormData.timeSlots) ? itemListingFormData.timeSlots : [],
+    province: typeof itemListingFormData.province === "string" ? itemListingFormData.province : "",
+    zipCode: typeof itemListingFormData.zipCode === "string" ? itemListingFormData.zipCode : "",
+    address: typeof itemListingFormData.address === "string" ? itemListingFormData.address : "",
+  }), [itemListingFormData])
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(addItemSchema),
+    defaultValues: getSafeFormData(),
+    mode: "onChange",
+  })
+
+  const { handleSubmit, reset, trigger, setValue, control } = form
+
+  // Initialize time slot data from context on component mount - FIXED
   useEffect(() => {
-    if (itemListingFormData.timeSlots && Array.isArray(itemListingFormData.timeSlots)) {
-      setStructuredTimeSlots(itemListingFormData.timeSlots)
+    if (!isInitialized) {
+      // Initialize structured time slots
+      if (itemListingFormData.timeSlots && Array.isArray(itemListingFormData.timeSlots)) {
+        setStructuredTimeSlots(itemListingFormData.timeSlots)
 
-      // Update daysData based on structured time slots
-      const updatedDaysData = daysData.map((day) => {
-        const matchingSlot = itemListingFormData.timeSlots?.find((slot) => slot.day === day.name)
-        return {
-          ...day,
-          timeSlots: matchingSlot ? matchingSlot.timeSlots : [],
-        }
-      })
-      setDaysData(updatedDaysData)
-    }
-
-    if (itemListingFormData.specificDate && Array.isArray(itemListingFormData.specificDate)) {
-      setStructuredSpecificDateSlots(itemListingFormData.specificDate)
-
-      // If there's a specific date, extract the time slots for display
-      if (itemListingFormData.specificDate.length > 0) {
-        const firstSpecificDate = itemListingFormData.specificDate[0]
-        setSpecificDateTimeSlots(firstSpecificDate.timeSlots)
-
-        // Try to parse the date string back to a Date object
-        try {
-          const dateObj = new Date(firstSpecificDate.date)
-          if (!isNaN(dateObj.getTime())) {
-            setSelectedDate(dateObj)
+        // Update daysData based on structured time slots
+        const updatedDaysData = initialDaysData.map((day) => {
+          const matchingSlot = itemListingFormData.timeSlots?.find((slot) => slot.day === day.name)
+          return {
+            ...day,
+            timeSlots: matchingSlot ? matchingSlot.timeSlots : [],
           }
-        } catch (error) {
-          console.warn("Could not parse date from context:", firstSpecificDate.date)
-        }
+        })
+        setDaysData(updatedDaysData)
       }
-    }
-  }, []) // Only run on mount
 
-  // Sync time slot changes to context immediately
+      // Initialize specific date slots
+      if (itemListingFormData.specificDate && Array.isArray(itemListingFormData.specificDate)) {
+        setStructuredSpecificDateSlots(itemListingFormData.specificDate)
+      }
+
+      setIsInitialized(true)
+    }
+  }, [isInitialized, itemListingFormData.timeSlots, itemListingFormData.specificDate])
+
+  // Sync time slot changes to context - FIXED to prevent infinite loops
   useEffect(() => {
-    setItemListingFormData((prev) => ({
-      ...prev,
-      timeSlots: structuredTimeSlots.length > 0 ? structuredTimeSlots : [],
-      specificDate: structuredSpecificDateSlots.length > 0 ? structuredSpecificDateSlots : [],
-    }))
-  }, [structuredTimeSlots, structuredSpecificDateSlots, setItemListingFormData])
+    if (isInitialized) {
+      setItemListingFormData((prev) => ({
+        ...prev,
+        timeSlots: structuredTimeSlots.length > 0 ? structuredTimeSlots : [],
+        specificDate: structuredSpecificDateSlots.length > 0 ? structuredSpecificDateSlots : [],
+      }))
+    }
+  }, [structuredTimeSlots, structuredSpecificDateSlots, setItemListingFormData, isInitialized])
+
+  // Update form values when context data changes - FIXED
+  useEffect(() => {
+    if (isInitialized) {
+      const safeData = getSafeFormData()
+
+      // Update each field individually to ensure type safety
+      setValue("title", safeData.title)
+      setValue("weight", safeData.weight)
+      setValue("itemWorth", safeData.itemWorth)
+      setValue("description", safeData.description)
+      setValue("image", safeData.image)
+      setValue("category", safeData.category)
+      setValue("condition", safeData.condition)
+      setValue("specificDate", safeData.specificDate)
+      setValue("timeSlots", safeData.timeSlots)
+      setValue("province", safeData.province)
+      setValue("zipCode", safeData.zipCode)
+      setValue("address", safeData.address)
+    }
+  }, [getSafeFormData, setValue, isInitialized])
 
   // Time slot management functions
   const viewAllSlots = (dayName: string) => {
@@ -276,53 +318,11 @@ const ListingForm = () => {
           return [...prev, { date: dateString, timeSlots: newTimeSlots }]
         }
       })
-
-      // Don't clear weekday time slots anymore - allow both to coexist
     }
 
     setSelectedSpecificTimeSlots([])
     setIsSpecificDateModalOpen(false)
   }
-
-  const removeSpecificTimeSlot = (slotToRemove: string) => {
-    setSpecificDateTimeSlots((prev) => prev.filter((slot) => slot !== slotToRemove))
-
-    // Update structured specific date data
-    if (selectedDate) {
-      const dateString = selectedDate.toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-
-      setStructuredSpecificDateSlots((prev) =>
-        prev
-          .map((item) =>
-            item.date === dateString
-              ? { ...item, timeSlots: item.timeSlots.filter((slot) => slot !== slotToRemove) }
-              : item,
-          )
-          .filter((item) => item.timeSlots.length > 0),
-      )
-    }
-  }
-
-  // Helper function to ensure safe form data with correct types
-  const getSafeFormData = (): FormData => ({
-    title: typeof itemListingFormData.title === "string" ? itemListingFormData.title : "",
-    weight: typeof itemListingFormData.weight === "number" ? itemListingFormData.weight : "",
-    itemWorth: typeof itemListingFormData.itemWorth === "number" ? itemListingFormData.itemWorth : "",
-    description: typeof itemListingFormData.description === "string" ? itemListingFormData.description : "",
-    image: itemListingFormData.image || null,
-    category: typeof itemListingFormData.category === "string" ? itemListingFormData.category : "",
-    condition: typeof itemListingFormData.condition === "string" ? itemListingFormData.condition : "",
-    specificDate: Array.isArray(itemListingFormData.specificDate) ? itemListingFormData.specificDate : [],
-    timeSlots: Array.isArray(itemListingFormData.timeSlots) ? itemListingFormData.timeSlots : [],
-    province: typeof itemListingFormData.province === "string" ? itemListingFormData.province : "",
-    zipCode: typeof itemListingFormData.zipCode === "string" ? itemListingFormData.zipCode : "",
-    address: typeof itemListingFormData.address === "string" ? itemListingFormData.address : "",
-  })
 
   // Helper function to convert FormData to the expected app state format
   const convertFormDataToAppState = (formData: FormData) => ({
@@ -339,33 +339,6 @@ const ListingForm = () => {
     zipCode: formData.zipCode,
     address: formData.address,
   })
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(addItemSchema),
-    defaultValues: getSafeFormData(),
-    mode: "onChange",
-  })
-
-  const { handleSubmit, reset, trigger, setValue, control } = form
-
-  // Update form values when context data changes
-  useEffect(() => {
-    const safeData = getSafeFormData()
-
-    // Update each field individually to ensure type safety
-    setValue("title", safeData.title)
-    setValue("weight", safeData.weight)
-    setValue("itemWorth", safeData.itemWorth)
-    setValue("description", safeData.description)
-    setValue("image", safeData.image)
-    setValue("category", safeData.category)
-    setValue("condition", safeData.condition)
-    setValue("specificDate", safeData.specificDate)
-    setValue("timeSlots", safeData.timeSlots)
-    setValue("province", safeData.province)
-    setValue("zipCode", safeData.zipCode)
-    setValue("address", safeData.address)
-  }, [itemListingFormData, setValue])
 
   const validateCurrentStep = async () => {
     let fieldsToValidate: (keyof FormData)[] = []
@@ -471,7 +444,7 @@ const ListingForm = () => {
       console.log("Form submitted:", validatedData)
       alert("Form submitted successfully!")
 
-      // Only reset form data after successful submission
+      // Reset everything after successful submission
       const resetData: FormData = {
         title: "",
         weight: "",
@@ -505,25 +478,15 @@ const ListingForm = () => {
       // Reset local time slot state
       setStructuredTimeSlots([])
       setStructuredSpecificDateSlots([])
-      setDaysData([
-        { name: "Mondays", timeSlots: [] },
-        { name: "Tuesdays", timeSlots: [] },
-        { name: "Wednesdays", timeSlots: [] },
-        { name: "Thursdays", timeSlots: [] },
-        { name: "Fridays", timeSlots: [] },
-        { name: "Saturdays", timeSlots: [] },
-        { name: "Sundays", timeSlots: [] },
-        { name: "Weekdays", timeSlots: [] },
-        { name: "Weekends", timeSlots: [] },
-      ])
-      setSpecificDateTimeSlots([])
+      setDaysData(initialDaysData)
       setSelectedDate(undefined)
+      setIsInitialized(false) // Reset initialization flag
 
       setCurrentStep(0)
       reset(resetData)
       closeAddItem()
-    } catch (error) {
-      console.error("Validation error:", error)
+    } catch (err) {
+      console.error("Validation error:", err)
       alert("Please check all fields and try again.")
     } finally {
       setIsSubmitting(false)

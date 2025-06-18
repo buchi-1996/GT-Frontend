@@ -48,32 +48,48 @@ export const resetPasswordSchema = z.object({
 });
 
 
+// Helper function for number validation that handles both string and number inputs
+const positiveNumberSchema = (fieldName: string, minValue: number = 0.01) =>
+  z.union([
+    z.number().min(minValue, `${fieldName} must be at least ${minValue}`),
+    z
+      .string()
+      .min(1, `${fieldName} is required`)
+      .transform((val) => {
+        const parsed = parseFloat(val)
+        if (isNaN(parsed)) {
+          throw new Error(`${fieldName} must be a valid number`)
+        }
+        return parsed
+      })
+      .refine((val) => val >= minValue, `${fieldName} must be at least ${minValue}`)
+  ])
+
+// Image validation helper
+const imageSchema = z
+  .any()
+  .refine((file) => {
+    if (!file) return false
+    return file instanceof File
+  }, "Image is required")
+  .refine((file) => {
+    if (!file || !(file instanceof File)) return false
+    return file.type.startsWith('image/')
+  }, "File must be an image")
+  .refine((file) => {
+    if (!file || !(file instanceof File)) return false
+    return file.size <= 10 * 1024 * 1024 // 10MB
+  }, "Image must be less than 10MB")
 
 export const basicDetailsSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
-  weight: z
-    .number()
-    .min(1, "Weight must be positive")
-    .or(
-      z
-        .string()
-        .transform((val) => Number.parseFloat(val))
-        .refine((val) => val >= 0, "Weight must be positive"),
-    ),
-  itemWorth: z
-    .number()
-    .min(1, "Item worth must be positive")
-    .or(
-      z
-        .string()
-        .transform((val) => Number.parseFloat(val))
-        .refine((val) => val >= 0, "Item worth must be positive"),
-    ),
+  weight: positiveNumberSchema("Weight", 0.1),
+  itemWorth: positiveNumberSchema("Item worth", 0.01),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters")
     .max(500, "Description must be less than 500 characters"),
-  image: z.any().refine((file) => file instanceof File, "Image is required"),
+  image: imageSchema,
 })
 
 export const categoriesSchema = z.object({
@@ -99,7 +115,17 @@ export const timeSlotSchema = z.object({
       }),
     )
     .optional(),
-})
+}).refine(
+  (data) => {
+    // At least one of specificDate or timeSlots must have content
+    const hasSpecificDate = data.specificDate && data.specificDate.length > 0
+    const hasTimeSlots = data.timeSlots && data.timeSlots.length > 0
+    return hasSpecificDate || hasTimeSlots
+  },
+  {
+    message: "Please add at least one time slot for weekly availability or select a specific date with time slots.",
+  }
+)
 
 export const pickupDetailsSchema = z.object({
   province: z.string().min(1, "Province is required"),
@@ -107,32 +133,26 @@ export const pickupDetailsSchema = z.object({
   address: z.string().min(5, "Address must be at least 5 characters"),
 })
 
-// Combined schema for final submission
+// Combined schema for final submission - with more flexible image validation
 export const addItemSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
-  weight: z
-    .number()
-    .min(0, "Weight must be positive")
-    .or(
-      z
-        .string()
-        .transform((val) => Number.parseFloat(val))
-        .refine((val) => val >= 0, "Weight must be positive"),
-    ),
-  itemWorth: z
-    .number()
-    .min(0, "Item worth must be positive")
-    .or(
-      z
-        .string()
-        .transform((val) => Number.parseFloat(val))
-        .refine((val) => val >= 0, "Item worth must be positive"),
-    ),
+  weight: positiveNumberSchema("Weight", 0.1),
+  itemWorth: positiveNumberSchema("Item worth", 0.01),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters")
     .max(500, "Description must be less than 500 characters"),
-  image: z.any().optional(),
+  // For final submission, image should be required but allow File type
+  image: z
+    .any()
+    .refine((file) => {
+      if (!file) return false
+      return file instanceof File
+    }, "Image is required")
+    .refine((file) => {
+      if (!file || !(file instanceof File)) return false
+      return file.type.startsWith('image/')
+    }, "File must be an image"),
   category: z.string().min(1, "Category is required"),
   condition: z.string().min(1, "Condition is required"),
   specificDate: z
@@ -154,7 +174,18 @@ export const addItemSchema = z.object({
   province: z.string().min(1, "Province is required"),
   zipCode: z.string().min(1, "Zip code is required"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-})
+}).refine(
+  (data) => {
+    // At least one of specificDate or timeSlots must have content
+    const hasSpecificDate = data.specificDate && data.specificDate.length > 0
+    const hasTimeSlots = data.timeSlots && data.timeSlots.length > 0
+    return hasSpecificDate || hasTimeSlots
+  },
+  {
+    message: "Please add at least one time slot for weekly availability or select a specific date with time slots.",
+    path: ["timeSlots"], // This will show the error on the timeSlots field
+  }
+)
 
 export type BasicDetailsData = z.infer<typeof basicDetailsSchema>
 export type CategoriesData = z.infer<typeof categoriesSchema>
