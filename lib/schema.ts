@@ -84,7 +84,7 @@ const imageSchema = z
 export const basicDetailsSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
   weight: positiveNumberSchema("Weight", 0.1),
-  itemWorth: positiveNumberSchema("Item worth", 0.01),
+  itemWorth: positiveNumberSchema("Item worth", 1),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters")
