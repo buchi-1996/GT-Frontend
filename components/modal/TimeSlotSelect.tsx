@@ -44,7 +44,7 @@ const TimeSlotSelectModal = ({ children, open, onOpenChange }: TimeSlotSelectPro
         <DrawerHeader className="text-left">
           <DrawerTitle className="sr-only">Title</DrawerTitle>
         </DrawerHeader>
-        <ScrollArea>
+        <ScrollArea className="h-auto overflow-auto pb-10 w-full">
           {children}
           </ScrollArea>
       </DrawerContent>

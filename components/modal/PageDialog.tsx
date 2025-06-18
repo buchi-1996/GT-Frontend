@@ -34,7 +34,7 @@ export default function PageDialog() {
                 <DialogHeader>
                     <DialogTitle className="sr-only">Title</DialogTitle>
                 </DialogHeader>
-                    <ScrollArea className="min-h-screen pb-20 w-full">
+                    <ScrollArea className="min-h-screen pb-10 w-full">
                         {listingsContent}
                     </ScrollArea>
             </DialogContent>
