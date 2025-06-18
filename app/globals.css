@@ -10,6 +10,7 @@
   --color-banner-bg: var(--banner-background);
   --text-heading-text: var(--heading-text);
   --color-app-black: var(--gray-text);
+  --color-app-blue-bg: var(--blue-bg);
  
 
 
@@ -56,7 +57,8 @@
   --app-secondary: #989F42;
   --app-base: #626262;
   --large-text: 2rem;
-  --gray-text: #222222
+  --gray-text: #222222;
+  --blue-bg: #D4E6FF;
 
 
   --banner-background: #F0F4F8;
@@ -145,12 +147,15 @@ body {
 /* Custom scrollbar styles */
 @layer utilities {
   .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    ;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+    display: none !important;
+    scrollbar-width: none !important
+    ;
   }
 }
 
@@ -161,4 +166,18 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+
+[data-state="checked"] {
+  background-color: #e0f7e9 !important;
+  color: #0D9488;
+
+}
+
+[selected-single="true"]{
+  background-color: #0D9488 !important;
+  color: white !important;
+  border-radius: 50% !important;
+  font-weight: 500 !important;
 }

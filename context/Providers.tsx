@@ -4,6 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { AppStateProvider } from "@/context/appstore/AppContext";
 import { Toaster } from "@/components/ui/sonner"
 import SheetModal from "@/components/modal/Sheet";
+import PageDialog from "@/components/modal/PageDialog";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -11,6 +12,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <AppStateProvider>
             {children}
             <SheetModal />
+            <PageDialog />
             <Modal />
             <Toaster position="top-right" richColors />
         </AppStateProvider>

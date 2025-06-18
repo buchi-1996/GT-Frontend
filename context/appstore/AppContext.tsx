@@ -1,5 +1,6 @@
 "use client";
 
+import { AddItemData } from "@/lib/schema";
 import { createContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
 interface AppContextType {
@@ -17,12 +18,19 @@ interface AppContextType {
   closeSheet: () => void;
   openSidebar: () => void;
   closeSidebar: () => void;
+  openAddItem: (content: ReactNode) => void;
+  closeAddItem: () => void;
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   sidebarCollapsed: boolean;
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>
   progress: number[];
   setProgress: Dispatch<SetStateAction<number[]>>
+  listingsContent?: ReactNode;
+  isAddItemDialogOpen?: boolean;
+  setIsAddItemDialogOpen?: Dispatch<SetStateAction<boolean>>;
+  itemListingFormData: Partial<AddItemData>;
+  setItemListingFormData: Dispatch<SetStateAction<Partial<AddItemData>>>;
 
 }
 
@@ -35,10 +43,28 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [modalContent, setModalContent] = useState<ReactNode>(null);
   const [sheetContent, setSheetContent] = useState<ReactNode>(null);
+  const [listingsContent, setListingsContent] = useState<ReactNode>(null);
+  const [isAddItemDialogOpen, setIsAddItemDialogOpen] = useState(false);
+  // const [isEditItemDialogOpen, setIsEditItemDialogOpen] = useState(false);
   const [overlay, setOverlay] = useState(false)
   const [progress, setProgress] = useState([20]);
 
-  
+  const [itemListingFormData, setItemListingFormData] = useState<Partial<AddItemData>>({
+        title: "",
+        weight: 0,
+        itemWorth: 0,
+        description: "",
+        image: undefined,
+        category: "",
+        condition: "",
+        specificDate: [],
+        timeSlots: [],
+        province: "",
+        zipCode: "",
+        address: "",
+    })
+
+    // console.log("Item Listing Form Data:", itemListingFormData);  
 
   const openModal = (content: ReactNode) => {
     setModalContent(content);
@@ -71,6 +97,15 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
 
+   const openAddItem = (content: ReactNode) => {
+    setListingsContent(content);
+    setIsAddItemDialogOpen(true);
+  }
+  const closeAddItem = () => {
+    setIsAddItemDialogOpen(false);
+    setListingsContent(null);
+  };
+
   const appData = {
     isOpen,
     setIsOpen,
@@ -91,7 +126,14 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     overlay,
     setOverlay,
     progress,
-    setProgress
+    setProgress,
+    listingsContent,
+    isAddItemDialogOpen,
+    setIsAddItemDialogOpen,
+    openAddItem,
+    closeAddItem,
+    itemListingFormData,
+    setItemListingFormData
   }
 
 

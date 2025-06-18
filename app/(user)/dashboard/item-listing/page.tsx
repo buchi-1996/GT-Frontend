@@ -1,11 +1,14 @@
+import AddListingItem from '@/components/listings'
 import React from 'react'
 
 
 
-const ItemListing = () => {
+const page = () => {
     return (
-        <div>Item Listing</div>
+        <div className='min-h-[calc(100vh_-_11rem)]'>
+            <AddListingItem />
+        </div>
     )
 }
 
-export default ItemListing
+export default page

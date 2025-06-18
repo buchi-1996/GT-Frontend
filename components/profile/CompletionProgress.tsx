@@ -92,6 +92,8 @@ const CircularProgress = ({
 
 export default function CircularProgressWithCustomLabelDemo() {
 const {progress} = useAppState()
+
+console.log(progress)
   return (
     <div className="max-w-xs mx-auto w-full flex flex-col items-center">
       <CircularProgress
