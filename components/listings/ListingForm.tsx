@@ -922,7 +922,7 @@ const ListingForm = () => {
                 />
               </svg>
             </button>
-          <h4 className="text-lg font-semibold text-gray-900">{steps[currentStep].title}</h4>
+          <h4 className="text-[1rem] sm:text-xl font-semibold text-[#222222]">{steps[currentStep].title}</h4>
         </div>
         {/* Mobile Progress Indicators */}
         <div className="flex items-center justify-center space-x-2">
