@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Upload, X, PlusCircle } from "lucide-react"
@@ -58,17 +58,17 @@ const ListingForm = ({ editMode = false, editItemId }: ListingFormProps) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   // Initial days data
-  const initialDaysData = [
-    { name: "Mondays", timeSlots: [] as string[] },
-    { name: "Tuesdays", timeSlots: [] as string[] },
-    { name: "Wednesdays", timeSlots: [] as string[] },
-    { name: "Thursdays", timeSlots: [] as string[] },
-    { name: "Fridays", timeSlots: [] as string[] },
-    { name: "Saturdays", timeSlots: [] as string[] },
-    { name: "Sundays", timeSlots: [] as string[] },
-    { name: "Weekdays", timeSlots: [] as string[] },
-    { name: "Weekends", timeSlots: [] as string[] },
-  ]
+ const initialDaysData = useMemo(() => [
+  { name: "Mondays", timeSlots: [] as string[] },
+  { name: "Tuesdays", timeSlots: [] as string[] },
+  { name: "Wednesdays", timeSlots: [] as string[] },
+  { name: "Thursdays", timeSlots: [] as string[] },
+  { name: "Fridays", timeSlots: [] as string[] },
+  { name: "Saturdays", timeSlots: [] as string[] },
+  { name: "Sundays", timeSlots: [] as string[] },
+  { name: "Weekdays", timeSlots: [] as string[] },
+  { name: "Weekends", timeSlots: [] as string[] },
+], []);
 
   const [daysData, setDaysData] = useState(initialDaysData)
 
