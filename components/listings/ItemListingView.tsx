@@ -47,7 +47,7 @@ export function ItemListingView() {
                 listItem.id === item.id
                     ? {
                         ...listItem,
-                        status: newStatus as any,
+                        status: newStatus as "published" | "under-review" | "draft" | "expired",
                         expiresIn: newStatus === "published" ? "30 days" : newStatus === "draft" ? "Draft" : "Under Review",
                     }
                     : listItem,

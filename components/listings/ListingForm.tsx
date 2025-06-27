@@ -173,7 +173,7 @@ const ListingForm = ({ editMode = false, editItemId }: ListingFormProps) => {
 
       setIsInitialized(true)
     }
-  }, [isInitialized, itemListingFormData.timeSlots, itemListingFormData.specificDate])
+  }, [isInitialized, initialDaysData, itemListingFormData.timeSlots, itemListingFormData.specificDate])
 
   // Sync time slot changes to context - FIXED to prevent infinite loops
   useEffect(() => {

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Clock } from "lucide-react"
 import { ListedItem } from "@/context/appstore/AppContext"
+import Image from "next/image"
 
 interface ItemDetailModalProps {
   item: ListedItem | null
@@ -119,7 +120,9 @@ export function ItemDetailModal({
             <div className="grid grid-cols-2 gap-3">
               {item.images.slice(0, 4).map((image, index) => (
                 <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-100">
-                  <img
+                  <Image
+                  width={500}
+                  height={500}
                     src={image || "/placeholder.svg"}
                     alt={`${item.title} - Image ${index + 1}`}
                     className="w-full h-full object-cover"
