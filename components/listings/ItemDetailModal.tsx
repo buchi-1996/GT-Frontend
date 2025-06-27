@@ -3,7 +3,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { X, MapPin, Clock } from "lucide-react"
+import { MapPin, Clock } from "lucide-react"
 import { ListedItem } from "@/context/appstore/AppContext"
 
 interface ItemDetailModalProps {
@@ -23,7 +23,7 @@ export function ItemDetailModal({
   onEdit,
   onList,
   onUnlist,
-  onDelete,
+//   onDelete,
 }: ItemDetailModalProps) {
   if (!item) return null
 

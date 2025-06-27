@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import type React from "react"
 import { useState, useEffect } from "react"
 // import { ChevronLeft, ChevronRight } from "lucide-react"
@@ -79,7 +80,9 @@ export function ListingImageCarousel({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Main Image */}
-      <img
+      <Image
+        width={100}
+        height={100}
         src={images[currentIndex] || "/placeholder.svg"}
         alt={`${alt} - Image ${currentIndex + 1}`}
         className="w-full h-full object-cover transition-opacity duration-300"

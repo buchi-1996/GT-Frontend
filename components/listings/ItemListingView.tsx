@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Plus, X } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useAppState, useUIState } from "@/hooks/useAppState"
 import { ListingCard } from "./ListingCard"
 import ListingForm from "./ListingForm"
@@ -20,7 +20,7 @@ const tabs = [
 ]
 
 export function ItemListingView() {
-    const { openAddItem, isAddItemDialogOpen, listingsContent, closeAddItem } = useUIState()
+    const { openAddItem } = useUIState()
     const { listedItems, setListedItems, setItemListingFormData } = useAppState()
     const [activeTab, setActiveTab] = useState("all")
     const [selectedItem, setSelectedItem] = useState<ListedItem | null>(null)
