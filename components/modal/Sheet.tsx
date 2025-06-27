@@ -17,12 +17,12 @@ import {
 } from "@/components/ui/drawer"
 
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useAppState } from "@/hooks/useAppState";
+import {useUIState } from "@/hooks/useAppState";
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 
 const SheetModal = () => {
-    const { isSheetOpen, sheetContent, closeSheet } = useAppState();
+    const { isSheetOpen, sheetContent, closeSheet } = useUIState();
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
     if (isDesktop) {

@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/dialog"
 
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useAppState } from "@/hooks/useAppState";
+import { useUIState } from "@/hooks/useAppState";
 import { ScrollArea } from "../ui/scroll-area";
 
 export default function PageDialog() {
-    const { isAddItemDialogOpen, listingsContent, closeAddItem, } = useAppState();
+    const { isAddItemDialogOpen, listingsContent, closeAddItem, } = useUIState();
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
     if (isDesktop) {

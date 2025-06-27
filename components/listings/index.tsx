@@ -1,14 +1,23 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { useAppState } from '@/hooks/useAppState'
+import { useAppState, useUIState } from '@/hooks/useAppState'
 import Image from 'next/image'
 import React from 'react'
 import ListingForm from './ListingForm'
+import { ItemListingView } from './ItemListingView'
 
 
 
 const AddListingItem = () => {
-    const { openAddItem } = useAppState()
+      const { listedItems } = useAppState()
+      const { openAddItem } = useUIState()
+
+
+  // Show full listing view if there are items
+  if (listedItems.length > 0) {
+    return <ItemListingView />
+  }
+
     return (
         <div className='flex flex-col min-h-[calc(100vh_-_11rem)] items-center justify-center'>
             <Image

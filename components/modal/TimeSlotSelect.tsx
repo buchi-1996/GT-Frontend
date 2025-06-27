@@ -28,7 +28,18 @@ const TimeSlotSelectModal = ({ children, open, onOpenChange }: TimeSlotSelectPro
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange} >
-        <DialogContent className="min-w-full sm:min-w-auto sm:max-w-xl rounded-2xl border-none px-8 py-8">
+        <DialogContent  onPointerDownOutside={(e) => {
+          // Check if onOpenChange is a no-op function (empty function)
+          if (onOpenChange.toString() === "() => {}") {
+            e.preventDefault()
+          }
+        }}
+        onEscapeKeyDown={(e) => {
+          // Check if onOpenChange is a no-op function (empty function)
+          if (onOpenChange.toString() === "() => {}") {
+            e.preventDefault()
+          }
+        }} className={`${onOpenChange.toString() === "() => {}" ? "[&>button]:hidden" : ""} min-w-full sm:min-w-auto sm:max-w-xl rounded-2xl border-none px-8 py-8`}>
           <DialogHeader>
             <DialogTitle className="sr-only">Title</DialogTitle>
           </DialogHeader>

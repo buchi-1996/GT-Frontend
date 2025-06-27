@@ -7,7 +7,7 @@ import { NavigationSection } from '@/types'
 import { Card, CardContent } from '../ui/card'
 import { ChevronRight, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useAppState } from '@/hooks/useAppState'
+import { useUIState } from '@/hooks/useAppState'
 import User from '../header/User'
 import CompleteProfile from '../profile/CompleteProfile'
 
@@ -138,7 +138,7 @@ const navigationData: NavigationSection[] = [
 const MenuSidebar = () => {
 
   const pathname = usePathname()
-  const { openSheet, overlay, setOverlay, closeSidebar, sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useAppState()
+  const { openSheet, overlay, setOverlay, closeSidebar, sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useUIState()
 
 
 
@@ -176,7 +176,7 @@ const MenuSidebar = () => {
 
   return (
     <>
-      <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen sm:shadow-xl shrink-0 z-50 sm:border-r flex flex-col`}>
+      <div className={`${sidebarOpen ? 'translate-x-[0]' : '-translate-x-[100%]'} fixed inset-y-0 bg-white transform transition-all duration-300 ease-in-out -translate-x-[100%] md:-translate-x-0 overflow-y-auto scrollbar-hide ${sidebarCollapsed ? 'w-20' : 'min-w-72'}  md:sticky top-0 min-h-screen md:h-screen  shrink-0 z-50 sm:border-r flex flex-col`}>
         <div className={`${sidebarCollapsed && 'flex-col'} hidden  z-20 md:flex sticky top-0 bg-white py-5 px-4 items-center justify-between`}>
           <Link href="/">
             <div className="text-2xl text-center w-full font-bold text-[#0d9488] self-center">GT</div>

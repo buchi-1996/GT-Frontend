@@ -15,3 +15,19 @@ export interface NavigationSection {
   title?: string
   items: NavigationItem[]
 }
+
+
+export interface FormData {
+  title: string
+  weight: string | number
+  itemWorth: string | number
+  description: string
+  image: File[] // Always an array, never undefined
+  category: string
+  condition: string
+  specificDate?: Array<{ date: string; timeSlots: string[] }>
+  timeSlots?: Array<{ day: string; timeSlots: string[] }>
+  province: string
+  zipCode: string
+  address: string
+}

@@ -48,6 +48,11 @@ export const resetPasswordSchema = z.object({
 });
 
 
+
+
+
+
+
 // Helper function for number validation that handles both string and number inputs
 const positiveNumberSchema = (fieldName: string, minValue: number = 0.01) =>
   z.union([
@@ -66,20 +71,20 @@ const positiveNumberSchema = (fieldName: string, minValue: number = 0.01) =>
   ])
 
 // Image validation helper
-const imageSchema = z
-  .any()
-  .refine((file) => {
-    if (!file) return false
-    return file instanceof File
-  }, "Image is required")
-  .refine((file) => {
-    if (!file || !(file instanceof File)) return false
-    return file.type.startsWith('image/')
-  }, "File must be an image")
-  .refine((file) => {
-    if (!file || !(file instanceof File)) return false
-    return file.size <= 10 * 1024 * 1024 // 10MB
-  }, "Image must be less than 10MB")
+const imageArraySchema = z
+  .array(
+    z
+      .any()
+      .refine((file) => file instanceof File, "Each file must be a valid image")
+      .refine((file) => file.type.startsWith("image/"), "Each file must be an image")
+      .refine((file) => file.size <= 10 * 1024 * 1024, "Each image must be less than 10MB")
+  )
+  .min(1, "At least one image is required")
+  .max(3, "You can upload a maximum of 3 images")
+
+
+
+
 
 export const basicDetailsSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
@@ -89,13 +94,17 @@ export const basicDetailsSchema = z.object({
     .string()
     .min(10, "Description must be at least 10 characters")
     .max(500, "Description must be less than 500 characters"),
-  image: imageSchema,
+  image: imageArraySchema,
 })
+
+
 
 export const categoriesSchema = z.object({
   category: z.string().min(1, "Category is required"),
   condition: z.string().min(1, "Condition is required"),
 })
+
+
 
 // Updated time slot schema to match the new structure
 export const timeSlotSchema = z.object({
@@ -127,11 +136,15 @@ export const timeSlotSchema = z.object({
   }
 )
 
+
+
 export const pickupDetailsSchema = z.object({
   province: z.string().min(1, "Province is required"),
   zipCode: z.string().min(1, "Zip code is required"),
   address: z.string().min(5, "Address must be at least 5 characters"),
 })
+
+
 
 // Combined schema for final submission - with more flexible image validation
 export const addItemSchema = z.object({
@@ -143,16 +156,7 @@ export const addItemSchema = z.object({
     .min(10, "Description must be at least 10 characters")
     .max(500, "Description must be less than 500 characters"),
   // For final submission, image should be required but allow File type
-  image: z
-    .any()
-    .refine((file) => {
-      if (!file) return false
-      return file instanceof File
-    }, "Image is required")
-    .refine((file) => {
-      if (!file || !(file instanceof File)) return false
-      return file.type.startsWith('image/')
-    }, "File must be an image"),
+  image: imageArraySchema,
   category: z.string().min(1, "Category is required"),
   condition: z.string().min(1, "Condition is required"),
   specificDate: z
