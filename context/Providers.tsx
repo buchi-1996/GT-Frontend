@@ -5,7 +5,7 @@ import { AppStateProvider } from "@/context/appstore/AppContext";
 import { Toaster } from "@/components/ui/sonner"
 import SheetModal from "@/components/modal/Sheet";
 import PageDialog from "@/components/modal/PageDialog";
-import { UIStateProvider } from "./appstore/UiContext";
+import { UIStateProvider } from "./appstore/UIContext";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {

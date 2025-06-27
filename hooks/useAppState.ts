@@ -1,7 +1,7 @@
 "use client";
 
 import { AppContext } from "@/context/appstore/AppContext";
-import { UIContext } from "@/context/appstore/UiContext";
+import { UIContext } from "@/context/appstore/UIContext";
 import { useContext } from "react";
 
 export function useAppState() {
