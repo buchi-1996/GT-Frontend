@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { useAppState } from "@/hooks/useAppState";
+import { useUIState } from "@/hooks/useAppState";
 
 interface CircularProgressProps {
   value: number;
@@ -91,7 +91,7 @@ const CircularProgress = ({
 };
 
 export default function CircularProgressWithCustomLabelDemo() {
-const {progress} = useAppState()
+const {progress} = useUIState()
 
 console.log(progress)
   return (
