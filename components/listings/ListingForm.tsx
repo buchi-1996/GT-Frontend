@@ -415,7 +415,7 @@ const ListingForm = ({ editMode = false, editItemId }: ListingFormProps) => {
     }
   }
 
-  const handleFinalSubmit = handleSubmit(async (data) => {
+  const handleFinalSubmit = handleSubmit(async () => {
     // Show confirmation modal instead of directly submitting
     setShowConfirmModal(true)
   })

@@ -1,4 +1,4 @@
-import { useAppState } from '@/hooks/useAppState'
+import { useUIState } from '@/hooks/useAppState'
 import { NavigationItem } from '@/types'
 import Link from 'next/link'
 import React from 'react'
@@ -6,7 +6,7 @@ import React from 'react'
 
 
 const MenuItem = ({ title, icon, href, isActive }: NavigationItem) => {
-    const {sidebarCollapsed, setSidebarOpen} = useAppState()
+    const {sidebarCollapsed, setSidebarOpen} = useUIState()
 
     return (
         <li onClick={() => setSidebarOpen(false)}>
