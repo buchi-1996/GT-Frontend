@@ -106,16 +106,16 @@ export function ItemListingView() {
                 <div className="flex items-center gap-4 justify-between overflow-hidden">
                     {/* Tabs */}
                     <ScrollArea className="w-full overflow-auto">
-                        <div className="flex gap-1 bg-white rounded-lg">
+                        <div className="flex gap-6 bg-white rounded-lg">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`px-4 py-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id ? "bg-green-50 text-app-black" : "text-gray-600 hover:text-gray-900"
+                                    className={`px-4 py-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id ? "bg-[#F9F9F9] text-app-black" : "text-gray-600 hover:text-gray-900"
                                         }`}
                                 >
                                     {tab.label}
-                                    <Badge variant="secondary" className="bg-green-50 text-green-600 text-xs">
+                                    <Badge variant="secondary" className="text-gray-600 text-xs">
                                         {getTabCount(tab.id)}
                                     </Badge>
                                 </button>
