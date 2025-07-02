@@ -84,10 +84,10 @@ const MactchingView = () => {
         }
     }
 
- const handleExpandedContentClick = (e: React.MouseEvent) => {
-    // Prevent the click from bubbling up to the card
-    e.stopPropagation()
-  }
+    const handleExpandedContentClick = (e: React.MouseEvent) => {
+        // Prevent the click from bubbling up to the card
+        e.stopPropagation()
+    }
 
 
 
@@ -95,20 +95,20 @@ const MactchingView = () => {
     return (
         <div className="flex-1">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full ">
-                 <TabsList className="grid w-fit grid-cols-2 mb-6 gap-6 bg-gray-50 p-1 h-auto bg-transparent rounded-lg">
-              <TabsTrigger
-                value="pending"
-                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-600 hover:bg-gray-50 rounded-md px-3 py-2"
-              >
-                Pending
-              </TabsTrigger>
-              <TabsTrigger
-                value="matched"
-                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-600 hover:bg-gray-50 rounded-md px-3 py-2"
-              >
-                Matched
-              </TabsTrigger>
-            </TabsList>
+                <TabsList className="grid w-fit grid-cols-2 mb-6 gap-6 bg-gray-50 p-1 h-auto bg-transparent rounded-lg">
+                    <TabsTrigger
+                        value="pending"
+                        className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-600 hover:bg-gray-50 rounded-md px-3 py-2"
+                    >
+                        Pending
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="matched"
+                        className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-600 hover:bg-gray-50 rounded-md px-3 py-2"
+                    >
+                        Matched
+                    </TabsTrigger>
+                </TabsList>
 
                 <TabsContent value="pending" className="grid gap-8">
                     {items.map((item) => (
@@ -117,19 +117,19 @@ const MactchingView = () => {
                                 <div className="flex items-center justify-between gap-4">
                                     <div className='flex flex-col xl:flex-row items-start gap-4'>
                                         <Image
-                                        width={200}
-                                        height={200}
-                                        src={item.image || "/placeholder.svg"}
-                                        alt={item.title}
-                                        className="w-24 h-18 rounded-lg object-cover"
-                                    />
-                                    <div className="flex-1">
-                                        <h2 className="text-lg font-semibold text-[#222222] mb-2">{item.title}</h2>
-                                        <div className="flex items-center gap-3">
-                                            <Badge className={`${getStatusColor(item.status)} py-2 px-3 rounded-full`}>{item.status}</Badge>
-                                            <span className="text-[#626262] text-xs font-semibold bg-gray-50 py-2 px-3 rounded-full">{item.category}</span>
+                                            width={200}
+                                            height={200}
+                                            src={item.image || "/placeholder.svg"}
+                                            alt={item.title}
+                                            className="w-24 h-18 rounded-lg object-cover"
+                                        />
+                                        <div className="flex-1">
+                                            <h2 className="text-lg font-semibold text-[#222222] mb-2">{item.title}</h2>
+                                            <div className="flex items-center gap-3">
+                                                <Badge className={`${getStatusColor(item.status)} py-2 px-3 rounded-full`}>{item.status}</Badge>
+                                                <span className="text-[#626262] text-xs font-semibold bg-gray-50 py-2 px-3 rounded-full">{item.category}</span>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                     <div className="flex items-center gap-2 bg-[#E6F8F4] p-3 rounded-full text-[#0d9488]">
                                         <Users className="w-5 h-5" />
@@ -174,26 +174,26 @@ const MactchingView = () => {
 
                                             <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
                                                 <p className="  text-[#383838] text-sm mb-4">
-                                                "Hi there! I've been looking for a {item.title.toLowerCase()} just like this for my home
-                                                office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                considering!"
-                                            </p>
-                                            <div className='flex flex-col xl:flex-row items-center gap-6'>
-                                                <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                    &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
+                                                    office. I would really appreciate it and would be able to pick it up anytime. Thanks for
+                                                    considering!&quot;
+                                                </p>
+                                                <div className='flex flex-col xl:flex-row items-center gap-6'>
+                                                    <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                        </div>
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">0</div>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                    </div>
+                                                    <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
                                                 </div>
-                                                <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
+
                                             </div>
-                                                
-                                            </div>
-                                        
+
                                         </div>
 
                                         <div className="border-b pb-12">
@@ -223,26 +223,26 @@ const MactchingView = () => {
 
                                             <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
                                                 <p className="  text-[#383838] text-sm mb-4">
-                                                "Hi there! I've been looking for a {item.title.toLowerCase()} just like this for my home
-                                                office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                considering!"
-                                            </p>
-                                            <div className='flex flex-col xl:flex-row items-center gap-6'>
-                                                <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                    &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
+                                                    office. I would really appreciate it and would be able to pick it up anytime. Thanks for
+                                                    considering!&quot;
+                                                </p>
+                                                <div className='flex flex-col xl:flex-row items-center gap-6'>
+                                                    <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                        </div>
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">0</div>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                    </div>
+                                                    <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
                                                 </div>
-                                                <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
+
                                             </div>
-                                                
-                                            </div>
-                                        
+
                                         </div>
                                         <div className="rounded-xl">
                                             <div className="flex flex-col xl:flex-row items-start gap-4 mb-4">
@@ -271,26 +271,26 @@ const MactchingView = () => {
 
                                             <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
                                                 <p className="  text-[#383838] text-sm mb-4">
-                                                "Hi there! I've been looking for a {item.title.toLowerCase()} just like this for my home
-                                                office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                considering!"
-                                            </p>
-                                            <div className='flex flex-col xl:flex-row items-center gap-6'>
-                                                <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                    &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
+                                                    office. I would really appreciate it and would be able to pick it up anytime. Thanks for
+                                                    considering!&quot;
+                                                </p>
+                                                <div className='flex flex-col xl:flex-row items-center gap-6'>
+                                                    <div className="flex flex-col xl:flex-row flex-1 w-full gap-6">
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">3</div>
+                                                        </div>
+                                                        <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                            <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
+                                                            <div className="text-xl font-semibold text-[#222222]">0</div>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                        <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                    </div>
+                                                    <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
                                                 </div>
-                                                <Button variant="primary" className="py-6 w-full xl:w-44">Accept</Button>
+
                                             </div>
-                                                
-                                            </div>
-                                        
+
                                         </div>
                                     </>
                                 </div>
