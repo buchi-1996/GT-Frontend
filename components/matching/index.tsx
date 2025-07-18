@@ -575,29 +575,29 @@ const MactchingView = () => {
                     <Label htmlFor="item-not-available" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
                         <RadioGroupItem value="item not available" className="ring ring-app-primary  text-app-primary" id="item-not-available" />
                         <div className="grid gap-2 items-start">
-                            <h4 className='font-[500px] text-[1rem]'>Item no longer available</h4>
-                            <p className='text-gray-500 text-sm leading-5'>The item was damaged, lost, or otherwise became unavailaable before the collection</p>
+                            <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Item no longer available</h4>
+                            <p className='text-gray-500 text-xs sm:text-sm leading-5'>The item was damaged, lost, or otherwise became unavailaable before the collection</p>
                         </div>
                     </Label>
                     <Label htmlFor="receiver-unresponsive" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
                         <RadioGroupItem value="Receiver Unresponsiv" className="ring ring-app-primary text-app-primary" id="receiver-unresponsive" />
                         <div className="grid gap-2 items-start">
-                            <h4 className='font-[500px] text-[1rem]'>Receiver Unresponsive</h4>
-                            <p className='text-gray-500 text-sm leading-5'>The selected Receiver has not responded to confirmation messages or has failed to confirm collection details.</p>
+                            <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Receiver Unresponsive</h4>
+                            <p className='text-gray-500 text-xs sm:text-sm leading-5'>The selected Receiver has not responded to confirmation messages or has failed to confirm collection details.</p>
                         </div>
                     </Label>
                     <Label htmlFor="incomplete-or-misleading" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
                         <RadioGroupItem value="Incomplete or Misleading" className="ring ring-app-primary  text-app-primary" id="incomplete-or-misleading" />
                         <div className="grid gap-2 items-start">
-                            <h4 className='font-[500px] text-[1rem]'>Receiver&apos;s Profile Incomplete or Misleading</h4>
-                            <p className='text-gray-500 text-sm leading-5'>The Giver identified inconsistencies or missing critical information in the Receiver&apos;s profile.</p>
+                            <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Receiver&apos;s Profile Incomplete or Misleading</h4>
+                            <p className='text-gray-500 text-xs sm:text-sm leading-5'>The Giver identified inconsistencies or missing critical information in the Receiver&apos;s profile.</p>
                         </div>
                     </Label>
                     <Label htmlFor="other" className="w-full flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
                         <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
                         <div className="w-full grid gap-2 items-start">
-                            <h4 className='font-[500px] text-[1rem]'>Other (please Specify)</h4>
-                            <Textarea className='mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
+                            <h4 className='font-[500px] text-sm sm:text-[1rem]'>Other (please Specify)</h4>
+                            <Textarea className='placeholder:text-gray-400 pt-3 text-sm sm:text-md h-44 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
                         </div>
                     </Label>
                 </RadioGroup>
