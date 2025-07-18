@@ -305,15 +305,15 @@ const MactchingView = () => {
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
                                                                         <span className="text-sm font-medium">5.0</span>
                                                                     </div>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• 2.4km away</span>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• Requested 1 day ago</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• 2.4km away</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-1 text-sm text-[#626262]">
                                                         <Clock className="w-4 h-4" />
-                                                        <span className="text-nowrap">Joined 2 months ago</span>
+                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
                                                     </div>
                                                 </div>
 
@@ -359,15 +359,15 @@ const MactchingView = () => {
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
                                                                         <span className="text-sm font-medium">5.0</span>
                                                                     </div>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• 2.4km away</span>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• Requested 1 day ago</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• 2.4km away</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-1 text-sm text-[#626262]">
                                                         <Clock className="w-4 h-4" />
-                                                        <span className="text-nowrap">Joined 2 months ago</span>
+                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
                                                     </div>
                                                 </div>
 
