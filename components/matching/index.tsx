@@ -213,7 +213,7 @@ const MactchingView = () => {
                                                 className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
                                             />
                                             <div className="flex-1">
-                                                <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2">{item.title}</h2>
+                                                <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">{item.title}</h2>
                                                 <div className="flex items-start lg:items-center gap-2 md:gap-3">
                                                     <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
                                                     <Badge className=" text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
@@ -573,28 +573,28 @@ const MactchingView = () => {
 
                 <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='h-96 overflow-y-auto mb-4 scrollbar-hide'>
                     <Label htmlFor="item-not-available" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
-                        <RadioGroupItem value="item not available" className="ring ring-app-primary  text-app-primary" id="item-not-available" />
-                        <div className="grid gap-2 items-start">
+                        <RadioGroupItem value="item not available" className="mt-1 ring ring-app-primary  text-app-primary" id="item-not-available" />
+                        <div className="grid gap-2">
                             <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Item no longer available</h4>
                             <p className='text-gray-500 text-xs sm:text-sm leading-5'>The item was damaged, lost, or otherwise became unavailaable before the collection</p>
                         </div>
                     </Label>
                     <Label htmlFor="receiver-unresponsive" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
-                        <RadioGroupItem value="Receiver Unresponsiv" className="ring ring-app-primary text-app-primary" id="receiver-unresponsive" />
-                        <div className="grid gap-2 items-start">
+                        <RadioGroupItem value="Receiver Unresponsive" className="mt-1 ring ring-app-primary text-app-primary" id="receiver-unresponsive" />
+                        <div className="grid gap-2">
                             <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Receiver Unresponsive</h4>
                             <p className='text-gray-500 text-xs sm:text-sm leading-5'>The selected Receiver has not responded to confirmation messages or has failed to confirm collection details.</p>
                         </div>
                     </Label>
                     <Label htmlFor="incomplete-or-misleading" className="flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
-                        <RadioGroupItem value="Incomplete or Misleading" className="ring ring-app-primary  text-app-primary" id="incomplete-or-misleading" />
-                        <div className="grid gap-2 items-start">
+                        <RadioGroupItem value="Incomplete or Misleading" className="mt-1 ring ring-app-primary  text-app-primary" id="incomplete-or-misleading" />
+                        <div className="grid gap-2">
                             <h4 className='font-[500px] text-sm sm:text-[1rem] leading-6'>Receiver&apos;s Profile Incomplete or Misleading</h4>
                             <p className='text-gray-500 text-xs sm:text-sm leading-5'>The Giver identified inconsistencies or missing critical information in the Receiver&apos;s profile.</p>
                         </div>
                     </Label>
                     <Label htmlFor="other" className="w-full flex items-start bg-gray-50 rounded-lg py-6 px-4 space-x-2">
-                        <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
+                        <RadioGroupItem value="other" className="mt-1 ring ring-app-primary text-app-primary" id="other" />
                         <div className="w-full grid gap-2 items-start">
                             <h4 className='font-[500px] text-sm sm:text-[1rem]'>Other (please Specify)</h4>
                             <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
