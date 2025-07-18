@@ -220,7 +220,7 @@ const MactchingView = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="absolute top-0 right-0 md:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg md:rounded-full text-[#0d9488]">
+                                        <div className="absolute top-0 right-0 lg:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg lg:rounded-full text-[#0d9488]">
                                             <Users className="w-3 md:w-5 h-3 md:h-5" />
                                             <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
                                             <ChevronRight
@@ -300,12 +300,12 @@ const MactchingView = () => {
                                                         <div className="flex-1">
                                                             <div className="flex flex-col gap-1 mb-1">
                                                                 <h3 className="text-sm md:text-md font-semibold text-[#222222]">Michael Chen</h3>
-                                                                <div className='flex gap-2'>
-                                                                    <div className="flex items-center gap-2">
+                                                                <div className='flex items-center-safe'>
+                                                                    <div className="flex items-center gap-2 mr-1">
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
-                                                                        <span className="text-sm font-medium">5.0</span>
+                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• 2.4km away</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
                                                                     <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
@@ -354,12 +354,12 @@ const MactchingView = () => {
                                                         <div className="flex-1">
                                                             <div className="flex flex-col gap-1 mb-1">
                                                                 <h3 className="font-semibold text-[#222222]">Emma Wilson</h3>
-                                                                <div className='flex gap-2'>
-                                                                    <div className="flex items-center gap-2">
+                                                                <div className='flex items-center-safe'>
+                                                                    <div className="flex items-center gap-2 mr-1">
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
-                                                                        <span className="text-sm font-medium">5.0</span>
+                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• 2.4km away</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
                                                                     <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
