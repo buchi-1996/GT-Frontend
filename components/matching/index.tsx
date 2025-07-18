@@ -619,8 +619,8 @@ const MactchingView = () => {
                     <h4 className='text-xl font-semibold'>Feedback Received</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>What would you like to do with the item.</p>
                     <div className='flex items-center justify-center gap-4 mt-6'>
-                        <Button onClick={handleArchive} variant="secondary" className=' w-44 py-6 px-6 cursor-pointer'>Archive</Button>
-                        <Button onClick={handleRelist} variant="primary" className=' w-44 py-6 px-6'>Relist</Button>
+                        <Button onClick={handleArchive} variant="secondary" className='w-full md:w-44 py-6 px-6 cursor-pointer'>Archive</Button>
+                        <Button onClick={handleRelist} variant="primary" className=' w-full md:w-44 py-6 px-6'>Relist</Button>
                     </div>
                 </div>
             </ResponsiveAlert>
