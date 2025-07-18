@@ -201,9 +201,9 @@ const MactchingView = () => {
                 <TabsContent value="pending" className="flex gap-10 flex-row items-start">
                     <div className='flex-1  grid gap-6 md:gap-8'>
                         {items.map((item) => (
-                            <Card key={item.id} className="w-full xl:min-w-[550px] py-3 md:py-6 px-3 md:px-6 bg-transparent border-b  shadow-none cursor-pointer" onClick={() => handleItemClick(item.id)}>
+                            <Card key={item.id} className="relative overflow-hidden w-full xl:min-w-[550px] py-3 md:py-6 px-3 md:px-6 bg-transparent border-b  shadow-none cursor-pointer" onClick={() => handleItemClick(item.id)}>
                                 <CardContent className="p-0">
-                                    <div className="flex items-center lg:items-center justify-between gap-4">
+                                    <div className=" flex items-center lg:items-center justify-between gap-4">
                                         <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
                                             <Image
                                                 width={200}
@@ -220,7 +220,7 @@ const MactchingView = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-full text-[#0d9488]">
+                                        <div className="absolute top-0 right-0 md:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg md:rounded-full text-[#0d9488]">
                                             <Users className="w-3 md:w-5 h-3 md:h-5" />
                                             <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
                                             <ChevronRight
@@ -293,13 +293,13 @@ const MactchingView = () => {
                                             <div className="@container border-b pb-12">
                                                 <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
                                                     <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-12 h-12">
+                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
                                                             <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                                             <AvatarFallback className="bg-[#4c21a8] text-white">M</AvatarFallback>
                                                         </Avatar>
                                                         <div className="flex-1">
                                                             <div className="flex flex-col gap-1 mb-1">
-                                                                <h3 className="font-semibold text-[#222222]">Michael Chen</h3>
+                                                                <h3 className="text-sm md:text-md font-semibold text-[#222222]">Michael Chen</h3>
                                                                 <div className='flex gap-2'>
                                                                     <div className="flex items-center gap-2">
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
@@ -347,7 +347,7 @@ const MactchingView = () => {
                                             <div className="@container rounded-xl">
                                                 <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
                                                     <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-12 h-12">
+                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
                                                             <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                                             <AvatarFallback className="bg-[#c2410c] text-white">E</AvatarFallback>
                                                         </Avatar>
