@@ -108,7 +108,6 @@ const MactchingView = () => {
 
 
     const handleItemClick = (itemId: string) => {
-        // If clicking on the same item, close it. Otherwise, close all and open the clicked one
         if (expandedItem === itemId) {
             setExpandedItem(null)
         } else {
@@ -200,29 +199,29 @@ const MactchingView = () => {
                 </TabsList>
 
                 <TabsContent value="pending" className="flex gap-10 flex-row items-start">
-                    <div className='flex-1  grid gap-8'>
+                    <div className='flex-1  grid gap-6 md:gap-8'>
                         {items.map((item) => (
                             <Card key={item.id} className="w-full xl:min-w-[550px] py-3 md:py-6 px-3 md:px-6 bg-transparent border-b  shadow-none cursor-pointer" onClick={() => handleItemClick(item.id)}>
                                 <CardContent className="p-0">
-                                    <div className="flex items-start lg:items-center justify-between gap-4">
-                                        <div className='flex flex-row items-start lg:items-start gap-6'>
+                                    <div className="flex items-center lg:items-center justify-between gap-4">
+                                        <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
                                             <Image
                                                 width={200}
                                                 height={200}
                                                 src={item.image || "/placeholder.svg"}
                                                 alt={item.title}
-                                                className="w-24 h-18 rounded-lg object-cover"
+                                                className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
                                             />
                                             <div className="flex-1">
                                                 <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2">{item.title}</h2>
                                                 <div className="flex items-start lg:items-center gap-2 md:gap-3">
-                                                    <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-xs md:text-sm`}>{item.status}</Badge>
-                                                    <Badge className="hidden lg:block text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-xs md:text-sm ">{item.category}</Badge>
+                                                    <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
+                                                    <Badge className=" text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-full text-[#0d9488]">
-                                            <Users className="w-4 md:w-5 h-4 md:h-5" />
+                                            <Users className="w-3 md:w-5 h-3 md:h-5" />
                                             <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
                                             <ChevronRight
                                                 className={`w-4 md:w-5 h-4 md:h-5 ${expandedItem === item.id ? "rotate-90 text-[#0d9488]" : "text-[#0d9488]"
@@ -240,27 +239,27 @@ const MactchingView = () => {
                                             <div className="@container border-b pb-12">
                                                 <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
                                                     <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-12 h-12">
+                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
                                                             <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                                             <AvatarFallback className="bg-[#0d9488] text-white">SJ</AvatarFallback>
                                                         </Avatar>
                                                         <div className="flex-1">
                                                             <div className="flex flex-col gap-1 mb-1">
-                                                                <h3 className="font-semibold text-[#222222]">Sarah Johnson</h3>
-                                                                <div className='flex gap-2'>
-                                                                    <div className="flex items-center gap-2">
+                                                                <h3 className="text-sm md:text-md font-semibold text-[#222222]">Sarah Johnson</h3>
+                                                                <div className='flex items-center-safe'>
+                                                                    <div className="flex items-center gap-2 mr-1">
                                                                         <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
-                                                                        <span className="text-sm font-medium">5.0</span>
+                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• 2.4km away</span>
-                                                                    <span className="text-sm text-nowrap text-[#626262]">• Requested 1 day ago</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
+                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-1 text-sm text-[#626262]">
                                                         <Clock className="w-4 h-4" />
-                                                        <span className="text-nowrap">Joined 2 months ago</span>
+                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
                                                     </div>
                                                 </div>
 
@@ -272,7 +271,7 @@ const MactchingView = () => {
                                                     </p>
                                                     <div className='@container'>
                                                         <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
-                                                            <div className="flex flex-col @xl:flex-row flex-1 w-full gap-6">
+                                                            <div className="flex flex-col @xl:flex-row flex-1 w-full gap-4 md:gap-6">
                                                                 <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
                                                                     <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
                                                                     <div className="text-xl font-semibold text-[#222222]">3</div>
