@@ -597,7 +597,7 @@ const MactchingView = () => {
                         <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
                         <div className="w-full grid gap-2 items-start">
                             <h4 className='font-[500px] text-sm sm:text-[1rem]'>Other (please Specify)</h4>
-                            <Textarea className='placeholder:text-gray-400 pt-3 text-md h-44 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
+                            <Textarea className='placeholder:text-gray-400 pt-3  h-44 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
                         </div>
                     </Label>
                 </RadioGroup>
