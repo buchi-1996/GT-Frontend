@@ -409,7 +409,7 @@ const MactchingView = () => {
                         </div>
                     )}
                     {(!openCriteria || isMobile) && (
-                        <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 z-50 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
+                        <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
                             <span>
                                 <svg width="44" height="44" className="w-44 h-44 text-gray-900" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
