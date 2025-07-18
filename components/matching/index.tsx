@@ -597,7 +597,7 @@ const MactchingView = () => {
                         <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
                         <div className="w-full grid gap-2 items-start">
                             <h4 className='font-[500px] text-sm sm:text-[1rem]'>Other (please Specify)</h4>
-                            <Textarea className='placeholder:text-gray-400 text-xs sm:text-md pt-3 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
+                            <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Provide details about your decision to un-match recipient. ' />
                         </div>
                     </Label>
                 </RadioGroup>
@@ -619,8 +619,8 @@ const MactchingView = () => {
                     <h4 className='text-xl font-semibold'>Feedback Received</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>What would you like to do with the item.</p>
                     <div className='flex items-center justify-center gap-4 mt-6'>
-                        <Button onClick={handleArchive} variant="secondary" className='w-full md:w-44 py-6 px-6 cursor-pointer'>Archive</Button>
-                        <Button onClick={handleRelist} variant="primary" className=' w-full md:w-44 py-6 px-6'>Relist</Button>
+                        <Button onClick={handleArchive} variant="secondary" className='w-auto md:w-44 py-6 px-6 cursor-pointer'>Archive</Button>
+                        <Button onClick={handleRelist} variant="primary" className=' w-auto md:w-44 py-6 px-6'>Relist</Button>
                     </div>
                 </div>
             </ResponsiveAlert>
