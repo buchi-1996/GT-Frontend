@@ -1,5 +1,7 @@
 "use client";
 
+import React from 'react'
+
 import {
   Dialog,
   DialogContent,
@@ -13,33 +15,42 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useUIState } from "@/hooks/useAppState";
 
-export default function Modal() {
-  const { isOpen, modalContent, closeModal } = useUIState();
+interface ResponsiveModalProps{
+    children: React.ReactNode;
+    open?: boolean;
+    close?: (open: boolean) => void;
+    className?: string;
+}
+
+
+const ResponsiveModal = ({children, open, close, className}: ResponsiveModalProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)")
+  
 
   if (isDesktop) {
     return (
-      <Dialog open={isOpen} onOpenChange={closeModal} >
-        <DialogContent className="sm:max-w-[425px] rounded-2xl border-none">
+      <Dialog open={open} onOpenChange={close} >
+        <DialogContent className={`sm:max-w-[600px] ${className} rounded-2xl border-none`}>
           <DialogHeader>
             <DialogTitle className="sr-only">Title</DialogTitle>
           </DialogHeader>
-          {modalContent}
+          {children}
         </DialogContent>
       </Dialog>
     )
   }
 
   return (
-    <Drawer repositionInputs={false} open={isOpen} onOpenChange={closeModal}>
-      <DrawerContent>
+    <Drawer repositionInputs={false} open={open} onOpenChange={close}>
+      <DrawerContent className={`${className}`}>
         <DrawerHeader className="text-left">
           <DrawerTitle className="sr-only">Title</DrawerTitle>
         </DrawerHeader>
-        {modalContent}
+        {children}
       </DrawerContent>
     </Drawer>
   );
 }
+
+export default ResponsiveModal

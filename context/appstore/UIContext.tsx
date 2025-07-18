@@ -26,6 +26,9 @@ interface UIContextType {
     listingsContent?: ReactNode;
     isAddItemDialogOpen?: boolean;
     setIsAddItemDialogOpen?: Dispatch<SetStateAction<boolean>>;
+    openCriteria: boolean;
+    setOpenCriteria: Dispatch<SetStateAction<boolean>>
+    
 }
 
 export const UIContext = createContext<UIContextType | undefined>(undefined);
@@ -43,6 +46,9 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     // const [isEditItemDialogOpen, setIsEditItemDialogOpen] = useState(false);
     const [overlay, setOverlay] = useState(false)
     const [progress, setProgress] = useState([20]);
+    const [openCriteria, setOpenCriteria] = useState(true)
+    
+    
 
     const openModal = (content: ReactNode) => {
         setModalContent(content);
@@ -62,6 +68,7 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     const closeSheet = () => {
         setIsSheetOpen(false);
         setSheetContent(null);
+        // setOpenCriteria(!openCriteria)
     };
 
     const openSidebar = () => {
@@ -83,6 +90,9 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         setIsAddItemDialogOpen(false);
         setListingsContent(null);
     };
+
+
+   
 
     const UIData = {
         isOpen,
@@ -110,6 +120,9 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         setIsAddItemDialogOpen,
         openAddItem,
         closeAddItem,
+        openCriteria,
+        setOpenCriteria,
+      
     }
 
 

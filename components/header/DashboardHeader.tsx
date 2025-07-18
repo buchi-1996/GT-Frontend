@@ -1,15 +1,30 @@
 "use client"
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Button } from '../ui/button'
 import { ChevronRight, Menu } from 'lucide-react'
 import { useUIState } from '@/hooks/useAppState'
 import User from './User'
 import CompleteProfile from '../profile/CompleteProfile'
+import { usePathname } from 'next/navigation'
 
 const DashboardHeader = () => {
   const { openSidebar, setSidebarCollapsed, sidebarCollapsed, openSheet } = useUIState()
+  const pathname = usePathname()
 
+ const pageTitle = useMemo(() => {
+  if (!pathname) return '';
+
+  const parts = pathname.split('/');
+  const last = parts[parts.length - 1] || parts[parts.length - 2];
+
+  if (last.toLowerCase() === 'overview') return 'Welcome back, Joe!';
+
+  return last
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}, [pathname]);
 
   return (
     <header className="z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">
@@ -24,7 +39,7 @@ const DashboardHeader = () => {
             <path d="M5 7H6M5 10H6" stroke="#141B34" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Button>
-        <h1 className={`${sidebarCollapsed && 'ml-auto md:ml-10'} text-[1rem] sm:text-xl font-semibold text-[#222222]`}>Welcome back, Joe!</h1>
+        <h1 className={`${sidebarCollapsed && 'ml-auto md:ml-10'} text-[1rem] sm:text-xl font-semibold text-[#222222]`}>{pageTitle}</h1>
       </div>
 
       <div className="flex items-center gap-5">

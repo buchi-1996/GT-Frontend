@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/drawer"
 
 import { useMediaQuery } from "@/hooks/use-media-query";
-import {useUIState } from "@/hooks/useAppState";
+import { useUIState } from "@/hooks/useAppState";
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 
