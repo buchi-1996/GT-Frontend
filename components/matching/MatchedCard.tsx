@@ -14,7 +14,7 @@ interface MatchedCardProps {
 }
 
 
-const MatchedCard = ({setIsUnmatchedModal}: MatchedCardProps) => {
+const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
     const isMobileBtn = useMediaQuery("(max-width: 768px)")
 
     const isIconBtn = isMobileBtn ? 'icon' : "default"
@@ -51,23 +51,23 @@ const MatchedCard = ({setIsUnmatchedModal}: MatchedCardProps) => {
                         </div>
 
                     </div>
-                    <div className='flex xl:hidden my-2 md:my-0 flex-wrap flex items-center gap-4'>
-                         <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
+                    <div className='flex xl:hidden myy-1 md:my-2 md:my-0 flex-wrap flex items-center gap-4'>
+                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
+                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
+                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
+                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
                     </div>
-                    <div className='absolute top-6 right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-3'>
-                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-10 h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>
-                            <Trash2 size={8} className=" size-5 block lg:hidden" />
+                    <div className='absolute top-6 right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
+                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-10 h-10 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>
+                            <Trash2 size={8} className="size-4 md:size-5 block lg:hidden" />
                             <span className="hidden lg:block">
                                 Un-Match
                             </span>
                         </Button>
-                        <Button variant="primary" size={isIconBtn} className='lg:py-6 w-10 h-10 lg:h-0 lg:w-auto'>
+                        <Button variant="primary" size={isIconBtn} className='lg:py-6 w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto'>
                             <span className="block lg:hidden text-white">
                                 <svg
-                                    className="size-[18px] font-bold stroke-2 text-white stroke-white"
+                                    className="size-[17px] m-0 p-0 md:size-[18px] font-bold stroke-2 text-white stroke-white"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="18"
