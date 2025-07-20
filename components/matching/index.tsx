@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/card'
-import { ChevronRight, Clock, Star, StarIcon, Users } from 'lucide-react'
+import { ChevronRight, Clock, StarIcon, Users } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'

@@ -98,7 +98,7 @@ const shortFeedbackOptions = [
 ]
 
 const PickupView = () => {
-    const [pickupItems, _setPickupItems] = useState<PickupItemprops[]>([
+    const [pickupItems] = useState<PickupItemprops[]>([
         {
             id: "1",
             title: "Sdorens 118 Sofa Couch",
