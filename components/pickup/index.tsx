@@ -232,7 +232,7 @@ const PickupView = () => {
             alert("Please select a rating.")
             return
         }
-        if(commentRef.current.length < 10) {
+        if(feedback.includes('leave a comment') && commentRef.current.length < 10) {
             alert("Comment must be at least 10 characters long.")
             return
         }
