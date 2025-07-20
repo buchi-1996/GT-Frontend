@@ -20,10 +20,10 @@ const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
     const isIconBtn = isMobileBtn ? 'icon' : "default"
 
     return (
-        <Card className="relative w-full xl:min-w-[550px] py-4 md:py-6 px-4 rounded-lg lg:rounded-none bg-transparent  lg:border-0 lg:border-b shadow-none cursor-pointer" >
+        <Card className="relative w-full xl:min-w-[550px] py-2 md:py-4 md:py-6 px-2 md:px-4 rounded-lg lg:rounded-none bg-transparent  lg:border-0 lg:border-b shadow-none cursor-pointer" >
             <CardContent className="p-0">
                 <div className=" flex flex-col 2xl:flex-row items-start 2xl:items-center justify-between gap-4">
-                    <div className='border-b md:border-0 pb-4 md:pb-0 w-full flex flex-row items-center lg:items-start gap-4 md:gap-6'>
+                    <div className='border-b md:border-0 pb-3 md:pb-4 md:pb-0 w-full flex flex-row items-center lg:items-start gap-3 md:gap-6'>
                         <Image
                             width={200}
                             height={200}
@@ -57,21 +57,21 @@ const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
                         <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
                         <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
                     </div>
-                    <div className='absolute top-6 right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
-                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-10 h-10 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>
+                    <div className='absolute top-3 md:top-6 right-2 md:right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
+                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>
                             <Trash2 size={8} className="size-4 md:size-5 block lg:hidden" />
                             <span className="hidden lg:block">
                                 Un-Match
                             </span>
                         </Button>
-                        <Button variant="primary" size={isIconBtn} className='lg:py-6 w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto'>
+                        <Button variant="primary" size={isIconBtn} className='py-4 px-[16px] lg:px-auto lg:py-6 w-6 h-6 md:w-10 md:h-10 lg:h-0 lg:w-auto'>
                             <span className="block lg:hidden text-white">
                                 <svg
                                     className="size-[17px] m-0 p-0 md:size-[18px] font-bold stroke-2 text-white stroke-white"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
+                                    width="10"
+                                    height="10"
                                     viewBox="0 0 24 24"
                                 >
                                     <path stroke="currentColor" d="M8.5 14.5h7m-7-5H12"></path>
