@@ -232,7 +232,7 @@ const PickupView = () => {
             alert("Please select a rating.")
             return
         }
-        if(feedback.includes('leave a comment') && commentRef.current.length < 10) {
+        if(feedback.includes('leave a comment') || commentRef.current.length < 10) {
             alert("Comment must be at least 10 characters long.")
             return
         }
@@ -351,8 +351,8 @@ const PickupView = () => {
                     </div>
                 ))}
             </div>
-            <ResponsiveAlert open={confirmPickModal} close={() => { }} className='py-6 md:py-20'>
-                <div className='flex flex-col items-center gap-3 justify-center text-center p-6'>
+            <ResponsiveAlert open={confirmPickModal} close={() => { }} className='py-4 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-2 md:p-6'>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="80" height="81" fill="none">
                             <rect width="80" height="80" y="0.5" fill="#F1F3DE" rx="40"></rect>
@@ -374,7 +374,7 @@ const PickupView = () => {
                     </span>
                     <h4 className='text-xl font-semibold'>Waiting for receiver confirmation</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>You marked the item as picked up. The receiver has been asked to confirm. We&apos;ll auto-marked the item as picked up after 48 hours. </p>
-                    <div className='flex items-center justify-center gap-4 mt-6'>
+                    <div className='flex items-center justify-center gap-4 mt-2 mb-2 md:mb-0 md:mt-6'>
                         <Button onClick={handleConfirmPickup} variant="primary" className=' w-auto w-24 py-6 px-6'>Ok</Button>
                     </div>
                 </div>
