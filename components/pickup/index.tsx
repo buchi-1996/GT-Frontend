@@ -1,0 +1,473 @@
+"use client"
+
+import React, { useRef, useState } from 'react'
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { Badge } from '../ui/badge';
+import Image from 'next/image';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { StarIcon } from 'lucide-react';
+import { Button } from '../ui/button';
+import ResponsiveAlert from '../modal/ResponsiveAlert';
+import ResponsiveModal from '../modal/ResponsiveModal';
+import { Textarea } from '../ui/textarea';
+
+
+const tabs = [
+    { id: "all", label: "All" },
+    { id: "scheduled", label: "Scheduled" },
+    { id: "picked-up", label: "Picked up" },
+    { id: "no-show", label: "No-show" },
+    { id: "pending", label: "Pending" },
+]
+
+interface PickupItemprops {
+    id: string;
+    title: string;
+    image: string;
+    status: string;
+    pickupDate: string;
+    location: string;
+    receiver: string;
+    rating: number;
+}
+
+const getStatusColor = (status: string) => {
+    switch (status) {
+        case "scheduled":
+            return "bg-[#F3EAFD] text-[#8E6ADD] border-green-200"
+        case "picked-up":
+            return "bg-[#E2F4E8] text-[#009975] border-yellow-200"
+        case "no-show":
+            return "bg-[#FFDDDD] text-[#C00F0C] border-gray-200"
+        case "pending":
+            return "bg-[#E7EFF9] text-[#2563EB] border-red-200"
+        default:
+            return "bg-gray-100 text-gray-800 border-gray-200"
+    }
+}
+
+const getStatusText = (status: string) => {
+    switch (status) {
+        case "scheduled":
+            return "Scheduled"
+        case "picked-up":
+            return "Picked up"
+        case "no-show":
+            return "No-show"
+        case "pending":
+            return "Pending  Confirmation"
+        default:
+            return status
+    }
+}
+
+const shortFeedbackOptions = [
+    {
+        id: 'grateful',
+        title: "Grateful",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#0D9488" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406Z" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" d="M5.333 9.667s1.067.608 1.6 1.5c0 0 1.6-3.5 3.733-4.667" /></svg>
+    },
+    {
+        id: 'polite',
+        title: "Polite",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#B36ADD" stroke-linejoin="round" d="M14.666 8.212c0 3.522-2.985 6.378-6.666 6.378a6.94 6.94 0 0 1-1.29-.12c-.306-.057-.46-.086-.566-.07-.107.017-.258.097-.561.258a4.333 4.333 0 0 1-2.816.438c.365-.45.615-.988.725-1.566.066-.353-.099-.696-.346-.947-1.124-1.141-1.813-2.679-1.813-4.371C1.333 4.69 4.318 1.834 8 1.834c3.681 0 6.666 2.856 6.666 6.378Z"/><path stroke="#B36ADD" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.333" d="M7.997 8.5h.006m2.657 0h.006m-5.333 0h.006"/></svg>
+
+    },
+    {
+        id: 'prompt-response',
+        title: "Promt response",
+        icon: <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.75242 8.94907H5.44644C4.45729 8.94907 3.96271 8.94907 3.7519 8.62293C3.54108 8.29687 3.74195 7.84253 4.14368 6.93389L5.35144 4.20215C5.7167 3.376 5.89934 2.96292 6.25364 2.73146C6.60794 2.5 7.05759 2.5 7.95699 2.5H9.34992C10.4425 2.5 10.9887 2.5 11.1947 2.8569C11.4008 3.2138 11.1298 3.69059 10.5877 4.64415L9.87312 5.90125C9.60366 6.3753 9.46892 6.61233 9.47079 6.80635C9.47326 7.0585 9.60732 7.2908 9.82392 7.418C9.99059 7.51593 10.2621 7.51593 10.8053 7.51593C11.4919 7.51593 11.8352 7.51593 12.014 7.6348C12.2463 7.7892 12.3679 8.06547 12.3253 8.34213C12.2925 8.55507 12.0615 8.8104 11.5997 9.32113L7.90959 13.4015C7.18479 14.203 6.82239 14.6037 6.57904 14.4769C6.33568 14.3501 6.45254 13.8215 6.68626 12.7641L7.14412 10.6931C7.32206 9.888 7.41106 9.48547 7.19706 9.21727C6.98306 8.94907 6.57284 8.94907 5.75242 8.94907Z" stroke="#3B82F6" strokeLinejoin="round" />
+                                </svg>
+    },
+    {
+        id: 'trustworthy',
+        title: "Trustworthy",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#E8B931" strokeLinecap="round" strokeLinejoin="round" d="M14.666 5h-1.859c-.4 0-.601 0-.79-.058-.189-.057-.356-.168-.69-.39-.5-.334-1.07-.714-1.353-.8-.284-.086-.584-.086-1.185-.086-.818 0-1.345 0-1.712.152-.368.152-.657.442-1.235 1.02l-.509.508c-.13.13-.195.196-.235.26a.667.667 0 0 0 .04.766c.048.06.12.117.263.233.53.427 1.295.384 1.776-.1L8 5.679h.666l4 4.024c.368.37.368.97 0 1.341a.939.939 0 0 1-1.333 0L11 10.708m0 0L9 8.696m2 2.012c.368.37.368.97 0 1.34a.939.939 0 0 1-1.334 0L9 11.379m0 0c.368.37.368.971 0 1.342a.939.939 0 0 1-1.334 0l-1-1.006M9 11.378l-1.334-1.333m-1 1.669-.333-.336m.333.336c.369.37.369.97 0 1.34a.939.939 0 0 1-1.333 0l-1.882-1.92c-.387-.396-.58-.593-.828-.697-.248-.104-.525-.104-1.077-.104h-.213" /><path stroke="#E8B931" strokeLinecap="round" d="M14.667 10.334H13M5.666 5H1.333" /></svg>
+    },
+    {
+        id: 'patience-and-understanding',
+        title: "Patience and understanding",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" d="M8 15.167A6.667 6.667 0 1 0 8 1.834a6.667 6.667 0 0 0 0 13.333Z" /><path stroke="#14AE7D" stroke-linecap="round" stroke-linejoin="round" d="M5.333 10.5A3.328 3.328 0 0 0 8 11.833c1.09 0 2.058-.523 2.666-1.333" /><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.333" d="M5.339 6.5h-.006m5.333 0h-.006" /></svg>
+    },
+    {
+        id: 'leave-a-comment',
+        title: "Leave a comment",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406ZM8 5.834v5.333m2.666-2.666H5.333"/></svg>
+    }
+]
+
+const PickupView = () => {
+    const [pickupItems, _setPickupItems] = useState<PickupItemprops[]>([
+        {
+            id: "1",
+            title: "Sdorens 118 Sofa Couch",
+            image: "/assets/pickup-items/26d5c2792470ae73a928ea3596432d5ae1d5b71d.png",
+            status: "scheduled",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        },
+        {
+            id: "2",
+            title: "Office Chair",
+            image: "/assets/pickup-items/298a5bcde4a39366ac3054cd4e4b7b6d3f856897.png",
+            status: "picked-up",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        },
+        {
+            id: "3",
+            title: "Sdorens 118 Sofa Couch",
+            image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
+            status: "pending",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        },
+        {
+            id: "4",
+            title: "Vintage Desk Lamp",
+            image: "/assets/pickup-items/a6caeef3522ab10e25891ab48ea01ad3e52e49a9.png",
+            status: "pending",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        },
+        {
+            id: "5",
+            title: "Office Chair",
+            image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
+            status: "no-show",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        },
+        {
+            id: "6",
+            title: "Sdorens 118 Sofa Couch",
+            image: "/assets/pickup-items/cfa5b76f7683cbb3b70e5c6075ef96b40b3c4cc8.png",
+            status: "picked-up",
+            pickupDate: "2023-10-01",
+            location: "Capitol Hill, Seattle",
+            receiver: "John Doe",
+            rating: 4.5,
+        }
+    ])
+    const [activeTab, setActiveTab] = useState("all")
+
+    const filteredItems = pickupItems.filter((item) => {
+        if (activeTab === "all") return true
+        return item.status === activeTab
+    })
+
+    const getTabCount = (tabId: string) => {
+        if (tabId === "all") return pickupItems.length
+        return pickupItems.filter((item) => item.status === tabId).length
+    }
+
+    const getActionButtonsForCard = (status: string, id: string) => {
+        switch (status) {
+            case "scheduled":
+                return (
+                    <div className='grid grid-cols-2 w-full gap-3'>
+                        <Button variant="secondary" className='py-5 w-full'>Send Message</Button>
+                        <Button variant="destructive" className='py-5 w-full'>Un-Match</Button>
+                    </div>
+                )
+            case "picked-up":
+                return (
+                    <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item successfully received by recipient</div>
+                )
+            case "no-show":
+                return (
+                    <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item has been moved back to draft</div>
+                )
+            case "pending":
+                return (
+                    <div className='grid grid-cols-2 w-full gap-3'>
+                        <Button variant="destructive" className='py-5 w-full'>Mark as No-show</Button>
+                        <Button onClick={() => handlePickupConfirmation(id)} variant="primary" className='py-5 w-full'>Mark as Picked up</Button>
+                    </div>
+                )
+            default:
+                return null
+        }
+    }
+
+    const [confirmPickModal, setConfirmPickupModal] = useState(false)
+    const [isconfirmed, setIsConfirmed] = useState(false)
+    const [isfeedbackModal, setIsFeedbackModal] = useState(false)
+    const [hoveredRating, setHoveredRating] = useState(0)
+    const [rating, setRating] = useState(0)
+    const [feedback, setFeedback] = useState<string[]>([]);
+    const commentRef = useRef<string>('');
+
+
+
+
+    const handleFeedbackButtonClick = () => {
+        setIsFeedbackModal(true)
+        setIsConfirmed(false)
+    }
+
+    const handleFeedbackModalClose = () => {
+        setIsFeedbackModal(false)
+        setRating(0)
+        setHoveredRating(0)
+    }
+
+    const handleFeedbackSubmit = () => {
+        if (feedback.length === 0) {
+            alert("Please select at least one feedback option.")
+            return
+        }
+        if (rating === 0) {
+            alert("Please select a rating.")
+            return
+        }
+        if(commentRef.current.length < 10) {
+            alert("Comment must be at least 10 characters long.")
+            return
+        }
+        console.log("Feedback submitted:", { feedback, comment: commentRef.current, rating })
+        setIsFeedbackModal(false)
+        setRating(0)
+        setHoveredRating(0)
+        commentRef.current = '';
+        // Here you can add logic to save the feedback
+    }
+
+    const handlePickupConfirmation = (id: string) => {
+        console.log(`Pickup confirmed for item with id: ${id}`)
+        setConfirmPickupModal(true)
+        // Here you can add logic to update the item status to "picked-up"
+    }
+
+
+    const handleConfirmPickup = () => {
+        setConfirmPickupModal(false)
+        setIsConfirmed(true)
+    }
+
+
+    return (
+        <div className="min-h-screen">
+            <div className="w-full grid gap-10">
+                <div className="flex items-center gap-4 justify-between overflow-hidden">
+                    <ScrollArea className="w-full overflow-auto">
+                        <div className="flex gap-2 md:gap-6 bg-white rounded-lg">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`px-4 py-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id ? "bg-[#F9F9F9] text-app-black" : "text-gray-400 hover:text-gray-900"
+                                        }`}
+                                >
+                                    {tab.label}
+                                    <Badge variant="secondary" className={`text-gray-600 text-xs ${activeTab === tab.id ? "text-app-black" : "text-gray-400"}`}>
+                                        {getTabCount(tab.id)}
+                                    </Badge>
+                                </button>
+                            ))}
+                        </div>
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                </div>
+            </div>
+            {/* Items Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-8">
+                {filteredItems.map((item) => (
+                    <div key={item.id} className="w-full border rounded-lg overflow-hidden">
+                        <div className='relative'>
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                width={1000}
+                                height={1000}
+                                className="w-full h-48 object-cover"
+                            />
+                            <Badge className={`absolute bottom-2 right-2 font-semibold text-[#626262] ${getStatusColor(item.status)} py-1 border-none lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>{getStatusText(item.status)}</Badge>
+                        </div>
+                        <div className='flex flex-col p-4'>
+                            <h4 className='font-[500px] text-md'>{item.title}</h4>
+                            <div className='flex gap-2 border-b pb-3 flex-row items-center'>
+                                <Avatar className="w-6 h-6">
+                                    <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                    <AvatarFallback className="bg-[#0d9488] text-xs text-white">SJ</AvatarFallback>
+                                </Avatar>
+                                <div className='flex items-baseline  justify-between w-full'>
+                                    <h3 className="font-normal text-xs capitalize text-nowrap text-gray-500 flex gap-2 ">Sarah Johnson <span className='flex gap-2 items-center'>•<StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" /> 5.0</span></h3>
+                                    {item.status === "picked-up" && (<Button variant="ghost" className='text-[#0D9488] h-0 cursor-pointer hover:text-[#0D9488] p-0 bg-none hover:bg-none'>Rate</Button>)}
+                                </div>
+                            </div>
+                            <div className='grid gap-2 my-3'>
+                                <div className="flex items-center gap-2">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
+                                            <path
+                                                stroke="#626262"
+                                                strokeLinecap="round"
+                                                d="M12 12.836c.83.283 1.333.655 1.333 1.062 0 .886-2.387 1.605-5.333 1.605-2.945 0-5.333-.719-5.333-1.605 0-.407.503-.78 1.333-1.062"
+                                            ></path>
+                                            <path stroke="#626262" d="M10 7.17a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"></path>
+                                            <path
+                                                stroke="#626262"
+                                                d="M8 2.17c2.706 0 5 2.285 5 5.058 0 2.817-2.332 4.793-4.485 6.137a1.03 1.03 0 0 1-1.03 0C5.335 12.008 3 10.055 3 7.228 3 4.455 5.294 2.17 8 2.17Z"
+                                            ></path>
+                                        </svg>
+                                    </span>
+                                    <p className="text-xs text-gray-500">Capoitol Hill, Seattle</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
+                                            <path
+                                                stroke="#3B82F6"
+                                                d="M8 15.503A6.667 6.667 0 1 0 8 2.17a6.667 6.667 0 0 0 0 13.333Z"
+                                            ></path>
+                                            <path
+                                                stroke="#3B82F6"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="m6.333 7.17 2.334 2.333m2-3.333L7.333 9.503"
+                                            ></path>
+                                        </svg>
+                                    </span>
+                                    <p className="text-xs text-[#2563EB]">Pickup: {item.pickupDate} at 14:00</p>
+                                </div>
+                            </div>
+                            {/* action buttons */}
+                            <div className='mt-auto'>
+                                {getActionButtonsForCard(item.status, item.id)}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <ResponsiveAlert open={confirmPickModal} close={() => { }} className='py-6 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="81" fill="none">
+                            <rect width="80" height="80" y="0.5" fill="#F1F3DE" rx="40"></rect>
+                            <path
+                                stroke="#989F42"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M42 61c-1.636 0-3.2-.682-6.326-2.047-3.65-1.593-6.443-2.812-8.381-3.953H20m22 6c1.636 0 3.2-.682 6.326-2.047C56.11 55.556 60 53.857 60 51V30M42 61V39m-18-9v6"
+                            ></path>
+                            <path
+                                stroke="#989F42"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="m34.652 36.383-5.843-2.827C25.603 32.004 24 31.229 24 30s1.603-2.004 4.81-3.556l5.842-2.827C38.258 21.872 40.06 21 42 21s3.742.872 7.348 2.617l5.843 2.827C58.397 27.996 60 28.772 60 30s-1.603 2.004-4.81 3.556l-5.842 2.827C45.742 38.128 43.94 39 42 39s-3.742-.872-7.348-2.617m17.621-11.352L31.734 34.97M20 43h6m-6 6h6"
+                            ></path>
+                        </svg>
+                    </span>
+                    <h4 className='text-xl font-semibold'>Waiting for receiver confirmation</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>You marked the item as picked up. The receiver has been asked to confirm. We&apos;ll auto-marked the item as picked up after 48 hours. </p>
+                    <div className='flex items-center justify-center gap-4 mt-6'>
+                        <Button onClick={handleConfirmPickup} variant="primary" className=' w-auto w-24 py-6 px-6'>Ok</Button>
+                    </div>
+                </div>
+            </ResponsiveAlert>
+
+            {/* Pickup confirmed */}
+            <ResponsiveAlert open={isconfirmed} close={() => { }} className='py-6 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="100" fill="none"><path fill="#FF6D83" d="M3.281 38.73a4.155 4.155 0 1 1 1.75 8.124 4.155 4.155 0 0 1-1.75-8.123Z" /><path fill="#4671FF" d="M91.044 25.745a4.093 4.093 0 1 1 1.725 8.003 4.093 4.093 0 0 1-1.725-8.003Z" /><path fill="#FFB636" d="M51.314.614a4.276 4.276 0 1 1 1.8 8.362 4.276 4.276 0 0 1-1.8-8.362Z" /><path fill="#4671FF" d="M30.439 91.025a4.276 4.276 0 1 1 1.801 8.361 4.277 4.277 0 0 1-1.801-8.361Z" /><path fill="#AD8FE6" stroke="#AD8FE6" stroke-width=".377" d="M88.905 71.18a4.149 4.149 0 1 1 1.746 8.113 4.149 4.149 0 0 1-1.746-8.112Z" /><path fill="#14AE7D" d="M58.222 16.82c19.245 5.157 30.665 24.937 25.509 44.181-5.157 19.245-24.938 30.665-44.182 25.508C20.305 81.352 8.884 61.572 14.04 42.33c5.156-19.245 24.937-30.665 44.181-25.509Z" /><path fill="#fff" d="M42.907 65.372a1.017 1.017 0 0 1-1.424-.06L28.388 51.328a2.793 2.793 0 0 1-.608-1.973 2.8 2.8 0 0 1 .919-1.852 2.903 2.903 0 0 1 1.956-.743 2.907 2.907 0 0 1 1.952.76l9.437 10.077c.252.27.675.287.949.04l19.792-17.872a2.907 2.907 0 0 1 2.008-.593c.723.057 1.396.38 1.887.905a2.8 2.8 0 0 1 .76 1.922 2.793 2.793 0 0 1-.77 1.915L42.906 65.372Z" /><path stroke="#FF6E83" stroke-linecap="round" stroke-width="2.143" d="M20.834 15.332c-.66-2.45-2.229-5.7-5.95-7.768" /><path fill="#AD8FE6" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#AD8FE6" strokeLinecap="round" strokeWidth="2.027" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#FFB636" stroke-linecap="round" stroke-width="1.832" d="M83.127 11.48c2.277-.83 4.95-.007 7.54 5.027 4.883 9.487-6.64 7.553-5.97 1.64" /><path fill="#4671FF" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /><path stroke="#6EB9FF" stroke-linecap="round" stroke-width="2.027" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /></svg>
+                    </span>
+                    <h4 className='text-xl font-semibold'>Pickup Confirmed</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Thanks! We’ve marked the item as picked up.</p>
+                    <div className='flex items-center justify-center gap-4 mt-6'>
+                        <Button onClick={() => setIsConfirmed(false)} variant="secondary" className='w-auto md:w-44 py-6 px-6 cursor-pointer'>Done</Button>
+
+                        <Button onClick={handleFeedbackButtonClick} variant="primary" className='w-auto md:w-44 py-6 px-6'>Leave Feedback</Button>
+                    </div>
+                </div>
+            </ResponsiveAlert>
+
+            {/* Feeback/ Rating*/}
+            <ResponsiveModal open={isfeedbackModal} close={handleFeedbackModalClose} className='py-6 w-full md:w-[500px]'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-4'>
+
+                    <h4 className="text-lg font-normal text-[#222222] mb-2">How was your experience?</h4>
+
+                    {/* Star Rating */}
+                    <div className="flex justify-center gap-1 mb-2 border-b border-transparent w-full">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                                key={star}
+                                className="p-1 cursor-pointer "
+                                onMouseEnter={() => setHoveredRating(star)}
+                                onMouseLeave={() => setHoveredRating(0)}
+                                onClick={() => setRating(star)}
+                            >
+                                <StarIcon
+                                    className={`w-8 h-8 stroke-none ${star <= (hoveredRating || rating) ? "fill-[#FACC15] text-[#e8b931]" : "text-[#ededed] fill-gray-100"
+                                        }`}
+                                />
+                            </button>
+                        ))}
+                    </div>
+                    <div className='border-0  border-t w-full py-4'>
+                        <h4 className="text-md font-normal text-[#222222] mb-6">Leave feedback</h4>
+                        <div className='flex flex-wrap items-center gap-3 mb-4'>
+                            {shortFeedbackOptions.map((option) => (
+                                <button
+                                    key={option.id}
+                                    className={`border rounded-full flex items-center gap-2 py-2 px-4 cursor-pointer ${feedback.includes(option.id) ? "bg-[#E6F8F4]/40 border-[#85C9C3] text-app-black" : "text-gray-500 bg-transparent hover:bg-[#F9F9F9] hover:text-app-black"
+                                        }`}
+                                    onClick={() => {
+                                        setFeedback((prev) =>
+                                            prev.includes(option.id)
+                                                ? prev.filter((id) => id !== option.id)
+                                                : [...prev, option.id]
+                                        );
+                                    }}
+                                >
+                                    {option.icon}
+                                    <span className='text-xs md:text-sm'>{option.title}</span>
+                                </button>
+                            ))}
+                           
+                            
+                                <Textarea defaultValue="" onChange={(e)=> {commentRef.current = e.target.value}} rows={7} id="comment" placeholder="Leave a comment" className={feedback.includes('leave-a-comment') ? "" : "hidden"} />
+                            
+
+                        </div>
+                    </div>
+                    <Button onClick={handleFeedbackSubmit} disabled={feedback.length === 0} variant="primary" className='w-full py-6 px-6'>Submit</Button>
+                    {/* Product Info */}
+                    <div className="w-full flex items-center gap-3 p-3 bg-[#f9fafb] rounded-lg mt-2">
+                        <Image
+                            src="/assets/giver-items/Frame 2087328010-2.png"
+                            width={400}
+                            height={400}
+                            alt="Vintage Desk Lamp"
+                            className="w-20 h-16 rounded-lg object-cover"
+                        />
+                        <div className="text-left grid gap-1">
+                            <div className="font-medium text-[#222222]">Vintage Desk Lamp</div>
+                            <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
+                        </div>
+                    </div>
+                </div> 
+
+            </ResponsiveModal>
+        </div>
+    )
+}
+
+
+
+export default PickupView

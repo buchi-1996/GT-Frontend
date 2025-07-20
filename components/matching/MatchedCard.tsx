@@ -42,20 +42,20 @@ const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
                                     <h3 className="font-normal text-xs md:text-sm capitalize text-nowrap text-gray-500">Sarah Johnson</h3>
                                 </div>
                                 <div className='hidden my-2 sm:my-0 flex-wrap xl:flex xl:border-l xl:pl-3  items-center gap-4'>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
-                                    <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
+                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
+                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
+                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
+                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <div className='flex xl:hidden myy-1 md:my-2 md:my-0 flex-wrap flex items-center gap-4'>
-                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
-                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
-                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
-                        <Badge className={`text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
+                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
+                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
+                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
+                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
                     </div>
                     <div className='absolute top-3 md:top-6 right-2 md:right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
                         <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>

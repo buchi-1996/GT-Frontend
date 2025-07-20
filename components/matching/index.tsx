@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/card'
-import { ChevronRight, Clock, Star, Users } from 'lucide-react'
+import { ChevronRight, Clock, Star, StarIcon, Users } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
@@ -247,8 +247,8 @@ const MactchingView = () => {
                                                             <div className="flex flex-col gap-1 mb-1">
                                                                 <h3 className="text-sm md:text-md font-semibold text-[#222222]">Sarah Johnson</h3>
                                                                 <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-2 mr-1">
-                                                                        <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
+                                                                    <div className="flex items-center gap-1 mr-1">
+                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
                                                                         <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
                                                                     <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
@@ -301,8 +301,8 @@ const MactchingView = () => {
                                                             <div className="flex flex-col gap-1 mb-1">
                                                                 <h3 className="text-sm md:text-md font-semibold text-[#222222]">Michael Chen</h3>
                                                                 <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-2 mr-1">
-                                                                        <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
+                                                                    <div className="flex items-center gap-1 mr-1">
+                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
                                                                         <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
                                                                     <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
@@ -355,8 +355,8 @@ const MactchingView = () => {
                                                             <div className="flex flex-col gap-1 mb-1">
                                                                 <h3 className="font-semibold text-[#222222]">Emma Wilson</h3>
                                                                 <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-2 mr-1">
-                                                                        <Star className="w-4 h-4 fill-[#e8b931] text-[#e8b931]" />
+                                                                    <div className="flex items-center gap-1 mr-1">
+                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
                                                                         <span className="text-xs md:text-sm font-medium">5.0</span>
                                                                     </div>
                                                                     <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
