@@ -397,7 +397,7 @@ const PickupView = () => {
             </ResponsiveAlert>
 
             {/* Feeback/ Rating*/}
-            <ResponsiveModal open={isfeedbackModal} close={handleFeedbackModalClose} className='min-h-[80%] md:min-h-auto py-6 w-full md:w-[500px]'>
+            <ResponsiveModal open={isfeedbackModal} close={handleFeedbackModalClose} className='min-h-[90%] md:min-h-auto py-6 w-full md:w-[500px]'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-4'>
 
                     <h4 className="text-lg font-normal text-[#222222] mb-2">How was your experience?</h4>
