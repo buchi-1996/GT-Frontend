@@ -15,18 +15,19 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { ScrollArea } from '../ui/scroll-area';
 
-interface ResponsiveModalProps{
-    children: React.ReactNode;
-    open?: boolean;
-    close?: (open: boolean) => void;
-    className?: string;
+interface ResponsiveModalProps {
+  children: React.ReactNode;
+  open?: boolean;
+  close?: (open: boolean) => void;
+  className?: string;
 }
 
 
-const ResponsiveModal = ({children, open, close, className}: ResponsiveModalProps) => {
+const ResponsiveModal = ({ children, open, close, className }: ResponsiveModalProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)")
-  
+
 
   if (isDesktop) {
     return (
@@ -47,7 +48,9 @@ const ResponsiveModal = ({children, open, close, className}: ResponsiveModalProp
         <DrawerHeader className="text-left">
           <DrawerTitle className="sr-only">Title</DrawerTitle>
         </DrawerHeader>
-        {children}
+        <ScrollArea className="h-full w-full overflow-auto">
+          {children}
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   );
