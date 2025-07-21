@@ -70,15 +70,15 @@ const shortFeedbackOptions = [
     {
         id: 'polite',
         title: "Polite",
-        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#B36ADD" stroke-linejoin="round" d="M14.666 8.212c0 3.522-2.985 6.378-6.666 6.378a6.94 6.94 0 0 1-1.29-.12c-.306-.057-.46-.086-.566-.07-.107.017-.258.097-.561.258a4.333 4.333 0 0 1-2.816.438c.365-.45.615-.988.725-1.566.066-.353-.099-.696-.346-.947-1.124-1.141-1.813-2.679-1.813-4.371C1.333 4.69 4.318 1.834 8 1.834c3.681 0 6.666 2.856 6.666 6.378Z"/><path stroke="#B36ADD" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.333" d="M7.997 8.5h.006m2.657 0h.006m-5.333 0h.006"/></svg>
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#B36ADD" stroke-linejoin="round" d="M14.666 8.212c0 3.522-2.985 6.378-6.666 6.378a6.94 6.94 0 0 1-1.29-.12c-.306-.057-.46-.086-.566-.07-.107.017-.258.097-.561.258a4.333 4.333 0 0 1-2.816.438c.365-.45.615-.988.725-1.566.066-.353-.099-.696-.346-.947-1.124-1.141-1.813-2.679-1.813-4.371C1.333 4.69 4.318 1.834 8 1.834c3.681 0 6.666 2.856 6.666 6.378Z" /><path stroke="#B36ADD" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.333" d="M7.997 8.5h.006m2.657 0h.006m-5.333 0h.006" /></svg>
 
     },
     {
         id: 'prompt-response',
         title: "Promt response",
         icon: <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.75242 8.94907H5.44644C4.45729 8.94907 3.96271 8.94907 3.7519 8.62293C3.54108 8.29687 3.74195 7.84253 4.14368 6.93389L5.35144 4.20215C5.7167 3.376 5.89934 2.96292 6.25364 2.73146C6.60794 2.5 7.05759 2.5 7.95699 2.5H9.34992C10.4425 2.5 10.9887 2.5 11.1947 2.8569C11.4008 3.2138 11.1298 3.69059 10.5877 4.64415L9.87312 5.90125C9.60366 6.3753 9.46892 6.61233 9.47079 6.80635C9.47326 7.0585 9.60732 7.2908 9.82392 7.418C9.99059 7.51593 10.2621 7.51593 10.8053 7.51593C11.4919 7.51593 11.8352 7.51593 12.014 7.6348C12.2463 7.7892 12.3679 8.06547 12.3253 8.34213C12.2925 8.55507 12.0615 8.8104 11.5997 9.32113L7.90959 13.4015C7.18479 14.203 6.82239 14.6037 6.57904 14.4769C6.33568 14.3501 6.45254 13.8215 6.68626 12.7641L7.14412 10.6931C7.32206 9.888 7.41106 9.48547 7.19706 9.21727C6.98306 8.94907 6.57284 8.94907 5.75242 8.94907Z" stroke="#3B82F6" strokeLinejoin="round" />
-                                </svg>
+            <path d="M5.75242 8.94907H5.44644C4.45729 8.94907 3.96271 8.94907 3.7519 8.62293C3.54108 8.29687 3.74195 7.84253 4.14368 6.93389L5.35144 4.20215C5.7167 3.376 5.89934 2.96292 6.25364 2.73146C6.60794 2.5 7.05759 2.5 7.95699 2.5H9.34992C10.4425 2.5 10.9887 2.5 11.1947 2.8569C11.4008 3.2138 11.1298 3.69059 10.5877 4.64415L9.87312 5.90125C9.60366 6.3753 9.46892 6.61233 9.47079 6.80635C9.47326 7.0585 9.60732 7.2908 9.82392 7.418C9.99059 7.51593 10.2621 7.51593 10.8053 7.51593C11.4919 7.51593 11.8352 7.51593 12.014 7.6348C12.2463 7.7892 12.3679 8.06547 12.3253 8.34213C12.2925 8.55507 12.0615 8.8104 11.5997 9.32113L7.90959 13.4015C7.18479 14.203 6.82239 14.6037 6.57904 14.4769C6.33568 14.3501 6.45254 13.8215 6.68626 12.7641L7.14412 10.6931C7.32206 9.888 7.41106 9.48547 7.19706 9.21727C6.98306 8.94907 6.57284 8.94907 5.75242 8.94907Z" stroke="#3B82F6" strokeLinejoin="round" />
+        </svg>
     },
     {
         id: 'trustworthy',
@@ -93,7 +93,7 @@ const shortFeedbackOptions = [
     {
         id: 'leave-a-comment',
         title: "Leave a comment",
-        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406ZM8 5.834v5.333m2.666-2.666H5.333"/></svg>
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406ZM8 5.834v5.333m2.666-2.666H5.333" /></svg>
     }
 ]
 
@@ -207,6 +207,7 @@ const PickupView = () => {
     const [hoveredRating, setHoveredRating] = useState(0)
     const [rating, setRating] = useState(0)
     const [feedback, setFeedback] = useState<string[]>([]);
+    const [feedbackReceivedModal, setFeedbackReceivedModal] = useState(false);
     const commentRef = useRef<string>('');
 
 
@@ -232,12 +233,17 @@ const PickupView = () => {
             alert("Please select a rating.")
             return
         }
-        if(feedback.includes('leave a comment') || commentRef.current.length < 10) {
-            alert("Comment must be at least 10 characters long.")
-            return
+
+        if(feedback.includes('leave-a-comment')) {
+            if (commentRef.current.trim().length < 10) {
+                alert("Comment must be at least 10 characters long.");
+                return;
+            }
         }
+
         console.log("Feedback submitted:", { feedback, comment: commentRef.current, rating })
         setIsFeedbackModal(false)
+        setFeedbackReceivedModal(true)
         setRating(0)
         setHoveredRating(0)
         commentRef.current = '';
@@ -439,10 +445,10 @@ const PickupView = () => {
                                     <span className='text-xs md:text-sm'>{option.title}</span>
                                 </button>
                             ))}
-                           
-                            
-                                <Textarea defaultValue="" onChange={(e)=> {commentRef.current = e.target.value}} rows={7} id="comment" placeholder="Leave a comment" className={feedback.includes('leave-a-comment') ? "" : "hidden"} />
-                            
+
+
+                            <Textarea defaultValue="" onChange={(e) => { commentRef.current = e.target.value }} rows={7} id="comment" placeholder="Leave a comment" className={feedback.includes('leave-a-comment') ? "" : "hidden"} />
+
 
                         </div>
                     </div>
@@ -461,9 +467,23 @@ const PickupView = () => {
                             <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                         </div>
                     </div>
-                </div> 
+                </div>
 
             </ResponsiveModal>
+
+            <ResponsiveAlert open={feedbackReceivedModal} close={() => { }} className='py-4 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="100" fill="none"><path fill="#FF6D83" d="M3.281 38.73a4.155 4.155 0 1 1 1.75 8.124 4.155 4.155 0 0 1-1.75-8.123Z" /><path fill="#4671FF" d="M91.044 25.745a4.093 4.093 0 1 1 1.725 8.003 4.093 4.093 0 0 1-1.725-8.003Z" /><path fill="#FFB636" d="M51.314.614a4.276 4.276 0 1 1 1.8 8.362 4.276 4.276 0 0 1-1.8-8.362Z" /><path fill="#4671FF" d="M30.439 91.025a4.276 4.276 0 1 1 1.801 8.361 4.277 4.277 0 0 1-1.801-8.361Z" /><path fill="#AD8FE6" stroke="#AD8FE6" stroke-width=".377" d="M88.905 71.18a4.149 4.149 0 1 1 1.746 8.113 4.149 4.149 0 0 1-1.746-8.112Z" /><path fill="#14AE7D" d="M58.222 16.82c19.245 5.157 30.665 24.937 25.509 44.181-5.157 19.245-24.938 30.665-44.182 25.508C20.305 81.352 8.884 61.572 14.04 42.33c5.156-19.245 24.937-30.665 44.181-25.509Z" /><path fill="#fff" d="M42.907 65.372a1.017 1.017 0 0 1-1.424-.06L28.388 51.328a2.793 2.793 0 0 1-.608-1.973 2.8 2.8 0 0 1 .919-1.852 2.903 2.903 0 0 1 1.956-.743 2.907 2.907 0 0 1 1.952.76l9.437 10.077c.252.27.675.287.949.04l19.792-17.872a2.907 2.907 0 0 1 2.008-.593c.723.057 1.396.38 1.887.905a2.8 2.8 0 0 1 .76 1.922 2.793 2.793 0 0 1-.77 1.915L42.906 65.372Z" /><path stroke="#FF6E83" stroke-linecap="round" stroke-width="2.143" d="M20.834 15.332c-.66-2.45-2.229-5.7-5.95-7.768" /><path fill="#AD8FE6" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#AD8FE6" strokeLinecap="round" strokeWidth="2.027" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#FFB636" stroke-linecap="round" stroke-width="1.832" d="M83.127 11.48c2.277-.83 4.95-.007 7.54 5.027 4.883 9.487-6.64 7.553-5.97 1.64" /><path fill="#4671FF" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /><path stroke="#6EB9FF" stroke-linecap="round" stroke-width="2.027" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /></svg>
+                    </span>
+                    <h4 className='text-xl font-semibold'>Feedback Received</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Thank you for taking out time to give a feedback for receiver</p>
+                    <div className='flex items-center justify-center gap-4 mt-6'>
+
+                        <Button onClick={() => setFeedbackReceivedModal(false)} variant="primary" className='w-auto md:w-44 py-6 px-6'>Done</Button>
+                    </div>
+                </div>
+            </ResponsiveAlert>
         </div>
     )
 }
