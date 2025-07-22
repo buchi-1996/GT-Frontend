@@ -288,6 +288,12 @@ const PickupView = () => {
         setIsConfirmed(true)
     }
 
+    const handleDoNext = () =>{
+        setDoNextModal(false)
+        // submit form action here
+        console.log("Do next action submitted with value:", doNextValue);
+    }
+
 
     return (
         <div className="min-h-screen">
@@ -628,6 +634,7 @@ const PickupView = () => {
 
                 </div>
                 <Button
+                    onClick={handleDoNext}
                     disabled={!doNextValue}
                     variant="primary"
                     className='py-6 w-full'>Done</Button>

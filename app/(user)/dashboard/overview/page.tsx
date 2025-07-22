@@ -14,6 +14,7 @@ const Dashboard = () => {
                 <StatsCard
                     title="Item Listed"
                     count={0}
+                    weeklyStats="+5 this week"
                     Icon={(<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11.1875 6.1875H21.1875" stroke="#0D9488" strokeWidth="1.5" strokeLinecap="round" />
                         <path d="M11.1875 12.1875H21.1875" stroke="#0D9488" strokeWidth="1.5" strokeLinecap="round" />
@@ -26,19 +27,22 @@ const Dashboard = () => {
                 <StatsCard
                     title="Matches Made"
                     count={0}
+                    weeklyStats="+5 this week"
                     Icon={<Users className="w-5 h-5 text-[#8e6add]" />}
                     badgeColor="bg-[#F3EAFD]"
                 />
                 <StatsCard
                     title="Pickups"
                     count={0}
+                    weeklyStats="+5 this week"
                     Icon={<Package className="w-5 h-5 text-[#FB923C]" />}
                     badgeColor="bg-[#F9EEE7]"
                 />
                 <StatsCard
                     title="Rating"
                     count={0}
-                    isRating
+                    rating={5}
+                    reviews={20}
                     Icon={<Star className="w-5 h-5 text-[#989F42]" />}
                     badgeColor="bg-[#F1F3DE]"
                 />
