@@ -573,14 +573,16 @@ const PickupView = () => {
                             </div>
                             <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Please described what happened' />
                         </div>
+                        <Label htmlFor="report-no-show-file" className="mb-6 gap-2 overflow-hidden flex items-center cursor-pointer">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
+                            </span>
+                            <div className="grid">
+                                <span className='text-sm text-app-primary'>Upload evidence</span>
+                                <Input type="file" className='sr-only w-1/2' id='report-no-show-file' />
+                            </div>
+                        </Label>
                     </RadioGroup>
-                    <Label htmlFor="report-no-show-file" className="mb-6 px-6 flex gap-2 items-center cursor-pointer">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
-                        </span>
-                        <span className='text-sm text-app-primary'>Upload evidence</span>
-                        <Input type="file" className='sr-only' id='report-no-show-file' />
-                    </Label>
                 </div>
                 <Button
                     onClick={handleReportNoShowSubmit}
