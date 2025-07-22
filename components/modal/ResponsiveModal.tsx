@@ -48,7 +48,7 @@ const ResponsiveModal = ({ children, open, close, className }: ResponsiveModalPr
         <DrawerHeader className="text-left">
           <DrawerTitle className="sr-only">Title</DrawerTitle>
         </DrawerHeader>
-        <ScrollArea className="h-full w-full overflow-auto">
+        <ScrollArea className="h-full w-full overflow-auto scrollbar-hide">
           {children}
         </ScrollArea>
       </DrawerContent>

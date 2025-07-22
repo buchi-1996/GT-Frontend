@@ -336,7 +336,7 @@ const PickupView = () => {
                                 </Avatar>
                                 <div className='flex items-baseline  justify-between w-full'>
                                     <h3 className="font-normal text-xs capitalize text-nowrap text-gray-500 flex gap-2 ">Sarah Johnson <span className='flex gap-2 items-center'>•<StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" /> 5.0</span></h3>
-                                    {item.status === "picked-up" && (<Button variant="ghost" className='text-[#0D9488] h-0 cursor-pointer hover:text-[#0D9488] p-0 bg-none hover:bg-none'>Rate</Button>)}
+                                    {item.status === "picked-up" && (<Button onClick={() => setIsFeedbackModal(true)} variant="ghost" className='text-[#0D9488] h-0 cursor-pointer hover:text-[#0D9488] p-0 bg-none hover:bg-none'>Rate</Button>)}
                                 </div>
                             </div>
                             <div className='grid gap-2 my-3'>
@@ -551,8 +551,8 @@ const PickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5 max-h-full md:max-h-56 mb-6 md:mb-auto overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64 px-6 md:px-0 overflow-y-auto scrollbar-hide">
+                    <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='py-1 grid gap-6 md:px-6 overflow-y-auto mb-4 scrollbar-hide'>
                         <div className="flex items-center gap-3">
                             <RadioGroupItem value="no response to messages" className="ring ring-app-primary  text-app-primary" id="no-response" />
                             <Label htmlFor="no-response" className="text-gray-500 ">No response to messages</Label>
