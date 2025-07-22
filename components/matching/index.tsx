@@ -518,7 +518,7 @@ const MactchingView = () => {
                     onClick={handleReasonSubmit}
                     disabled={!selectedValue}
                     variant="primary"
-                    className='py-6'>Done</Button>
+                    className='py-6 w-full'>Done</Button>
             </ResponsiveModal>
 
 
