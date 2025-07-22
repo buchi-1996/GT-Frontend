@@ -551,8 +551,8 @@ const PickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64 px-6 md:px-0 overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='py-1 grid gap-6 md:px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                    <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
                         <div className="flex items-center gap-3">
                             <RadioGroupItem value="no response to messages" className="ring ring-app-primary  text-app-primary" id="no-response" />
                             <Label htmlFor="no-response" className="text-gray-500 ">No response to messages</Label>
