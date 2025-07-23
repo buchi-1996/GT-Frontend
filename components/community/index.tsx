@@ -4,6 +4,7 @@ import React from 'react'
 import { Card, CardContent } from '../ui/card'
 import { FirstGive } from './badges'
 import ContributorListItem from './ContributorListItem'
+import BadgeProgress from './BadgeProgress'
 
 
 const topContributors = [
@@ -144,6 +145,7 @@ const CommunityView = () => {
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
                             <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            
                         </div>
                         <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
                             <FirstGive className='grayscale' />
@@ -151,7 +153,8 @@ const CommunityView = () => {
                                 <h4 className='font-semibold text-gray-600'>First Give</h4>
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
+                            <BadgeProgress />
                         </div>
                         <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
                             <FirstGive className='grayscale' />
@@ -159,7 +162,8 @@ const CommunityView = () => {
                                 <h4 className='font-semibold text-gray-600'>First Give</h4>
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
+                            <BadgeProgress />
                         </div>
                         <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
                             <FirstGive className='grayscale' />
@@ -167,7 +171,8 @@ const CommunityView = () => {
                                 <h4 className='font-semibold text-gray-600'>First Give</h4>
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
+                            <BadgeProgress />
                         </div>
                         <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
                             <FirstGive className='grayscale' />
@@ -175,7 +180,8 @@ const CommunityView = () => {
                                 <h4 className='font-semibold text-gray-600'>First Give</h4>
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
+                            <BadgeProgress />
                         </div>
                         <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
                             <FirstGive className='grayscale' />
@@ -183,7 +189,8 @@ const CommunityView = () => {
                                 <h4 className='font-semibold text-gray-600'>First Give</h4>
                                 <p className='text-sm text-gray-500'>Listed your first item</p>
                             </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
+                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
+                            <BadgeProgress />
                         </div>
 
                     </div>
