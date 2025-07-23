@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import StatsCard from "@/components/usercard/StatsCard"
-import { Users, Package, Star, Leaf, Gift, Handshake } from "lucide-react"
+import { Users, Package, Star} from "lucide-react"
 
 
 
