@@ -35,7 +35,7 @@ const ReputationView = () => {
                     </div>
                 </div>
                 {/* Review tabs */}
-                <div className="border rounded-lg p-6">
+                <div className="border rounded-lg p-4 sm:p-6">
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full relative">
 
                         <TabsList className="flex p-0 items-center w-full relative justify-start gap-4 h-auto bg-transparent border-b rounded-none">

@@ -15,13 +15,16 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({itemTitle, giverName, receiverName, reviewText, isGiver, className}: ReviewCardProps) => {
+
+    const avatarFallback = (giverName?.charAt(0)?.toUpperCase() ?? '') + (giverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') || (receiverName?.charAt(0)?.toUpperCase() ?? '') + (receiverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') 
+
     return (
         <div className={`@container border-b py-6 ${className}`}>
             <div className="flex flex-col justify-between sm:@md:flex-row items-start gap-4 mb-4">
-                <div className='flex gap-4 flex-row items-start'>
+                <div className='flex gap-2 sm:gap-4 flex-row items-start'>
                     <Avatar className="w-10 md:w-12 h-10 md:h-12">
                         <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                        <AvatarFallback className="bg-[#0d9488] text-white">SJ</AvatarFallback>
+                        <AvatarFallback className="bg-[#0d9488] text-white">{avatarFallback}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                         <div className="flex flex-col mb-1">

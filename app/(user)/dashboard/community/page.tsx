@@ -1,8 +1,8 @@
-import React from 'react'
+import CommunityView from '@/components/community'
 
 const Community = () => {
   return (
-    <div>Community</div>
+    <CommunityView />
   )
 }
 
