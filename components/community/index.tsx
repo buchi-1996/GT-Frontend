@@ -194,6 +194,7 @@ const CommunityView = () => {
                     <ul className='grid'>
                         {topContributors.map(({id, name, profileImage, giveCount})=> (
                             <ContributorListItem 
+                            key={id}
                             id={id}
                             highestGiver={giveCount === Math.max(...topContributors.map(c => c.giveCount))}
                             userName={name}
