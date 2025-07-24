@@ -15,7 +15,7 @@ interface ContributorListItemProps {
 
 const ContributorListItem = ({ id, userName, profileImage, giveCount, highestGiver }: ContributorListItemProps) => {
     return (
-        <li className={`flex items-center justify-between p-5 ${highestGiver && 'bg-[#F1F3DE]'}`}>
+        <li className={`flex items-start xl:items-center justify-between p-5 ${highestGiver && 'bg-[#F1F3DE]'}`}>
             <div className='flex items-center gap-4 flex-1'>
                 <p className='font-bold text-gray-500'>{id}</p>
                 <div className='flex gap-2 sm:gap-4 flex-row items-start'>
@@ -27,7 +27,7 @@ const ContributorListItem = ({ id, userName, profileImage, giveCount, highestGiv
                         <div className="flex flex-col mb-1">
                             <h3 className="text-sm md:text-[1rem] font-semiboldtext-[#222222]">{userName}</h3>
                             <div className='flex items-center gap-2'>
-                                <p className='text-xs md:text-sm text-gray-500'>{giveCount} items given</p>
+                                <p className='text-xs  md:text-sm text-gray-500'>{giveCount} items given</p>
                                 <span className='text-gray-500 text-sm'>•</span>
                                 <div className="flex items-center gap-1 mr-1">
                                     <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />

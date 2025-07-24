@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { Card, CardContent } from '../ui/card'
-import { FirstGive } from './badges'
+import { CommunityStar, FirstGive, GenerousSoul } from './badges'
 import ContributorListItem from './ContributorListItem'
-import BadgeProgress from './BadgeProgress'
+import BadgeCard from './BadgeCard'
 
 
 const topContributors = [
@@ -44,7 +44,7 @@ const topContributors = [
 const CommunityView = () => {
     return (
         <div className="grid gap-10">
-            <div className="hidden xl:block border rounded-lg p-4 sm:p-6 ">
+            <div className="hidden xl:block border rounded-lg p-4 sm:p-6">
                 <h2 className="text-md sm:text-[1.2rem] font-semibold text-[#222222] mb-4">Your Environmental Impact</h2>
                 <div className="grid grid-cols-4 gap-4">
                     <Card className="bg-[#e6f8f4] w-full shadow-none h-auto shrink-0 border-0">
@@ -131,67 +131,42 @@ const CommunityView = () => {
                 </div>
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-6 gap-8">
-                <div className="col-auto xl:col-span-4 p-6 border rounded-lg">
+                <div className="col-auto xl:col-span-4 p-4 md:p-6 border rounded-lg">
                     <div className="flex items-center justify-between mb-6">
                         <h4 className='font-semibold'>Earned Badges</h4>
                         <button className='text-app-primary text-sm cursor-pointer'>View all</button>
                     </div>
                     {/* Badges */}
                     <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            <span className='text-xs text-gray-400'>Earned 1 month ago</span>
-                            
-                        </div>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='grayscale' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
-                            <BadgeProgress />
-                        </div>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='grayscale' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
-                            <BadgeProgress />
-                        </div>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='grayscale' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
-                            <BadgeProgress />
-                        </div>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='grayscale' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
-                            <BadgeProgress />
-                        </div>
-                        <div className='grid place-items-center gap-3 bg-gray-50 rounded-md py-6 px-4'>
-                            <FirstGive className='grayscale' />
-                            <div className='text-center'>
-                                <h4 className='font-semibold text-gray-600'>First Give</h4>
-                                <p className='text-sm text-gray-500'>Listed your first item</p>
-                            </div>
-                            {/* <span className='text-xs text-gray-400'>Earned 1 month ago</span> */}
-                            <BadgeProgress />
-                        </div>
+                        
+                        <BadgeCard 
+                            currentStep={0}
+                            totalSteps={1}
+                            badgeTitle="First Give"
+                            goalAchieved="Listed your first item"
+                            icon={<FirstGive />}
+                            isCompleted={true}
+                            earnedDate="Earned 1 month ago"
+                        />
+
+                        <BadgeCard 
+                            currentStep={2}
+                            totalSteps={5}
+                            badgeTitle="Generous Soul"
+                            goalAchieved="Gave away 5 items"
+                            icon={<GenerousSoul className='grayscale' />}
+                            isCompleted={false}
+                            earnedDate="Earned 1 month ago"
+                        />
+                        <BadgeCard 
+                            currentStep={1}
+                            totalSteps={10}
+                            badgeTitle="Community Star"
+                            goalAchieved="Got 10 good reviews"
+                            icon={<CommunityStar className='grayscale' />}
+                            isCompleted={false}
+                            earnedDate="Earned 1 month ago"
+                        />
 
                     </div>
                 </div>

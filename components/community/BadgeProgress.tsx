@@ -3,14 +3,26 @@
 import React, { useState } from 'react'
 import { Progress } from '../ui/progress'
 
-const BadgeProgress = () => {
+interface BadgeProgressProps {
+  currentStep?: number
+  totalSteps?: number
+}
 
-    const [progress] = useState(13)
+const BadgeProgress = ({ currentStep = 2, totalSteps = 5 }: BadgeProgressProps) => {
+  // Calculate progress percentage (0-100)
+  let progressPercentage = (currentStep / totalSteps) * 100
+
+  
+  // You can still use state if you want to update it dynamically
+  
 
   return (
     <div className='w-full flex items-center gap-3 justify-center'>
-    <Progress value={progress} className='data-[slot=progress]:bg-[#D4E6FF]  w-[55%] h-[6px]' />
-    <span className='text-xs'>0/1</span>
+      <Progress 
+        value={progressPercentage} 
+        className='data-[slot=progress]:bg-[#D4E6FF] w-[100%] md:w-[55%] h-[6px]' 
+      />
+      <span className='text-xs'>{currentStep}/{totalSteps}</span>
     </div>
   )
 }

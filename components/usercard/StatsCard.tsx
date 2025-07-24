@@ -24,7 +24,7 @@ const StatsCard = ({ title, isPercent, weeklyStats, reviews, count, rating, Icon
                         <span className="text-[#626262] text-xs sm:text-sm">{title}</span>
                         <div className="mt-auto flex items-center gap-1 2xl:gap-3">
                             {rating && <StarIcon className="w-8 h-8 stroke-0 fill-amber-300 text-[#E8B931]" />}
-                            <div className="text-2xl xl:text-[1.5rem] 2xl:text-4xl font-bold text-[#222222]">
+                            <div className="text-[1.22rem] sm:text-2xl xl:text-[1.5rem] 2xl:text-4xl font-bold text-[#222222]">
                                 {rating ? `${rating} (${reviews})` : `${count} ${isPercent ? '%' : ''}`}
                                 </div>
                         </div>
