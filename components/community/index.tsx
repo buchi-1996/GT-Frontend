@@ -186,6 +186,13 @@ const CommunityView = () => {
                         ))}
                         
                     </ul>
+                    <div className='grid gap-2 border-t p-4 md:p-6'>
+                        <div className="flex items-center justify-between">
+                            <h4 className='font-bold'>Your Rank</h4>
+                            <h4 className='font-bold'>#23</h4>
+                        </div>
+                        <p className='text-gray-500'>Give out 30 more items to be amongst the top 5 contributors.</p>
+                    </div>
                 </div>
             </div>
         </div>

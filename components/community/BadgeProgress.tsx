@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Progress } from '../ui/progress'
 
 interface BadgeProgressProps {
@@ -10,7 +10,7 @@ interface BadgeProgressProps {
 
 const BadgeProgress = ({ currentStep = 2, totalSteps = 5 }: BadgeProgressProps) => {
   // Calculate progress percentage (0-100)
-  let progressPercentage = (currentStep / totalSteps) * 100
+ const progressPercentage = (currentStep / totalSteps) * 100
 
   
   // You can still use state if you want to update it dynamically
