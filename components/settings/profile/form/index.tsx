@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { completeProfileSchema } from "@/lib/schema"
+import { CompleteProfileFormData, completeProfileSchema } from "@/lib/schema"
 import { BasicInfoSection } from "./BasicInfo"
 import { AddressSection } from "./AddressForm"
 import { PasswordSection } from "./PasswordForm"
@@ -41,7 +41,7 @@ export function ProfileForm() {
     }
   })
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: CompleteProfileFormData) => {
     console.log("All form data:", data)
   }
 

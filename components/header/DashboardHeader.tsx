@@ -11,24 +11,25 @@ import { usePathname } from 'next/navigation'
 const DashboardHeader = () => {
   const { openSidebar, setSidebarCollapsed, sidebarCollapsed, openSheet } = useUIState()
   const pathname = usePathname()
-  let last;
 
- const pageTitle = useMemo(() => {
-  if (!pathname) return '';
 
-  const parts = pathname.split('/');
-  if(parts.includes('settings')){
-    last = 'settings'
-  }else{
-   last = parts[parts.length - 1] || parts[parts.length - 2];
- }
-  if (last.toLowerCase() === 'overview') return 'Welcome back, Joe!';
+  const pageTitle = useMemo(() => {
+    if (!pathname) return '';
+    let last: string;
 
-  return last
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}, [pathname]);
+    const parts = pathname.split('/');
+    if (parts.includes('settings')) {
+      last = 'settings'
+    } else {
+      last = parts[parts.length - 1] || parts[parts.length - 2];
+    }
+    if (last.toLowerCase() === 'overview') return 'Welcome back, Joe!';
+
+    return last
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }, [pathname]);
 
   return (
     <header className="z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">

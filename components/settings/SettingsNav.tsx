@@ -1,15 +1,12 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MenuItem from '../sidebar/MenuItem'
 import { usePathname } from 'next/navigation'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'

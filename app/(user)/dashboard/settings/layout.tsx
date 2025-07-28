@@ -17,11 +17,10 @@ export const metadata: Metadata = {
 };
 
 
-export default function SettingsLayout({isProfile,
+export default function SettingsLayout({
     children
 }: Readonly<{
     children: React.ReactNode;
-    isProfile: boolean;
 }>): React.ReactNode {
     return (
         <html lang="en">
