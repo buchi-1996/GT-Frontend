@@ -11,9 +11,10 @@ import { PhoneInput } from "@/components/PhoneInput"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { CompleteProfileFormData } from "@/lib/schema"
 
 interface BasicInfoSectionProps {
-  form: UseFormReturn<any>
+  form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function BasicInfoSection({ form }: BasicInfoSectionProps) {

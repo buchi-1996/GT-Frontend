@@ -6,9 +6,10 @@ import { UseFormReturn } from "react-hook-form"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react'
+import { CompleteProfileFormData } from "@/lib/schema"
 
 interface PasswordSectionProps {
-  form: UseFormReturn<any>
+  form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function PasswordSection({ form }: PasswordSectionProps) {

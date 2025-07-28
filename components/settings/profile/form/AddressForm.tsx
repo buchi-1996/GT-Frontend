@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button"
 import { Plus } from 'lucide-react'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CompleteProfileFormData } from "@/lib/schema"
 
 interface AddressSectionProps {
-  form: UseFormReturn<any>
+  form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function AddressSection({ form }: AddressSectionProps) {

@@ -261,6 +261,8 @@ export const completeProfileSchema = z.object({
 })
 
 
+export type CompleteProfileFormData = z.infer<typeof completeProfileSchema>
+
 
 export type BasicDetailsData = z.infer<typeof basicDetailsSchema>
 export type CategoriesData = z.infer<typeof categoriesSchema>

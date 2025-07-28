@@ -4,9 +4,10 @@
 import { UseFormReturn } from "react-hook-form"
 import { FormField, FormItem, FormControl } from "@/components/ui/form"
 import { Switch } from "@/components/ui/switch"
+import { CompleteProfileFormData } from "@/lib/schema"
 
 interface SettingsSectionProps {
-  form: UseFormReturn<any>
+  form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function SettingsSection({ form }: SettingsSectionProps) {
@@ -16,7 +17,7 @@ export function SettingsSection({ form }: SettingsSectionProps) {
 
       <FormField
         control={form.control}
-        name="settings.profileVisibility"
+        name="otherSettings.profileVisibility"
         render={({ field }) => (
           <FormItem>
             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center justify-between">
@@ -26,7 +27,7 @@ export function SettingsSection({ form }: SettingsSectionProps) {
               </div>
               <FormControl>
                 <Switch
-                  checked={field.value}
+                  checked={!!field.value}
                   onCheckedChange={field.onChange}
                   className="data-[state=checked]:bg-[#14ae7d] data-[state=checked]:data-[slot=thumb]:bg-white"
                 />
@@ -38,7 +39,7 @@ export function SettingsSection({ form }: SettingsSectionProps) {
 
       <FormField
         control={form.control}
-        name="settings.twoFactorAuth"
+        name="otherSettings.twoFactorAuth"
         render={({ field }) => (
           <FormItem>
             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center justify-between">
