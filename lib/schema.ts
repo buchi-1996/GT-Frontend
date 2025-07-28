@@ -191,6 +191,77 @@ export const addItemSchema = z.object({
   }
 )
 
+
+
+
+
+// ======================Profile Schema ===============================
+
+
+// schemas/profile-schema.ts
+
+export const addressSchema = z.object({
+  id: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  province: z.string().optional(),
+  postalCode: z.string().optional(),
+  isDefault: z.boolean().optional(),
+})
+
+export const profileSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  username: z.string().optional(),
+  email: z.string().email("Invalid email address").optional().or(z.literal("")),
+  phone: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: z.enum(["male", "female", "other"]).optional(),
+  accountRole: z.enum(["receiver", "giver", "both"]).optional(),
+  language: z.string().optional(),
+  aboutMe: z.string().optional(),
+  addresses: z.array(addressSchema).optional(),
+})
+
+export const passwordSchema = z.object({
+  currentPassword: z.string().optional(),
+  newPassword: z.string().optional(),
+  confirmPassword: z.string().optional(),
+}).refine((data) => {
+  // Only validate password match if both new passwords are provided
+  if (data.newPassword || data.confirmPassword) {
+    return data.newPassword === data.confirmPassword
+  }
+  return true
+}, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+}).refine((data) => {
+  // Only require current password if new password is provided
+  if (data.newPassword) {
+    return !!data.currentPassword
+  }
+  return true
+}, {
+  message: "Current password is required to set new password",
+  path: ["currentPassword"],
+})
+
+export const otherSettingsSchema = z.object({
+  profileVisibility: z.boolean().optional(),
+  twoFactorAuth: z.boolean().optional(),
+})
+
+// Combined schema for the entire form
+export const completeProfileSchema = z.object({
+  address: addressSchema,
+  profile: profileSchema,
+  password: passwordSchema,
+  otherSettings: otherSettingsSchema,
+})
+
+
+
 export type BasicDetailsData = z.infer<typeof basicDetailsSchema>
 export type CategoriesData = z.infer<typeof categoriesSchema>
 export type TimeSlotData = z.infer<typeof timeSlotSchema>
@@ -201,3 +272,6 @@ export type registerGiverData = z.infer<typeof registerGiverSchema>
 export type loginData = z.infer<typeof loginSchema>
 export type forgotPasswordData = z.infer<typeof forgotPasswordSchema>
 export type resetPasswordData = z.infer<typeof resetPasswordSchema>
+
+
+

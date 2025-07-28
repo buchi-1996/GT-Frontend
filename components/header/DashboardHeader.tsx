@@ -11,13 +11,17 @@ import { usePathname } from 'next/navigation'
 const DashboardHeader = () => {
   const { openSidebar, setSidebarCollapsed, sidebarCollapsed, openSheet } = useUIState()
   const pathname = usePathname()
+  let last;
 
  const pageTitle = useMemo(() => {
   if (!pathname) return '';
 
   const parts = pathname.split('/');
-  const last = parts[parts.length - 1] || parts[parts.length - 2];
-
+  if(parts.includes('settings')){
+    last = 'settings'
+  }else{
+   last = parts[parts.length - 1] || parts[parts.length - 2];
+ }
   if (last.toLowerCase() === 'overview') return 'Welcome back, Joe!';
 
   return last

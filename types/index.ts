@@ -3,11 +3,12 @@ import { Url } from "next/dist/shared/lib/router/router";
 import * as React from "react";
 
 export interface NavigationItem {
-  id: string
+  id?: string
   title: string
-  icon: React.ReactNode
+  icon?: React.ReactNode
   href?: Url
   isActive?: boolean
+  size?: string
 }
 
 export interface NavigationSection {

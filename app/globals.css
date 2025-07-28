@@ -168,7 +168,7 @@ body {
   background-repeat: no-repeat;
 }
 
-
+/* 
 [data-state="checked"] {
   background-color: #e0f7e9 !important;
   color: #0D9488;
@@ -180,4 +180,4 @@ body {
   color: white !important;
   border-radius: 50% !important;
   font-weight: 500 !important;
-}
+} */

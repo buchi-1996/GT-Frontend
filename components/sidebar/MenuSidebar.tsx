@@ -218,7 +218,7 @@ const MenuSidebar = () => {
             </ul>
             <ul className='list-none grid gap-1 sm:gap-2 '>
               {navigationData[1].items.map(menuItem => (
-                <MenuItem key={menuItem.id} {...menuItem} />
+                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
               ))}
             </ul>
           </div>
