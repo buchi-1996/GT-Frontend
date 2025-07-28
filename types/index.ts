@@ -6,7 +6,7 @@ export interface NavigationItem {
   id?: string
   title: string
   icon?: React.ReactNode
-  href?: Url
+  href?: Url 
   isActive?: boolean
   size?: string
 }

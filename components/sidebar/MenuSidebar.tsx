@@ -213,12 +213,12 @@ const MenuSidebar = () => {
                 <ChevronRight className={`${sidebarCollapsed && 'hidden'} w-6 h-6`} />
               </Button>
               {navigationData[0].items.map(menuItem => (
-                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
+                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href } {...menuItem} />
               ))}
             </ul>
             <ul className='list-none grid gap-1 sm:gap-2 '>
               {navigationData[1].items.map(menuItem => (
-                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href} {...menuItem} />
+                <MenuItem key={menuItem.id} isActive={pathname === menuItem.href  || pathname.includes(`${menuItem?.href}`)} {...menuItem} />
               ))}
             </ul>
           </div>
