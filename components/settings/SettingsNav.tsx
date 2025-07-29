@@ -91,7 +91,7 @@ const SettingsNav = () => {
             <div className='block lg:hidden w-full'>
                 <DropdownMenu onOpenChange={handleDropDownOpenChange}>
                     <DropdownMenuTrigger className='cursor-pointer capitalize bg-gray-50 w-full text-left p-4 rounded-lg flex items-center justify-between'>
-                        <span>{selectedMenu}</span>
+                        <span className='font-semibold'>{selectedMenu}</span>
                         {dropDownOpen ? (<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10 10-4.477 10-10ZM15 15 9 9m0 6 6-6" /></svg></span>) : (<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.996 12h.01M11.984 16h.01M12 8h.009" /><path stroke="#757575" strokeWidth="1.5" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10 10-4.477 10-10Z" /></svg></span>)}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] border-none shadow-xl">

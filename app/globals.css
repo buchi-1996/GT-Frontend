@@ -168,8 +168,8 @@ body {
   background-repeat: no-repeat;
 }
 
-/* 
-[data-state="checked"] {
+
+/* [data-state="checked"] {
   background-color: #e0f7e9 !important;
   color: #0D9488;
 

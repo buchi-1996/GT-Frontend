@@ -261,6 +261,14 @@ export const completeProfileSchema = z.object({
 })
 
 
+
+
+// Verify ID schema
+
+
+
+
+
 export type CompleteProfileFormData = z.infer<typeof completeProfileSchema>
 
 
