@@ -52,7 +52,7 @@ export default function VerifyIDForm({setVerifyInProgressModal, setVerificationM
         },
     })
 
-    const onSubmit = (values: any) => {
+    const onSubmit = (values: unknown) => {
         console.log("Form values:", values)
         setVerificationModalOpen(false)
         setVerifyInProgressModal(true)

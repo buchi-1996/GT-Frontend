@@ -243,7 +243,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
           </span>
           <h3 className="text-xl my-4 font-semibold text-gray-900 max-w-md">ID verification in progress...</h3>
           <p className="text-gray-600">
-            We’ll notify you once your ID has been verified
+            We&apos;ll notify you once your ID has been verified
           </p>
 
           <div className="pt-4">
