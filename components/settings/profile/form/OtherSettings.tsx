@@ -22,7 +22,7 @@ export function SettingsSection({ form }: SettingsSectionProps) {
           <FormItem>
             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center gap-4 justify-between">
               <div>
-                <h4 className="font-medium text-md text-[#222222]">Everyone can view my profile</h4>
+                <h4 className="font-semibold text-sm text-[#222222] mb-1">Everyone can view my profile</h4>
                 <p className="text-sm text-[#626262]">Turning off means only selected user will see your profile</p>
               </div>
               <FormControl>
@@ -44,7 +44,7 @@ export function SettingsSection({ form }: SettingsSectionProps) {
           <FormItem>
             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
               <div>
-                <h4 className="font-medium text-md text-[#222222]">2FA authentication</h4>
+                <h4 className="font-semibold text-sm text-[#222222] mb-1">2FA authentication</h4>
                 <p className="text-sm text-[#626262]">This will add an extra layer of security to your account</p>
               </div>
               <FormControl>

@@ -69,9 +69,10 @@ const settingsMenu = [
 const SettingsNav = () => {
 
     const pathname = usePathname()
-    console.log(pathname)
+    const parts = pathname.split('/')
+    const last = parts.slice(parts.length -1).join('')
 
-    const [selectedMenu, setSelectedMenu] = useState("profile")
+    const [selectedMenu, setSelectedMenu] = useState(last)
     const [dropDownOpen, setDropDownOpen] = useState(false)
 
     const handleDropDownOpenChange = () => {

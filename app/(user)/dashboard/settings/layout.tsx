@@ -26,7 +26,7 @@ export default function SettingsLayout({
         <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <Providers>
-                    <div className='@container flex flex-col lg:flex-row items-start gap-2 md:gap-8'>
+                    <div className='@container flex flex-col lg:flex-row items-start gap-4 md:gap-8'>
                         <SettingsNav />
                         <div className="flex-1 w-full h-full">
                             {children}
