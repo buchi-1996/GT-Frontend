@@ -83,7 +83,7 @@ export default function VerifyIDForm({setVerifyInProgressModal, setVerificationM
                                 </FormControl>
                                 <SelectContent className="shadow-xl w-full border-none px-1 py-2">
                                     <SelectItem value="passport">Passport</SelectItem>
-                                    <SelectItem value="driver_license">Driver's License</SelectItem>
+                                    <SelectItem value="driver_license">Driver&apos;s License</SelectItem>
                                     <SelectItem value="national_id">National ID</SelectItem>
                                 </SelectContent>
                             </Select>
