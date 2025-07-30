@@ -116,7 +116,7 @@ const InterestManagement = () => {
                             )}
                         />
                         <div className="px-4 md:px-6 mt-10 py-6 bg-[#E7EFF9] rounded-lg border border-[#D4E6FF]">
-                            <p className="text-sm leading-6 text-[#2563EB]"><span className='font-bold'>Note</span>: You'll always receive notifications when someone  shows interest in your items, regardless of auto-selection settings.  Auto-selection only applies when the interest threshold is reached.</p>
+                            <p className="text-sm leading-6 text-[#2563EB]"><span className='font-bold'>Note</span>: You&apos;ll always receive notifications when someone  shows interest in your items, regardless of auto-selection settings.  Auto-selection only applies when the interest threshold is reached.</p>
                         </div>
                     </div>
                     <div className="flex justify-end">
