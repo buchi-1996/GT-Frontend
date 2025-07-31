@@ -1,8 +1,9 @@
+import CancellationView from '@/components/settings/cancellation'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>Cancellation</div>
+    <CancellationView />
   )
 }
 
