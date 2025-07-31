@@ -81,7 +81,7 @@ const CancellationView = () => {
                                             <Slider onValueChange={field.onChange} defaultValue={[field.value ?? 0]} max={100} step={1} />
                                             <h4 className="font-semibold">{field.value}h</h4>
                                         </div>
-                                        <p className='text-sm text-gray-500'>You'll receive a reminder {field.value} hours before scheduled pickups</p>
+                                        <p className='text-sm text-gray-500'>You&apos;ll receive a reminder {field.value} hours before scheduled pickups</p>
                                         <FormMessage />
                                     </FormItem>
                                 )}
