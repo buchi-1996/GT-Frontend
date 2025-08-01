@@ -8,8 +8,7 @@ import React from 'react'
 import { FormField, FormItem, FormControl } from "@/components/ui/form"
 import { z } from 'zod';
 import { Switch } from '@/components/ui/switch';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+
 
 const badgesAndRecognitionSchema = z.object({
     showBadgesOnProfile: z.boolean().optional(),

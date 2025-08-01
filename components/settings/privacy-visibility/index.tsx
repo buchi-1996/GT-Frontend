@@ -53,7 +53,7 @@ const PrivacyAndVisibilityView = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className='grid hidden lg:block pb-6'>
                         <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Privacy & Visibility Settings</h4>
-                        <p className='text-gray-500 text-sm'>Control who can see your information and how it's used</p>
+                        <p className='text-gray-500 text-sm'>Control who can see your information and how it&apos;s used</p>
                     </div>
                     <div className='py-6  border-t-0 lg:border-t'>
                         <h3 className="font-semibold text-[#222222] mb-8">Profile Visibility</h3>

@@ -8,9 +8,7 @@ import React from 'react'
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { z } from 'zod';
-import { Switch } from '@/components/ui/switch';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+
 
 
 const accountSettingsSchema = z.object({
