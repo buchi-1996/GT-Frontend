@@ -1,8 +1,9 @@
+import PrivacyAndVisibilityView from '@/components/settings/privacy-visibility'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>Privacy & Visibility</div>
+    <PrivacyAndVisibilityView />
   )
 }
 

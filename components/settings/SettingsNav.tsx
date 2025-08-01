@@ -109,7 +109,7 @@ const SettingsNav = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className='hidden lg:block w-full min-w-[200px] lg:@xl:w-[25%] grid gap-2 border rounded-lg p-2 self-start'>
+            <div className='sticky top-[7rem] hidden lg:block w-full min-w-[200px] lg:@xl:w-[25%] grid gap-2 border rounded-lg p-2 self-start'>
 
                 {settingsMenu.map(menuItem => (
                     <MenuItem
