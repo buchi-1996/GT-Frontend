@@ -85,7 +85,7 @@ const SettingsNav = () => {
 
 
 
-
+    if (!pathname.split('/').includes('settings')) return
 
 
 
@@ -95,10 +95,6 @@ const SettingsNav = () => {
         setDropDownOpen(!dropDownOpen)
         console.log(dropDownOpen)
     }
-
-
-
-
 
 
 
