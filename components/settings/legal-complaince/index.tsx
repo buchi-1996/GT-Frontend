@@ -19,9 +19,9 @@ const LegalAndComplianceView = () => {
                 <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Legal & Compliance</h4>
                 <p className='text-gray-500 text-sm'>Review legal documents and manage your data sharing preferences</p>
             </div>
-            <div className='py-6 border-t-0 lg:border-t  border-b '>
+            <div className='@container py-6 border-t-0 lg:border-t  border-b '>
                 <h3 className="font-semibold text-[#222222] mb-8">Legal Documents</h3>
-                <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch'>
+                <div className='grid grid-cols-1 md:@md:grid-cols-2 xl:@xl:grid-cols-3 gap-4 items-stretch'>
                     <Link href="#">
                         <div className='bg-gray-50 rounded-lg p-6 grid gap-4'>
                             <div className='flex items-center justify-between gap-4'>
@@ -46,7 +46,7 @@ const LegalAndComplianceView = () => {
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" fill="none"><path stroke="#3B82F6" strokeLinecap="round" strokeLinejoin="round" d="M6.168 11.332h5.333M6.168 8.668h2.667M9.5 1.665V2c0 1.885 0 2.828.586 3.414.586.586 1.528.586 3.414.586h.333m.334 1.104v2.229c0 2.514 0 3.771-.781 4.552-.781.781-2.038.781-4.553.781-2.514 0-3.77 0-4.552-.78-.781-.782-.781-2.039-.781-4.553v-3.03c0-2.163 0-3.244.59-3.977.12-.148.255-.283.403-.402.733-.591 1.814-.591 3.978-.591.47 0 .705 0 .92.076.045.016.09.034.132.055.206.098.372.264.705.597l3.158 3.158c.385.385.578.578.68.823.1.245.1.517.1 1.062Z" /></svg>
                                     </span>
-                                    <h4 className='text-sm font-semibold'>Privacy Policy</h4>
+                                    <h4 className='text-sm font-semibold'>Terms of Use</h4>
                                 </div>
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.25" d="M16.333 10.835v.833c0 2.75 0 4.125-.854 4.98-.854.853-2.23.853-4.979.853H8.833c-2.75 0-4.124 0-4.979-.854C3 15.793 3 14.417 3 11.668v-1.667c0-2.75 0-4.124.854-4.979.855-.854 2.23-.854 4.98-.854h.833M12.166 2.5h3.333c1.179 0 1.768 0 2.134.366C18 3.232 18 3.821 18 5v3.333m-.833-5-7.5 7.5" /></svg>
