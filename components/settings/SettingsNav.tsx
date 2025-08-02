@@ -70,11 +70,10 @@ const SettingsNav = () => {
     const pathname = usePathname()
     const pageTitle = useMemo(() => {
         if (!pathname) return '';
-        let last: string;
 
         const parts = pathname.split('/');
 
-        last = parts[parts.length - 1] || parts[parts.length - 2];
+        const last = parts[parts.length - 1] || parts[parts.length - 2];
 
         return last
             .split('-')
