@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function AuthLayout({
+export default function DashBoardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
