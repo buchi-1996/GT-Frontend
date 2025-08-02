@@ -70,10 +70,9 @@ const HelpAndSupportView = () => {
                 <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Help & Support</h4>
                 <p className='text-gray-500 text-sm'>Find answers to common questions or get in touch with our support team</p>
             </div>
-            <div className='py-6 border-t-0 lg:border-t  border-b '>
+            <div className='@container py-6 border-t-0 lg:border-t  border-b '>
                 <h3 className="font-semibold text-[#222222] mb-8">Get Help Now</h3>
-                <ScrollArea className='w-full overflow-x-auto'>
-                    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
+                    <div className='grid grid-cols-1 md:@md:grid-cols-2 xl:@xl:grid-cols-3 gap-6'>
                         <div className='bg-gray-50 rounded-lg p-6 grid place-items-center gap-2'>
                             <span className='mb-4'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none"><path stroke="#3B82F6" strokeLinejoin="round" strokeWidth="1.5" d="M22.834 11.567c0 5.283-4.478 9.566-10 9.566-.65.001-1.297-.059-1.935-.178-.459-.087-.688-.13-.848-.105-.16.024-.388.145-.842.386a6.5 6.5 0 0 1-4.224.657 5.292 5.292 0 0 0 1.087-2.348c.1-.53-.148-1.045-.52-1.422-1.685-1.712-2.718-4.018-2.718-6.556 0-5.283 4.478-9.567 10-9.567s10 4.284 10 9.567Z" /><path stroke="#3B82F6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12.83 12h.008m3.987 0h.009m-8 0h.009" /></svg>
@@ -101,8 +100,6 @@ const HelpAndSupportView = () => {
                             <Button className='mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Create Ticket</Button>
                         </div>
                     </div>
-                    <ScrollBar orientation='horizontal' />
-                </ScrollArea>
             </div>
             <div className="py-6 border-b box-border">
                 <h3 className="font-semibold text-[#222222] mb-8">Frequently Asked Questions</h3>
