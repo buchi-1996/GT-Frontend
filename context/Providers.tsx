@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 import SheetModal from "@/components/modal/Sheet";
 import PageDialog from "@/components/modal/PageDialog";
 import { UIStateProvider } from "./appstore/UIContext";
+import VerifyIdModal from "@/components/shared/VerifyId";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -14,6 +15,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 {children}
                 <SheetModal />
                 <PageDialog />
+                <VerifyIdModal />
                 <Toaster position="top-right" richColors />
             </UIStateProvider>
         </AppStateProvider>

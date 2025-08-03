@@ -28,6 +28,8 @@ interface UIContextType {
     setIsAddItemDialogOpen?: Dispatch<SetStateAction<boolean>>;
     openCriteria: boolean;
     setOpenCriteria: Dispatch<SetStateAction<boolean>>
+    verificationModalOpen: boolean;
+    setVerificationModalOpen: Dispatch<SetStateAction<boolean>>
     
 }
 
@@ -47,6 +49,7 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     const [overlay, setOverlay] = useState(false)
     const [progress, setProgress] = useState([20]);
     const [openCriteria, setOpenCriteria] = useState(true)
+    const [verificationModalOpen, setVerificationModalOpen] = useState(false)
     
     
 
@@ -122,6 +125,8 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         closeAddItem,
         openCriteria,
         setOpenCriteria,
+        verificationModalOpen,
+        setVerificationModalOpen,
       
     }
 

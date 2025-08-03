@@ -2,14 +2,14 @@
 
 import React, { useMemo } from 'react'
 import { Button } from '../ui/button'
-import { ChevronRight, Menu } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useUIState } from '@/hooks/useAppState'
 import User from './User'
-import CompleteProfile from '../profile/CompleteProfile'
 import { usePathname } from 'next/navigation'
 
 const DashboardHeader = () => {
-  const { openSidebar, setSidebarCollapsed, sidebarCollapsed, openSheet } = useUIState()
+  const { openSidebar, setSidebarCollapsed, sidebarCollapsed, setVerificationModalOpen } = useUIState()
+  
   const pathname = usePathname()
 
 
@@ -48,15 +48,8 @@ const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        <Button onClick={() => openSheet(<CompleteProfile />)} className="hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
-          <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.84553 12.5631C2.99545 13.6767 3.91775 14.549 5.0401 14.6006C5.98451 14.644 6.94386 14.6667 8.00033 14.6667C9.05679 14.6667 10.0161 14.644 10.9605 14.6006C12.0829 14.549 13.0052 13.6767 13.1551 12.5631C13.253 11.8365 13.3337 11.0917 13.3337 10.3333C13.3337 9.57493 13.253 8.8302 13.1551 8.10353C13.0052 6.99 12.0829 6.11766 10.9605 6.06606C10.0161 6.02265 9.05679 6 8.00033 6C6.94386 6 5.98451 6.02265 5.0401 6.06606C3.91775 6.11766 2.99545 6.99 2.84553 8.10353C2.74769 8.8302 2.66699 9.57493 2.66699 10.3333C2.66699 11.0917 2.74769 11.8365 2.84553 12.5631Z" stroke="white" />
-            <path d="M5 5.99992V4.33325C5 2.6764 6.34315 1.33325 8 1.33325C9.65687 1.33325 11 2.6764 11 4.33325V5.99992" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M7.99707 10.3333H8.00307" stroke="white" strokeWidth="2.66667" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          </span>
-          Complete setup
-          <ChevronRight className="w-4 h-4" />
+        <Button onClick={() => setVerificationModalOpen(true)} className="hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
+           Verify ID
         </Button>
 
         <div className='flex gap-4 items-center'>
