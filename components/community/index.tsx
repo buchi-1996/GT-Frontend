@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/card'
-import { CommunityStar, EcoChampion, FeedBackFriendly, FirstGive, GenerousSoul, GtAnniversary, KidnessChampion, MilestoneGiver, NeighbourhoodHero, OneForAll, ReliableGiver, SteadyGiver, SwiftResponder, VerifiedGiver, ZeroWasteAdvocate } from './badges'
+import { CommunityStar, EcoChampion, FirstGive, GenerousSoul, NeighbourhoodHero, ReliableGiver, SteadyGiver, SwiftResponder, VerifiedGiver } from './badges'
 import ContributorListItem from './ContributorListItem'
 import BadgeCard from './BadgeCard'
-import ResponsiveModal from '../modal/ResponsiveModal'
+import { useUIState } from '@/hooks/useAppState'
 
 
 const topContributors = [
@@ -43,7 +43,8 @@ const topContributors = [
 
 
 const CommunityView = () => {
-    const [viewAllBadgeModal, setViewAllBadgeModal] = useState(false)
+    const { viewAllBadgeModal, setViewAllBadgeModal } = useUIState()
+
 
     return (
         <div className="grid gap-10">
@@ -141,8 +142,8 @@ const CommunityView = () => {
                     </div>
                     {/* Badges */}
                     <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>
-                        
-                        <BadgeCard 
+
+                        <BadgeCard
                             currentStep={0}
                             totalSteps={1}
                             badgeTitle="First Give"
@@ -152,7 +153,7 @@ const CommunityView = () => {
                             earnedDate="Earned 1 month ago"
                         />
 
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={2}
                             totalSteps={5}
                             badgeTitle="Generous Soul"
@@ -161,7 +162,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={1}
                             totalSteps={10}
                             badgeTitle="Community Star"
@@ -170,7 +171,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={0}
                             totalSteps={1}
                             badgeTitle="Eco Champion"
@@ -179,7 +180,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={3}
                             totalSteps={10}
                             badgeTitle="Swift Responder"
@@ -188,7 +189,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={1}
                             totalSteps={5}
                             badgeTitle="Reliable Giver"
@@ -197,7 +198,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={3}
                             totalSteps={10}
                             badgeTitle="Neighbourhood Hero"
@@ -206,7 +207,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={3}
                             totalSteps={10}
                             badgeTitle="Verified Giver"
@@ -215,7 +216,7 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                        <BadgeCard 
+                        <BadgeCard
                             currentStep={3}
                             totalSteps={10}
                             badgeTitle="Steady Giver"
@@ -224,8 +225,8 @@ const CommunityView = () => {
                             isCompleted={false}
                             earnedDate="Earned 1 month ago"
                         />
-                       
-                       
+
+
 
                     </div>
                 </div>
@@ -233,17 +234,17 @@ const CommunityView = () => {
                     {/* Top 5 Contributors */}
                     <h4 className='font-semibold p-6'>Top 5 Contributors</h4>
                     <ul className='grid'>
-                        {topContributors.map(({id, name, profileImage, giveCount})=> (
-                            <ContributorListItem 
-                            key={id}
-                            id={id}
-                            highestGiver={giveCount === Math.max(...topContributors.map(c => c.giveCount))}
-                            userName={name}
-                            giveCount={giveCount}
-                            profileImage={profileImage}
-                        />
+                        {topContributors.map(({ id, name, profileImage, giveCount }) => (
+                            <ContributorListItem
+                                key={id}
+                                id={id}
+                                highestGiver={giveCount === Math.max(...topContributors.map(c => c.giveCount))}
+                                userName={name}
+                                giveCount={giveCount}
+                                profileImage={profileImage}
+                            />
                         ))}
-                        
+
                     </ul>
                     <div className='grid gap-2 border-t p-4 md:p-6'>
                         <div className="flex items-center justify-between">
@@ -255,149 +256,7 @@ const CommunityView = () => {
                 </div>
             </div>
 
-            <ResponsiveModal open={viewAllBadgeModal} close={()=> setViewAllBadgeModal(false)} className='min-w-auto h-auto md:h-[85%] md:min-w-[700px] py-4 md:py-6 px-4'>
-                       
-                    <div className='grid grid-cols-2 lg:grid-cols-3 gap-2 overflow-auto scrollbar-hide'>
-                        
-                        <BadgeCard 
-                            currentStep={0}
-                            totalSteps={1}
-                            badgeTitle="First Give"
-                            goalAchieved="Listed your first item"
-                            icon={<FirstGive />}
-                            isCompleted={true}
-                            earnedDate="Earned 1 month ago"
-                        />
-
-                        <BadgeCard 
-                            currentStep={2}
-                            totalSteps={5}
-                            badgeTitle="Generous Soul"
-                            goalAchieved="Gave away 5 items"
-                            icon={<GenerousSoul className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={10}
-                            badgeTitle="Community Star"
-                            goalAchieved="Got 10 good reviews"
-                            icon={<CommunityStar className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={0}
-                            totalSteps={1}
-                            badgeTitle="Eco Champion"
-                            goalAchieved="Sustainable item giver"
-                            icon={<EcoChampion className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={3}
-                            totalSteps={10}
-                            badgeTitle="Swift Responder"
-                            goalAchieved="10 replies in 24hrs"
-                            icon={<SwiftResponder className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={5}
-                            badgeTitle="Reliable Giver"
-                            goalAchieved="5 pickups confirmed"
-                            icon={<ReliableGiver className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={3}
-                            totalSteps={10}
-                            badgeTitle="Neighbourhood Hero"
-                            goalAchieved="Gave within 5km"
-                            icon={<NeighbourhoodHero className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={3}
-                            totalSteps={10}
-                            badgeTitle="Verified Giver"
-                            goalAchieved="Verified Identity"
-                            icon={<VerifiedGiver className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={3}
-                            totalSteps={10}
-                            badgeTitle="Steady Giver"
-                            goalAchieved="Gave weekly for a month"
-                            icon={<SteadyGiver className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={3}
-                            badgeTitle="One-for-All"
-                            goalAchieved="Listed 3 different items"
-                            icon={<OneForAll className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={2}
-                            totalSteps={25}
-                            badgeTitle="Milestone Giver"
-                            goalAchieved="Gave 25 items "
-                            icon={<MilestoneGiver className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={4}
-                            badgeTitle="Kindness Champion"
-                            goalAchieved="Gave valuable items"
-                            icon={<KidnessChampion className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={3}
-                            badgeTitle="Zero Waste Advocate"
-                            goalAchieved="Gave valuable items"
-                            icon={<ZeroWasteAdvocate className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={2}
-                            totalSteps={5}
-                            badgeTitle="Feedback Friendly"
-                            goalAchieved="Gave 5 feedbacks"
-                            icon={<FeedBackFriendly className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-                        <BadgeCard 
-                            currentStep={1}
-                            totalSteps={4}
-                            badgeTitle="GT Anniversary"
-                            goalAchieved="One year anniversary"
-                            icon={<GtAnniversary className='mix-blend-luminosity' />}
-                            isCompleted={false}
-                            earnedDate="Earned 1 month ago"
-                        />
-
-                    </div>
-            </ResponsiveModal>
+           
         </div>
     )
 }

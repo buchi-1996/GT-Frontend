@@ -6,16 +6,26 @@ import SheetModal from "@/components/modal/Sheet";
 import PageDialog from "@/components/modal/PageDialog";
 import { UIStateProvider } from "./appstore/UIContext";
 import VerifyIdModal from "@/components/shared/VerifyId";
+import AllBadges from "@/components/shared/AllBadges";
 
+
+const AppModals = () => {
+    return (
+        <>
+            <SheetModal />
+            <PageDialog />
+            <VerifyIdModal />
+            <AllBadges />
+        </>
+    )
+}
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <AppStateProvider>
             <UIStateProvider>
                 {children}
-                <SheetModal />
-                <PageDialog />
-                <VerifyIdModal />
+                <AppModals />
                 <Toaster position="top-right" richColors />
             </UIStateProvider>
         </AppStateProvider>

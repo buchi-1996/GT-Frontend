@@ -18,7 +18,7 @@ const BadgeCard = ({ icon, badgeTitle, goalAchieved, isCompleted, currentStep, t
       {icon}
       <div className='text-center mt-1'>
         <h4 className='font-semibold text-sm text-gray-700'>{badgeTitle}</h4>
-        <p className='text-xs md:text-sm text-gray-500'>{goalAchieved}</p>
+        <p className='text-xs text-center md:text-sm text-gray-500'>{goalAchieved}</p>
       </div>
       {isCompleted ? (
         <span className='text-xs text-gray-400'>{earnedDate}</span>) : (<BadgeProgress currentStep={currentStep} totalSteps={totalSteps} />)}

@@ -30,6 +30,8 @@ interface UIContextType {
     setOpenCriteria: Dispatch<SetStateAction<boolean>>
     verificationModalOpen: boolean;
     setVerificationModalOpen: Dispatch<SetStateAction<boolean>>
+    viewAllBadgeModal: boolean;
+    setViewAllBadgeModal: Dispatch<SetStateAction<boolean>>
     
 }
 
@@ -50,6 +52,8 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     const [progress, setProgress] = useState([20]);
     const [openCriteria, setOpenCriteria] = useState(true)
     const [verificationModalOpen, setVerificationModalOpen] = useState(false)
+    const [viewAllBadgeModal, setViewAllBadgeModal] = useState(false)
+
     
     
 
@@ -127,6 +131,8 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         setOpenCriteria,
         verificationModalOpen,
         setVerificationModalOpen,
+        viewAllBadgeModal,
+        setViewAllBadgeModal,
       
     }
 
