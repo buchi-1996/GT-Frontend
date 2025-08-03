@@ -6,10 +6,12 @@ import { Menu, Verified } from 'lucide-react'
 import { useUIState } from '@/hooks/useAppState'
 import User from './User'
 import { usePathname } from 'next/navigation'
+import { Badge } from '../ui/badge'
+import AllNotifications from '../shared/AllNotifications'
 
 const DashboardHeader = () => {
-  const { openSidebar, setSidebarCollapsed, sidebarCollapsed, setVerificationModalOpen } = useUIState()
-  
+  const { openSheet, openSidebar, setSidebarCollapsed, sidebarCollapsed, setVerificationModalOpen } = useUIState()
+
   const pathname = usePathname()
 
 
@@ -49,7 +51,7 @@ const DashboardHeader = () => {
 
       <div className="flex items-center gap-5">
         <Button onClick={() => setVerificationModalOpen(true)} className="hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
-           <Verified /> Verify ID
+          <Verified /> Verify ID
         </Button>
 
         <div className='flex gap-4 items-center'>
@@ -62,7 +64,10 @@ const DashboardHeader = () => {
                 </svg>
               </span>
             </button>
-            <button className='cursor-pointer'>
+            <button onClick={() => openSheet(<AllNotifications />)} className='cursor-pointer relative'>
+              <Badge className="absolute -right-2 -top-2 bg-[#B6CC5E] h-5 min-w-5 rounded-full px-1 font-medium tabular-nums">
+                3
+              </Badge>
               <span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.52992 14.394C2.31727 15.7471 3.268 16.6862 4.43205 17.1542C8.89481 18.9486 15.1052 18.9486 19.5679 17.1542C20.732 16.6862 21.6827 15.7471 21.4701 14.394C21.3394 13.5625 20.6932 12.8701 20.2144 12.194C19.5873 11.2975 19.525 10.3197 19.5249 9.27941C19.5249 5.2591 16.1559 2 12 2C7.84413 2 4.47513 5.2591 4.47513 9.27941C4.47503 10.3197 4.41272 11.2975 3.78561 12.194C3.30684 12.8701 2.66061 13.5625 2.52992 14.394Z" stroke="#626262" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

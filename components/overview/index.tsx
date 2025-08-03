@@ -7,12 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import StatsCard from "@/components/usercard/StatsCard"
 import { useUIState } from "@/hooks/useAppState"
 import { Users, Package, Star, X } from "lucide-react"
+import AllActivities from "../shared/AllActivities"
 
 
 const OverViewScreen = () => {
 
-    const { setViewAllBadgeModal } = useUIState()
-
+    const {openSheet, setViewAllBadgeModal } = useUIState()
+    
 
     return (
         <main className="grid gap-10">
@@ -57,7 +58,7 @@ const OverViewScreen = () => {
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start  justify-between text-md sm:text-[1rem] text-[#222222]">
                             <span>Recent Activity</span>
-                            <button className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
+                            <button onClick={() => openSheet(<AllActivities />)} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-4 md:px-6 py-2">
