@@ -26,7 +26,7 @@ export function DatePicker({ date, onSelect, placeholder = "Pick a date", disabl
         </Button>
       </PopoverTrigger>
       <PopoverContent className="shadow-xl w-82 p-0" align="end">
-        <div className="p-4">
+        <div className="p-4 pb-6">
           <CalendarComponent
             className="w-full [&_button[data-selected-single=true]]:bg-[#0D9488] [&_button[data-selected-single=true]]:text-white [&_button[data-selected-single=true]]:rounded-md [&_button[data-selected-single=true]]:font-semibold [&_button[data-selected-single=true]]:hover:bg-[#0D9488]"
             mode="single"
