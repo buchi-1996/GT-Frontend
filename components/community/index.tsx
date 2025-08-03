@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, CardContent } from '../ui/card'
 import { CommunityStar, EcoChampion, FirstGive, GenerousSoul, NeighbourhoodHero, ReliableGiver, SteadyGiver, SwiftResponder, VerifiedGiver } from './badges'
 import ContributorListItem from './ContributorListItem'
@@ -43,7 +43,7 @@ const topContributors = [
 
 
 const CommunityView = () => {
-    const { viewAllBadgeModal, setViewAllBadgeModal } = useUIState()
+    const { setViewAllBadgeModal } = useUIState()
 
 
     return (
