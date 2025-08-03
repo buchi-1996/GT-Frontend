@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react'
 import { Button } from '../ui/button'
-import { Menu } from 'lucide-react'
+import { Menu, Verified } from 'lucide-react'
 import { useUIState } from '@/hooks/useAppState'
 import User from './User'
 import { usePathname } from 'next/navigation'
@@ -49,7 +49,7 @@ const DashboardHeader = () => {
 
       <div className="flex items-center gap-5">
         <Button onClick={() => setVerificationModalOpen(true)} className="hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
-           Verify ID
+           <Verified /> Verify ID
         </Button>
 
         <div className='flex gap-4 items-center'>

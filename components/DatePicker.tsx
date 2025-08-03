@@ -28,12 +28,12 @@ export function DatePicker({ date, onSelect, placeholder = "Pick a date", disabl
       <PopoverContent className="shadow-xl w-82 p-0" align="end">
         <div className="p-4">
           <CalendarComponent
-            className="w-full data-[selected-single=true]:text-white data-[selected-single=true]:bg-[#0D9488] data-[selected-single=true]:rounded-full data-[selected-single=true]:font-semibold"
+            className="w-full [&_button[data-selected-single=true]]:bg-[#0D9488] [&_button[data-selected-single=true]]:text-white [&_button[data-selected-single=true]]:rounded-md [&_button[data-selected-single=true]]:font-semibold [&_button[data-selected-single=true]]:hover:bg-[#0D9488]"
             mode="single"
             selected={date}
             onSelect={(selectedDate) => {
               onSelect(selectedDate)
-              // Don't close immediately - let user click OK
+              setOpen(false) // Close immediately when date is selected
             }}
             disabled={(date) => (disablePastDates ? date < new Date() : false)}
             
@@ -45,26 +45,8 @@ export function DatePicker({ date, onSelect, placeholder = "Pick a date", disabl
                 borderRadius: "50%",
                 fontWeight: "500",
               },
-              selected: {
-                backgroundColor: "#0D9488 !important",
-                color: "white !important",
-                borderRadius: "50% !important",
-                fontWeight: "500 !important",
-              },
             }}
           />
-          <div className="flex justify-end space-x-2 mt-4 pt-4 border-t">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setOpen(false)}
-              className="text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer">
-              Cancel
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => setOpen(false)} className="cursor-pointer">
-              OK
-            </Button>
-          </div>
         </div>
       </PopoverContent>
     </Popover>

@@ -129,7 +129,7 @@ const OverViewScreen = () => {
                             <button onClick={() => setViewAllBadgeModal(true)} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="px-4 md:px-6 py-2">
+                    <CardContent className="px-4 md:px-6 pb-2">
                         {/* <div className="text-center text-sm sm:text-md text-[#626262]">No Badges</div> */}
                         <div className='grid grid-cols-2 gap-2'>
 
