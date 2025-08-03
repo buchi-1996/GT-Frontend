@@ -9,7 +9,6 @@ import { ChevronRight, X, Verified } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useUIState } from '@/hooks/useAppState'
 import User from '../header/User'
-import CompleteProfile from '../profile/CompleteProfile'
 
 
 const navigationData: NavigationSection[] = [
