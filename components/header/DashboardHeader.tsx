@@ -34,7 +34,7 @@ const DashboardHeader = () => {
   }, [pathname]);
 
   return (
-    <header className="z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">
+    <header className="w-full z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">
       <div className='flex items-center gap-4'>
         <button onClick={openSidebar} className='block md:hidden shrink-0 cursor-pointer'>
           <Menu />

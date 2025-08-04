@@ -29,9 +29,9 @@ export default function DashBoardLayout({
                 <Providers>
                     <div className="relative flex h-full">
                         <MenuSidebar />
-                        <div className="flex-1 h-full">
+                        <div className="flex-1 flex flex-col min-h-dvh w-full">
                             <DashboardHeader />
-                            <div className="md:container mx-auto px-4 py-6 md:px-6 lg:p-12">
+                            <div className="w-full md:container flex-1 mx-auto px-4 py-6 md:px-6 lg:p-12">
                                 {children}
                             </div>
                         </div>

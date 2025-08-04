@@ -5,7 +5,7 @@ import React from 'react'
 
 const page = () => {
     return (
-        <div className='min-h-[calc(100vh_-_11rem)]'>
+        <div className='h-full w-full'>
             <AddListingItem />
         </div>
     )
