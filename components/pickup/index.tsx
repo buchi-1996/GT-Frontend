@@ -313,7 +313,7 @@ const PickupView = () => {
 
     const handleSubmitDispute = () => {
         setDisputeModalOpen(false)
-        setFeedbackReceivedModal(true)
+        setDisputeFeedbackReceived(true)
     }
 
 

@@ -1,7 +1,6 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { useAppState, useUIState } from '@/hooks/useAppState'
-import Image from 'next/image'
 import React from 'react'
 import ListingForm from './ListingForm'
 import { ItemListingView } from './ItemListingView'
