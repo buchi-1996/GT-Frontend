@@ -13,15 +13,8 @@ import { Textarea } from '../ui/textarea';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
+import FeedbackReceivedAlert from './FeedbackReceivedAlert';
 
-
-const tabs = [
-    { id: "all", label: "All" },
-    { id: "scheduled", label: "Scheduled" },
-    { id: "picked-up", label: "Picked up" },
-    { id: "no-show", label: "No-show" },
-    { id: "pending", label: "Pending" },
-]
 
 interface PickupItemprops {
     id: string;
@@ -33,6 +26,17 @@ interface PickupItemprops {
     receiver: string;
     rating: number;
 }
+
+
+const tabs = [
+    { id: "all", label: "All" },
+    { id: "scheduled", label: "Scheduled" },
+    { id: "picked-up", label: "Picked up" },
+    { id: "no-show", label: "No-show" },
+    { id: "dispute", label: "Dispute" },
+    { id: "pending", label: "Pending" },
+]
+
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -57,6 +61,8 @@ const getStatusText = (status: string) => {
             return "Picked up"
         case "no-show":
             return "No-show"
+        case "dispute":
+            return "Dispute"
         case "pending":
             return "Pending  Confirmation"
         default:
@@ -146,7 +152,7 @@ const PickupView = () => {
             id: "5",
             title: "Office Chair",
             image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
-            status: "no-show",
+            status: "dispute",
             pickupDate: "2023-10-01",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
@@ -154,14 +160,14 @@ const PickupView = () => {
         },
         {
             id: "6",
-            title: "Sdorens 118 Sofa Couch",
-            image: "/assets/pickup-items/cfa5b76f7683cbb3b70e5c6075ef96b40b3c4cc8.png",
-            status: "picked-up",
+            title: "Office Chair",
+            image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
+            status: "no-show",
             pickupDate: "2023-10-01",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
-        }
+        },
     ])
     const [activeTab, setActiveTab] = useState("all")
 
@@ -190,13 +196,20 @@ const PickupView = () => {
                 )
             case "no-show":
                 return (
-                    <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item has been moved back to draft</div>
+                    <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item moved to draft</div>
                 )
             case "pending":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
                         <Button onClick={() => handleMarkNoShow(id)} variant="destructive" className='py-5 w-full'>Mark as No-show</Button>
                         <Button onClick={() => handlePickupConfirmation(id)} variant="primary" className='py-5 w-full'>Mark as Picked up</Button>
+                    </div>
+                )
+            case "dispute":
+                return (
+                    <div className='grid grid-cols-2 w-full gap-3'>
+                        <Button variant="secondary" className='py-5 w-full'>Widthdraw Pickup</Button>
+                        <Button onClick={() => setDisputeModalOpen(true)} variant="primary" className='py-5 w-full'>Counter Dispute</Button>
                     </div>
                 )
             default:
@@ -214,6 +227,9 @@ const PickupView = () => {
     const [markNoShowModal, setIsMarkNoShowModal] = useState(false)
     const [reportNoShowModal, setReportNoShowModal] = useState(false)
     const [selectedValue, setSelectedValue] = useState('')
+    const [selectedDisputeValue, setSelectedDisputeValue] = useState('')
+    const [disputeFeedbackReceived, setDisputeFeedbackReceived] = useState(false)
+    const [disputeModalOpen, setDisputeModalOpen] = useState(false)
     const [doNextValue, setDoNextValue] = useState('')
     const [doNextModal, setDoNextModal] = useState(false)
     const commentRef = useRef<string>('');
@@ -288,10 +304,16 @@ const PickupView = () => {
         setIsConfirmed(true)
     }
 
-    const handleDoNext = () =>{
+    const handleDoNext = () => {
         setDoNextModal(false)
         // submit form action here
         console.log("Do next action submitted with value:", doNextValue);
+    }
+
+
+    const handleSubmitDispute = () => {
+        setDisputeModalOpen(false)
+        setFeedbackReceivedModal(true)
     }
 
 
@@ -503,7 +525,7 @@ const PickupView = () => {
 
             </ResponsiveModal>
 
-            <ResponsiveAlert open={feedbackReceivedModal} close={() => { }} className='py-4 md:py-20'>
+            {/* <ResponsiveAlert open={feedbackReceivedModal} close={() => { }} className='py-4 md:py-20'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="96" height="100" fill="none"><path fill="#FF6D83" d="M3.281 38.73a4.155 4.155 0 1 1 1.75 8.124 4.155 4.155 0 0 1-1.75-8.123Z" /><path fill="#4671FF" d="M91.044 25.745a4.093 4.093 0 1 1 1.725 8.003 4.093 4.093 0 0 1-1.725-8.003Z" /><path fill="#FFB636" d="M51.314.614a4.276 4.276 0 1 1 1.8 8.362 4.276 4.276 0 0 1-1.8-8.362Z" /><path fill="#4671FF" d="M30.439 91.025a4.276 4.276 0 1 1 1.801 8.361 4.277 4.277 0 0 1-1.801-8.361Z" /><path fill="#AD8FE6" stroke="#AD8FE6" stroke-width=".377" d="M88.905 71.18a4.149 4.149 0 1 1 1.746 8.113 4.149 4.149 0 0 1-1.746-8.112Z" /><path fill="#14AE7D" d="M58.222 16.82c19.245 5.157 30.665 24.937 25.509 44.181-5.157 19.245-24.938 30.665-44.182 25.508C20.305 81.352 8.884 61.572 14.04 42.33c5.156-19.245 24.937-30.665 44.181-25.509Z" /><path fill="#fff" d="M42.907 65.372a1.017 1.017 0 0 1-1.424-.06L28.388 51.328a2.793 2.793 0 0 1-.608-1.973 2.8 2.8 0 0 1 .919-1.852 2.903 2.903 0 0 1 1.956-.743 2.907 2.907 0 0 1 1.952.76l9.437 10.077c.252.27.675.287.949.04l19.792-17.872a2.907 2.907 0 0 1 2.008-.593c.723.057 1.396.38 1.887.905a2.8 2.8 0 0 1 .76 1.922 2.793 2.793 0 0 1-.77 1.915L42.906 65.372Z" /><path stroke="#FF6E83" stroke-linecap="round" stroke-width="2.143" d="M20.834 15.332c-.66-2.45-2.229-5.7-5.95-7.768" /><path fill="#AD8FE6" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#AD8FE6" strokeLinecap="round" strokeWidth="2.027" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#FFB636" stroke-linecap="round" stroke-width="1.832" d="M83.127 11.48c2.277-.83 4.95-.007 7.54 5.027 4.883 9.487-6.64 7.553-5.97 1.64" /><path fill="#4671FF" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /><path stroke="#6EB9FF" stroke-linecap="round" stroke-width="2.027" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /></svg>
@@ -514,7 +536,14 @@ const PickupView = () => {
                         <Button onClick={() => setFeedbackReceivedModal(false)} variant="primary" className='w-auto md:w-44 py-6 px-6'>Done</Button>
                     </div>
                 </div>
-            </ResponsiveAlert>
+            </ResponsiveAlert> */}
+            {/* Feedback Received - Mark No show */}
+            <FeedbackReceivedAlert 
+                subtext='Thank you for taking out time to give a feedback for receiver'
+                open={feedbackReceivedModal}
+                onClose={() => setFeedbackReceivedModal(false)}
+                buttonText='Done'
+            />
 
             <ResponsiveModal open={markNoShowModal} close={() => setIsMarkNoShowModal(false)} className='py-4 md:py-14'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
@@ -639,6 +668,71 @@ const PickupView = () => {
                     variant="primary"
                     className='py-6 w-full'>Done</Button>
             </ResponsiveModal>
+
+
+            {/* Counter Dispute Modal */}
+            <ResponsiveModal open={disputeModalOpen} close={()=> setDisputeModalOpen(false)} className="max-w-full md:max-w-[500px] min-h-[90%] md:min-h-auto pb-10 px-6">
+                <div className='grid gap-2 my-6 md:my-auto'>
+                    <h4 className='font-bold text-xl'>Counter Dispute</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Help us understand what happened</p>
+                </div>
+                {/* Product Info */}
+                <div className="w-full mb-4 md:mb-auto flex items-center gap-3 p-3 bg-[#f9fafb] rounded-lg mt-2">
+                    <Image
+                        src="/assets/giver-items/Frame 2087328010-2.png"
+                        width={400}
+                        height={400}
+                        alt="Vintage Desk Lamp"
+                        className="w-18 h-14 rounded-lg object-cover"
+                    />
+                    <div className="text-left grid gap-1">
+                        <div className="font-medium text-[#222222]">Vintage Desk Lamp</div>
+                        <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
+                    </div>
+                </div>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                        <div className="flex items-center gap-3">
+                            <RadioGroupItem value="receiver_pickup_in_person" className="ring ring-app-primary  text-app-primary" id="receiver_pickup_in_person" />
+                            <Label htmlFor="receiver_pickup_in_person" className="text-gray-500 ">The receiver picked it up in person</Label>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <RadioGroupItem value="left_item_at_agreed_location" className="ring ring-app-primary  text-app-primary" id="left_item_at_agreed_location" />
+                            <Label htmlFor="left_item_at_agreed_location" className="text-gray-500 ">I left the item at the agreed location</Label>
+                        </div>
+                        <div className="w-full grid gap-2 items-start">
+                            <div className="flex items-center gap-3 mb-4">
+                                <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
+                                <Label htmlFor="other" className="text-gray-500 ">Other reasons</Label>
+                            </div>
+                            <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Please described what happened' />
+                        </div>
+                        <Label htmlFor="report-no-show-file" className="mb-6 gap-2 overflow-hidden flex items-center cursor-pointer">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
+                            </span>
+                            <div className="grid">
+                                <span className='text-sm text-app-primary'>Upload evidence</span>
+                                <Input type="file" className='sr-only w-1/2' id='report-no-show-file' />
+                            </div>
+                        </Label>
+                    </RadioGroup>
+                </div>
+                <Button
+                    onClick={handleSubmitDispute}
+                    disabled={!selectedDisputeValue}
+                    variant="primary"
+                    className='py-6 w-full'>Submit Dispute</Button>
+            </ResponsiveModal>
+
+            {/* Feedback Received - Counter Dispute */}
+            <FeedbackReceivedAlert 
+                subtext='we&apos;ve recorded your dispute and will follow up if needed.'
+                open={disputeFeedbackReceived}
+                onClose={() => setDisputeFeedbackReceived(false)}
+                buttonText='Ok'
+            />
         </div>
     )
 }

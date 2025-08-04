@@ -7,6 +7,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Badge } from '../ui/badge'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import Image from 'next/image'
 import SortableList from './SortableList'
 import { useUIState } from '@/hooks/useAppState'
@@ -17,8 +22,6 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Textarea } from '../ui/textarea'
 import ResponsiveAlert from '../modal/ResponsiveAlert'
 import MatchedCard from './MatchedCard'
-
-
 
 const items = [
     {
@@ -63,6 +66,48 @@ const items = [
     },
 ]
 
+const matchedUsers = [
+    {
+        id: "sarah",
+        name: "Sarah Johnson",
+        rating: 5.0,
+        distance: "2.4km away",
+        requestedTime: "1 day ago",
+        joinedTime: "2 months ago",
+        pickups: 3,
+        noShowRecord: 0,
+        message: "Hi there! I've been looking for a vintage desk lamp just like this for my home office. I would really appreciate it and would be able to pick it up anytime. Thanks for considering!",
+        avatarFallback: "SJ",
+        avatarBg: "bg-[#0d9488]"
+    },
+    {
+        id: "michael",
+        name: "Michael Chen",
+        rating: 5.0,
+        distance: "2.4km away",
+        requestedTime: "1 day ago",
+        joinedTime: "2 months ago",
+        pickups: 3,
+        noShowRecord: 0,
+        message: "Hi there! I've been looking for a vintage desk lamp just like this for my home office. I would really appreciate it and would be able to pick it up anytime. Thanks for considering!",
+        avatarFallback: "M",
+        avatarBg: "bg-[#4c21a8]"
+    },
+    {
+        id: "emma",
+        name: "Emma Wilson",
+        rating: 5.0,
+        distance: "2.4km away",
+        requestedTime: "1 day ago",
+        joinedTime: "2 months ago",
+        pickups: 3,
+        noShowRecord: 0,
+        message: "Hi there! I've been looking for a vintage desk lamp just like this for my home office. I would really appreciate it and would be able to pick it up anytime. Thanks for considering!",
+        avatarFallback: "E",
+        avatarBg: "bg-[#c2410c]"
+    }
+]
+
 const getStatusColor = (status: string) => {
     switch (status) {
         case "Needs Repair":
@@ -81,21 +126,18 @@ const getStatusColor = (status: string) => {
 }
 
 const MactchingView = () => {
-
     const [activeTab, setActiveTab] = useState("pending")
-    const [expandedItem, setExpandedItem] = useState<string | null>(null)
+    const [openItemId, setOpenItemId] = useState<string | null>(null)
     const [isGiftedModal, setIsGiftedModal] = useState(false)
     const [isUnmatchedModal, setIsUnmatchedModal] = useState(false)
     const [reasonModal, setReasonModal] = useState(false)
     const [feedBackModal, setFeedBackModal] = useState(false)
     const [isRelisted, setIsRelisted] = useState(false)
     const [isArchived, setIsArchived] = useState(false)
-
-    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedValue, setSelectedValue] = useState('')
 
     const { openCriteria, setOpenCriteria, openSheet, setIsSheetOpen, isOpen, setIsOpen } = useUIState()
     const isMobile = useMediaQuery("(max-width: 1280px)")
-
 
     const handleCriteriaShow = () => {
         if (isMobile) {
@@ -105,21 +147,9 @@ const MactchingView = () => {
         setOpenCriteria(true)
     }
 
-
-
-    const handleItemClick = (itemId: string) => {
-        if (expandedItem === itemId) {
-            setExpandedItem(null)
-        } else {
-            setExpandedItem(itemId)
-        }
+    const handleItemToggle = (itemId: string) => {
+        setOpenItemId(openItemId === itemId ? null : itemId)
     }
-
-    const handleExpandedContentClick = (e: React.MouseEvent) => {
-        // Prevent the click from bubbling up to the card
-        e.stopPropagation()
-    }
-
 
     const handleOpenchange = () => {
         setIsOpen(false)
@@ -129,28 +159,21 @@ const MactchingView = () => {
         setIsGiftedModal(false)
     }
 
-
     const handleGiftItem = () => {
-        // Logic to handle gifting the item
-        // This could involve updating the item's status, notifying the user, etc.
         console.log("Item gifted successfully!");
-        setIsOpen(false); // Close the modal after gifting
-        setIsGiftedModal(true); // Set a state to indicate the item has been gifted
+        setIsOpen(false);
+        setIsGiftedModal(true);
     }
-
 
     const handleUnmatchClose = () => {
         setIsUnmatchedModal(false);
     }
 
     const handleUnmatch = () => {
-        // Logic to handle un-matching the recipient
-        // This could involve updating the item's status, notifying the user, etc.
         console.log("Item un-matched successfully!");
-        setIsUnmatchedModal(false); // Set a state to indicate the item has been un-matched
-        setReasonModal(true); // Open the reason modal after un-matching
+        setIsUnmatchedModal(false);
+        setReasonModal(true);
     }
-
 
     const handleReasonModalClose = () => {
         setReasonModal(false);
@@ -159,11 +182,8 @@ const MactchingView = () => {
     const handleReasonSubmit = () => {
         console.log('Submitted reason')
         setReasonModal(false)
-        setFeedBackModal(true); // Open the feedback modal after submitting the reason
+        setFeedBackModal(true);
     }
-
-
-
 
     const handleArchive = () => {
         console.log('Archived')
@@ -172,13 +192,10 @@ const MactchingView = () => {
     }
 
     const handleRelist = () => {
-        console.log('Archived')
+        console.log('Relisted')
         setFeedBackModal(false)
         setIsRelisted(true)
     }
-
-
-
 
     return (
         <div className="flex-1 flex flex-row items-start gap-10">
@@ -199,212 +216,105 @@ const MactchingView = () => {
                 </TabsList>
 
                 <TabsContent value="pending" className="flex gap-10 flex-row items-start">
-                    <div className='flex-1  grid gap-6 md:gap-8'>
+                    <div className='flex-1 grid gap-6 md:gap-8'>
                         {items.map((item) => (
-                            <Card key={item.id} className="relative overflow-hidden w-full xl:min-w-[550px] py-3 md:py-6 px-3 md:px-6 bg-transparent border-b  shadow-none cursor-pointer" onClick={() => handleItemClick(item.id)}>
-                                <CardContent className="p-0">
-                                    <div className=" flex items-center lg:items-center justify-between gap-4">
-                                        <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
-                                            <Image
-                                                width={200}
-                                                height={200}
-                                                src={item.image || "/placeholder.svg"}
-                                                alt={item.title}
-                                                className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
-                                            />
-                                            <div className="flex-1">
-                                                <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">{item.title}</h2>
-                                                <div className="flex items-start lg:items-center gap-2 md:gap-3">
-                                                    <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
-                                                    <Badge className=" text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
+                            <Collapsible
+                                key={item.id}
+                                open={openItemId === item.id}
+                                onOpenChange={() => handleItemToggle(item.id)}
+                            >
+                                <Card className="relative overflow-hidden w-full xl:min-w-[550px] pt-3 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 bg-transparent border-b shadow-none">
+                                    <CardContent className="p-0">
+                                        <CollapsibleTrigger className="w-full cursor-pointer">
+                                            <div className="flex items-center lg:items-center justify-between gap-4">
+                                                <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
+                                                    <Image
+                                                        width={200}
+                                                        height={200}
+                                                        src={item.image || "/placeholder.svg"}
+                                                        alt={item.title}
+                                                        className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
+                                                    />
+                                                    <div className="flex-1 text-left">
+                                                        <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">{item.title}</h2>
+                                                        <div className="flex items-start lg:items-center gap-2 md:gap-3">
+                                                            <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
+                                                            <Badge className="text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="absolute top-0 right-0 lg:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg lg:rounded-full text-[#0d9488]">
+                                                    <Users className="w-3 md:w-5 h-3 md:h-5" />
+                                                    <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
+                                                    <ChevronRight
+                                                        className={`w-4 md:w-5 h-4 md:h-5 transition-transform duration-200 ${
+                                                            openItemId === item.id ? "rotate-90 text-[#0d9488]" : "text-[#0d9488]"
+                                                        }`}
+                                                    />
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="absolute top-0 right-0 lg:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg lg:rounded-full text-[#0d9488]">
-                                            <Users className="w-3 md:w-5 h-3 md:h-5" />
-                                            <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
-                                            <ChevronRight
-                                                className={`w-4 md:w-5 h-4 md:h-5 ${expandedItem === item.id ? "rotate-90 text-[#0d9488]" : "text-[#0d9488]"
-                                                    }`}
-                                            />
-                                        </div>
-                                    </div>
-                                </CardContent>
+                                        </CollapsibleTrigger>
 
-                                {/* Expanded Content - Inside the same card */}
-                                {expandedItem === item.id && (
-                                    <div onClick={handleExpandedContentClick} className="border-t border-[#f1f1f1] pt-6 space-y-10">
-                                        <>
-                                            {/* Sarah Johnson */}
-                                            <div className="@container border-b pb-12">
-                                                <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                    <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
-                                                            <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                                            <AvatarFallback className="bg-[#0d9488] text-white">SJ</AvatarFallback>
-                                                        </Avatar>
-                                                        <div className="flex-1">
-                                                            <div className="flex flex-col gap-1 mb-1">
-                                                                <h3 className="text-sm md:text-md font-semibold text-[#222222]">Sarah Johnson</h3>
-                                                                <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-1 mr-1">
-                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
-                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
+                                        <CollapsibleContent className="border-t border-[#f1f1f1] mt-2 md:mt-3 pt-6 space-y-10">
+                                            {matchedUsers.map((user, index) => (
+                                                <div key={user.id} className={`@container ${index < matchedUsers.length - 1 ? 'border-b pb-12' : ''}`}>
+                                                    <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
+                                                        <div className='flex gap-4 flex-row items-start'>
+                                                            <Avatar className="w-10 md:w-12 h-10 md:h-12">
+                                                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                                                <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
+                                                            </Avatar>
+                                                            <div className="flex-1">
+                                                                <div className="flex flex-col gap-1 mb-1">
+                                                                    <h3 className="text-sm md:text-md font-semibold text-[#222222]">{user.name}</h3>
+                                                                    <div className='flex items-center-safe'>
+                                                                        <div className="flex items-center gap-1 mr-1">
+                                                                            <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
+                                                                            <span className="text-xs md:text-sm font-medium">{user.rating}</span>
+                                                                        </div>
+                                                                        <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• {user.distance}</span>
+                                                                        <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} {user.requestedTime}</span>
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-1 text-sm text-[#626262]">
-                                                        <Clock className="w-4 h-4" />
-                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
-                                                    </div>
-                                                </div>
-
-                                                <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
-                                                    <p className="  text-[#383838] text-sm mb-4">
-                                                        &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
-                                                        office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                        considering!&quot;
-                                                    </p>
-                                                    <div className='@container'>
-                                                        <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
-                                                            <div className="flex flex-col @xl:flex-row flex-1 w-full gap-4 md:gap-6">
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">3</div>
-                                                                </div>
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
+                                                        <div className="flex items-center gap-1 text-sm text-[#626262]">
+                                                            <Clock className="w-4 h-4" />
+                                                            <span className="text-xs md:text-sm text-nowrap">Joined {user.joinedTime}</span>
                                                         </div>
                                                     </div>
 
-                                                </div>
-
-                                            </div>
-
-                                            {/* Michael Chen */}
-                                            <div className="@container border-b pb-12">
-                                                <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                    <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
-                                                            <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                                            <AvatarFallback className="bg-[#4c21a8] text-white">M</AvatarFallback>
-                                                        </Avatar>
-                                                        <div className="flex-1">
-                                                            <div className="flex flex-col gap-1 mb-1">
-                                                                <h3 className="text-sm md:text-md font-semibold text-[#222222]">Michael Chen</h3>
-                                                                <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-1 mr-1">
-                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
-                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
+                                                    <div className='grid gap-4 p-4 bg-gray-50 rounded-xl'>
+                                                        <p className="text-[#383838] text-sm mb-4">
+                                                            &quot;{user.message}&quot;
+                                                        </p>
+                                                        <div className='@container'>
+                                                            <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
+                                                                <div className="flex flex-col @xl:flex-row flex-1 w-full gap-4 md:gap-6">
+                                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
+                                                                        <div className="text-xl font-semibold text-[#222222]">{user.pickups}</div>
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-1 text-sm text-[#626262]">
-                                                        <Clock className="w-4 h-4" />
-                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
-                                                    </div>
-                                                </div>
-
-                                                <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
-                                                    <p className="  text-[#383838] text-sm mb-4">
-                                                        &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
-                                                        office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                        considering!&quot;
-                                                    </p>
-                                                    <div className='@container'>
-                                                        <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
-                                                            <div className="flex flex-col @xl:flex-row flex-1 w-full gap-6">
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">3</div>
-                                                                </div>
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            {/* Emma Wilson */}
-                                            <div className="@container rounded-xl">
-                                                <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                    <div className='flex gap-4 flex-row items-start'>
-                                                        <Avatar className="w-10 md:w-12 h-10 md:h-12">
-                                                            <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                                            <AvatarFallback className="bg-[#c2410c] text-white">E</AvatarFallback>
-                                                        </Avatar>
-                                                        <div className="flex-1">
-                                                            <div className="flex flex-col gap-1 mb-1">
-                                                                <h3 className="font-semibold text-[#222222]">Emma Wilson</h3>
-                                                                <div className='flex items-center-safe'>
-                                                                    <div className="flex items-center gap-1 mr-1">
-                                                                        <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
-                                                                        <span className="text-xs md:text-sm font-medium">5.0</span>
+                                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
+                                                                        <div className="text-xl font-semibold text-[#222222]">{user.noShowRecord}</div>
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• 2.4km away</span>
-                                                                    <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} 1 day ago</span>
                                                                 </div>
+                                                                <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-1 text-sm text-[#626262]">
-                                                        <Clock className="w-4 h-4" />
-                                                        <span className="text-xs md:text-sm text-nowrap">Joined 2 months ago</span>
-                                                    </div>
                                                 </div>
-
-                                                <div className='grid gap-4 p-4 bg-gray-50  rounded-xl'>
-                                                    <p className="  text-[#383838] text-sm mb-4">
-                                                        &quot;Hi there! I&apos;ve been looking for a {item.title.toLowerCase()} just like this for my home
-                                                        office. I would really appreciate it and would be able to pick it up anytime. Thanks for
-                                                        considering!&quot;
-                                                    </p>
-                                                    <div className='@container'>
-                                                        <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
-                                                            <div className="flex flex-col @xl:flex-row flex-1 w-full gap-6">
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">3</div>
-                                                                </div>
-                                                                <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                    <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                                    <div className="text-xl font-semibold text-[#222222]">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </>
-                                    </div>
-                                )}
-                            </Card>
+                                            ))}
+                                        </CollapsibleContent>
+                                    </CardContent>
+                                </Card>
+                            </Collapsible>
                         ))}
                     </div>
 
                     {openCriteria && (
-                        <div className='hidden transition-all ease-out duration-300ms  xl:block p-6 overflow-hidden border rounded-lg w-[auto]'>
+                        <div className='hidden transition-all ease-out duration-300ms xl:block p-6 overflow-hidden border rounded-lg w-[auto]'>
                             <SortableList />
                         </div>
                     )}
@@ -423,14 +333,9 @@ const MactchingView = () => {
                 </TabsContent>
 
                 <TabsContent value="matched">
-                    {/* <div className="text-center py-12">
-                        <p className="text-[#626262]">No matched items yet.</p>
-                    </div> */}
-
                     <div className='grid gap-6'>
                         <MatchedCard setIsUnmatchedModal={setIsUnmatchedModal} />
                         <MatchedCard setIsUnmatchedModal={setIsUnmatchedModal} />
-
                     </div>
                 </TabsContent>
             </Tabs>
