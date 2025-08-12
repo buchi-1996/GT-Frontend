@@ -53,8 +53,8 @@ export function ListingImageCarousel({
         return (
             <div className={`relative ${className}`}>
                 <Image
-                    width={500}
-                    height={500}
+                    width={400}
+                    height={400}
                     src={images[0] || "/placeholder.svg"}
                     alt={alt}
                     className="w-full h-full object-cover"

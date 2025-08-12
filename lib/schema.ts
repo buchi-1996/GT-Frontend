@@ -285,3 +285,82 @@ export type resetPasswordData = z.infer<typeof resetPasswordSchema>
 
 
 
+
+export interface ListedItem extends ItemListingSchemaData {
+    id?: string;
+    imageUrls?: string[]; // For existing images from server
+    status: 'under-review' | 'published' | 'draft' | 'expired'
+}
+
+
+
+
+export const itemListingSchema = z.object({
+    // Basic details
+    title: z.string().min(2, "Title must be at least 2 characters").max(100),
+    description: z.string().min(10, "Description must be at least 10 characters").max(500),
+    weight: z.coerce.number().min(0.1, "Weight must be at least 0.1"),
+    itemWorth: z.coerce.number().min(0.01, "Item worth must be at least 0.01"),
+    itemColor: z.enum(["red", "blue", "green", "yellow", "black", "white", "gray", "brown", "orange", "purple", "pink", "multicolor", "other"], {
+        errorMap: () => ({ message: "Please select a color" })
+    }),
+
+    // Category and condition
+    category: z.string().min(1, "Category is required"),
+    condition: z.string().min(1, "Condition is required"),
+
+    availability: z.object({
+        // Regular weekly availability
+        weeklySchedule: z.array(
+            z.object({
+                day: z.enum(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']),
+                timeSlots: z.array(
+                    z.object({
+                        start: z.string(),
+                        end: z.string(),
+                    })
+                ),
+            })
+        ).optional(),
+
+        // Custom date availability
+        customDates: z.array(
+            z.object({
+                date: z.date(),
+                timeSlots: z.array(
+                    z.object({
+                        start: z.string(),
+                        end: z.string(),
+                    })
+                ),
+            })
+        ).optional(),
+    }).refine(data =>
+        (data.weeklySchedule && data.weeklySchedule.length > 0) ||
+        (data.customDates && data.customDates.length > 0),
+        {
+            message: "At least one availability slot is required"
+        }
+    ),
+
+    // Images
+    images: z.array(
+        z
+            .any()
+            .refine((file) => file instanceof File, "Each file must be a valid image")
+            .refine((file) => file.type.startsWith("image/"), "Each file must be an image")
+            .refine((file) => file.size <= 10 * 1024 * 1024, "Each image must be less than 10MB")
+    )
+        .min(1, "At least one image is required")
+        .max(10, "You can upload a maximum of 10 images"),
+
+    // Location
+    province: z.string().min(1, "Province is required"),
+    postCode: z.string().min(1, "Post code is required"),
+    address: z.string().min(5, "Address is required"),
+})
+
+
+
+// Infer type from schema
+export type ItemListingSchemaData = z.infer<typeof itemListingSchema>;

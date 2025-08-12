@@ -7,15 +7,18 @@ import PageDialog from "@/components/modal/PageDialog";
 import { UIStateProvider } from "./appstore/UIContext";
 import VerifyIdModal from "@/components/shared/VerifyId";
 import AllBadges from "@/components/shared/AllBadges";
+import AddItemModal from "@/components/multistep-form/AddItemModal";
 
 
 const AppModals = () => {
+
     return (
         <>
             <SheetModal />
             <PageDialog />
             <VerifyIdModal />
             <AllBadges />
+            <AddItemModal />
         </>
     )
 }

@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from 'react'
 
 interface UIContextType {
     isOpen: boolean;
@@ -32,6 +32,10 @@ interface UIContextType {
     setVerificationModalOpen: Dispatch<SetStateAction<boolean>>
     viewAllBadgeModal: boolean;
     setViewAllBadgeModal: Dispatch<SetStateAction<boolean>>
+    itemListingModalOpen: boolean;
+    setItemListingModalOpen: Dispatch<SetStateAction<boolean>>
+    isEditMode: boolean;
+    setIsEditMode: Dispatch<SetStateAction<boolean>>
     
 }
 
@@ -54,54 +58,54 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     const [verificationModalOpen, setVerificationModalOpen] = useState(false)
     const [viewAllBadgeModal, setViewAllBadgeModal] = useState(false)
 
-    
+    const [itemListingModalOpen, setItemListingModalOpen] = useState(false)
+    const [isEditMode, setIsEditMode] = useState(false)
     
 
-    const openModal = (content: ReactNode) => {
+    const openModal = useCallback((content: ReactNode) => {
         setModalContent(content);
         setIsOpen(true);
-    };
+    }, []);
 
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         setIsOpen(false);
         setModalContent(null);
-    };
+    }, []);
 
-
-    const openSheet = (content: ReactNode) => {
+    const openSheet = useCallback((content: ReactNode) => {
         setSheetContent(content);
         setIsSheetOpen(true);
-    }
-    const closeSheet = () => {
+    }, []);
+
+    const closeSheet = useCallback(() => {
         setIsSheetOpen(false);
         setSheetContent(null);
-        // setOpenCriteria(!openCriteria)
-    };
+    }, []);
 
-    const openSidebar = () => {
+    const openSidebar = useCallback(() => {
         setSidebarOpen(true)
         setOverlay(true)
         setSidebarCollapsed(false)
-    }
-    const closeSidebar = () => {
+    }, []);
+
+    const closeSidebar = useCallback(() => {
         setSidebarOpen(false)
         setOverlay(false)
-    }
+    }, []);
 
-
-    const openAddItem = (content: ReactNode) => {
+    const openAddItem = useCallback((content: ReactNode) => {
         setListingsContent(content);
         setIsAddItemDialogOpen(true);
-    }
-    const closeAddItem = () => {
+    }, []);
+
+    const closeAddItem = useCallback(() => {
         setIsAddItemDialogOpen(false);
         setListingsContent(null);
-    };
-
+    }, []);
 
    
 
-    const UIData = {
+    const UIData = useMemo(() => ({
         isOpen,
         setIsOpen,
         modalContent,
@@ -133,8 +137,47 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         setVerificationModalOpen,
         viewAllBadgeModal,
         setViewAllBadgeModal,
+        itemListingModalOpen,
+        setItemListingModalOpen,
+        isEditMode,
+        setIsEditMode
       
-    }
+    }), [ isOpen,
+        setIsOpen,
+        modalContent,
+        openModal,
+        closeModal,
+        sidebarOpen,
+        setSidebarOpen,
+        sidebarCollapsed,
+        setSidebarCollapsed,
+        isSheetOpen,
+        setIsSheetOpen,
+        sheetContent,
+        openSheet,
+        closeSheet,
+        openSidebar,
+        closeSidebar,
+        overlay,
+        setOverlay,
+        progress,
+        setProgress,
+        listingsContent,
+        isAddItemDialogOpen,
+        setIsAddItemDialogOpen,
+        openAddItem,
+        closeAddItem,
+        openCriteria,
+        setOpenCriteria,
+        verificationModalOpen,
+        setVerificationModalOpen,
+        viewAllBadgeModal,
+        setViewAllBadgeModal,
+        itemListingModalOpen,
+        setIsAddItemDialogOpen,
+        isEditMode,
+        setIsEditMode
+    ])
 
 
     return (

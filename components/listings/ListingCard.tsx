@@ -2,8 +2,10 @@
 
 import { Badge } from "@/components/ui/badge"
 import { ListingImageCarousel } from "./ListingImageCarousel"
-import { ListedItem } from "@/context/appstore/AppContext"
 import { Button } from "../ui/button"
+import { ListedItem } from "@/lib/schema"
+import { ItemDetailModal } from "./ItemDetailModal"
+import { useState } from "react"
 
 interface ItemCardProps {
     item: ListedItem
@@ -12,29 +14,31 @@ interface ItemCardProps {
     onList?: (item: ListedItem) => void
     onUnlist?: (item: ListedItem) => void
     onRepost?: (item: ListedItem) => void
-    onCardClick?: (item: ListedItem) => void
 }
 
-export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost, onCardClick }: ItemCardProps) {
+export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost }: ItemCardProps) {
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
 
-    const handleCardClick = () => {
-        onCardClick?.(item)
+
+    const handleShowItemDetails = () => {
+        setIsDetailModalOpen(true)
+        console.log(item)
     }
 
     const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-800 border-green-200"
-      case "under-review":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
-      case "draft":
-        return "bg-gray-100 text-gray-800 border-gray-200"
-      case "expired":
-        return "bg-red-100 text-red-800 border-red-200"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        switch (status) {
+            case "published":
+                return "bg-green-100 text-green-800 border-green-200"
+            case "under-review":
+                return "bg-yellow-100 text-yellow-800 border-yellow-200"
+            case "draft":
+                return "bg-gray-100 text-gray-800 border-gray-200"
+            case "expired":
+                return "bg-red-100 text-red-800 border-red-200"
+            default:
+                return "bg-gray-100 text-gray-800 border-gray-200"
+        }
     }
-  }
 
     const getStatusText = (status: string) => {
         switch (status) {
@@ -54,8 +58,8 @@ export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost
     return (
         <div className="flex flex-col bg-white rounded-xl border border-gray-200 overflow-hidden">
             {/* Image Section with Carousel */}
-            <div className="relative h-60">
-                <ListingImageCarousel images={item.images} alt={item.title} className="h-full w-full" />
+            <div className="relative h-48">
+                <ListingImageCarousel images={item.imageUrls as string[]} alt={item.title} className="h-full w-full" />
             </div>
 
             {/* Content Section */}
@@ -68,7 +72,7 @@ export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost
                         {getStatusText(item.status)}
                     </Badge>
                     <Badge variant="outline" className={`text-xs shadow-none border-none rounded-full py-2 px-4 font-medium bg-[#F1F3DE] text-[#989F42]`}>
-                        Expires in {item.expiresIn}
+                        Expires in 14 days
                     </Badge>
                 </div>
 
@@ -79,19 +83,19 @@ export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost
 
                 {/* Footer */}
                 <div className="grid grid-cols-2 items-center mt-auto gap-4">
-                    <Button onClick={handleCardClick} variant="secondary" className="shadow-none py-6 cursor-pointer" >View More</Button>
+                    <Button onClick={handleShowItemDetails} variant="secondary" className="shadow-none py-5 cursor-pointer" >View More</Button>
 
                     {item.status === "draft" && onList && (
-                        <Button variant="primary" className="py-6" onClick={() => onList(item)}>List Item</Button>
+                        <Button variant="primary" className="py-5" onClick={() => onList(item)}>List Item</Button>
                     )}
                     {item.status === "published" && onUnlist && (
-                        <Button variant="primary" className="py-6" onClick={() => onUnlist(item)}>Unlist Item</Button>
+                        <Button variant="primary" className="py-5" onClick={() => onUnlist(item)}>Unlist Item</Button>
                     )}
                     {item.status === "expired" && onRepost && (
-                        <Button variant="primary" className="py-6" onClick={() => onRepost(item)}>Repost Item</Button>
+                        <Button variant="primary" className="py-5" onClick={() => onRepost(item)}>Repost Item</Button>
                     )}
                     {item.status === "under-review" && onUnlist && (
-                        <Button variant="primary" className="py-6" onClick={() => onUnlist(item)}>Unlist Item</Button>
+                        <Button variant="primary" className="py-5" onClick={() => onUnlist(item)}>Unlist Item</Button>
                     )}
                     {onEdit && (
                         <Button variant="ghost" onClick={() => onEdit(item)}>Edit</Button>
@@ -101,6 +105,12 @@ export function ListingCard({ item, onEdit, onDelete, onList, onUnlist, onRepost
                     )}
                 </div>
             </div>
+            {/* Item Detail Modal */}
+            <ItemDetailModal
+                item={item}
+                open={isDetailModalOpen}
+                onOpenChange={setIsDetailModalOpen}
+            />
         </div>
     )
 }

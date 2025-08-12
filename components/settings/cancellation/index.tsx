@@ -21,7 +21,7 @@ const cancellationFormSchema = z.object({
 })
 
 
-type CancellationFormSchemaData = z.infer<typeof cancellationFormSchema>;
+type CancellationFormSchemaData =   
 
 const CancellationView = () => {
 

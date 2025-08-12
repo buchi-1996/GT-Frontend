@@ -50,7 +50,7 @@ const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        <Button onClick={() => setVerificationModalOpen(true)} className="hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
+        <Button onClick={() => setVerificationModalOpen(true)} className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
           <Verified /> Verify ID
         </Button>
 

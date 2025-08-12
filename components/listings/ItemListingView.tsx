@@ -6,10 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { Plus } from "lucide-react"
 import { useAppState, useUIState } from "@/hooks/useAppState"
 import { ListingCard } from "./ListingCard"
-import ListingForm from "./ListingForm"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { ListedItem } from "@/context/appstore/AppContext"
-import { ItemDetailModal } from "./ItemDetailModal"
+import { ListedItem } from "@/lib/schema"
 
 const tabs = [
     { id: "all", label: "All" },
@@ -20,11 +18,9 @@ const tabs = [
 ]
 
 export function ItemListingView() {
-    const { openAddItem } = useUIState()
-    const { listedItems, setListedItems, setItemListingFormData } = useAppState()
+    const { setItemListingModalOpen } = useUIState()
+    const { listedItems} = useAppState()
     const [activeTab, setActiveTab] = useState("all")
-    const [selectedItem, setSelectedItem] = useState<ListedItem | null>(null)
-    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
 
     const filteredItems = listedItems.filter((item) => {
         if (activeTab === "all") return true
@@ -36,68 +32,14 @@ export function ItemListingView() {
         return listedItems.filter((item) => item.status === tabId).length
     }
 
-    const handleCardClick = (item: ListedItem) => {
-        setSelectedItem(item)
-        setIsDetailModalOpen(true)
-    }
+  
 
-    const handleItemStatusChange = (item: ListedItem, newStatus: string) => {
-        setListedItems((prev) =>
-            prev.map((listItem) =>
-                listItem.id === item.id
-                    ? {
-                        ...listItem,
-                        status: newStatus as "published" | "under-review" | "draft" | "expired",
-                        expiresIn: newStatus === "published" ? "30 days" : newStatus === "draft" ? "Draft" : "Under Review",
-                    }
-                    : listItem,
-            ),
-        )
-        setIsDetailModalOpen(false)
-    }
-
-    const handleList = (item: ListedItem) => {
-        handleItemStatusChange(item, "published")
-    }
-
-    const handleUnlist = (item: ListedItem) => {
-        handleItemStatusChange(item, "draft")
-    }
+   
 
     const handleEdit = (item: ListedItem) => {
         // Close detail modal
-        setIsDetailModalOpen(false)
-
-        // Convert item data back to form format
-        const formData = {
-            title: item.title,
-            weight: item.weight || 0,
-            itemWorth: item.itemWorth || 0,
-            description: item.description,
-            image: [], // We'll handle existing images differently
-            category: item.category,
-            condition: item.condition,
-            specificDate: item.specificDate || [],
-            timeSlots: item.timeSlots || [],
-            province: item.province || "",
-            zipCode: item.zipCode || "",
-            address: item.address || "",
-            // Add existing images for display
-            existingImages: item.images || [],
-        }
-
-        // Set the form data in context
-        setItemListingFormData(formData)
-
-        // Open the edit form with a special edit mode
-        openAddItem(<ListingForm editMode={true} editItemId={item.id} />)
+        console.log('Editing')
     }
-
-    const handleDelete = (item: ListedItem) => {
-        setListedItems((prev) => prev.filter((listItem) => listItem.id !== item.id))
-        setIsDetailModalOpen(false)
-    }
-
 
 
     return (
@@ -125,7 +67,7 @@ export function ItemListingView() {
                     </ScrollArea>
                     <Button
                         variant="primary"
-                        onClick={() => openAddItem(<ListingForm />)}
+                        onClick={() => setItemListingModalOpen(true)}
                         className="py-4"
                     >
                         <Plus className="w-4 h-4 mr-2" />
@@ -138,9 +80,8 @@ export function ItemListingView() {
                     {filteredItems.map((item) => (
                         <ListingCard
                             key={item.id}
-                            onCardClick={handleCardClick}
                             item={item}
-                            onList={() => console.log("List item:", item.id)}
+                             onList={() => console.log("List item:", item.id)}
                             onUnlist={() => console.log("Unlist item:", item.id)}
                             onRepost={() => console.log("Repost item:", item.id)}
                         />
@@ -148,16 +89,7 @@ export function ItemListingView() {
                 </div>
             </div>
 
-            {/* Item Detail Modal */}
-            <ItemDetailModal
-                item={selectedItem}
-                open={isDetailModalOpen}
-                onOpenChange={setIsDetailModalOpen}
-                onEdit={handleEdit}
-                onList={handleList}
-                onUnlist={handleUnlist}
-                onDelete={handleDelete}
-            />
+            
         </div>
 
     )
