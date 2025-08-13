@@ -17,10 +17,6 @@ import SortableList from './SortableList'
 import { useUIState } from '@/hooks/useAppState'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import ResponsiveModal from '../modal/ResponsiveModal'
-import { Label } from '../ui/label'
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-import { Textarea } from '../ui/textarea'
-import ResponsiveAlert from '../modal/ResponsiveAlert'
 import MatchedCard from './MatchedCard'
 
 const items = [

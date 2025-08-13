@@ -7,7 +7,6 @@ import { Plus } from "lucide-react"
 import { useAppState, useUIState } from "@/hooks/useAppState"
 import { ListingCard } from "./ListingCard"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { ListedItem } from "@/lib/schema"
 
 const tabs = [
     { id: "all", label: "All" },
@@ -36,10 +35,10 @@ export function ItemListingView() {
 
    
 
-    const handleEdit = (item: ListedItem) => {
-        // Close detail modal
-        console.log('Editing')
-    }
+    // const handleEdit = (item: ListedItem) => {
+    //     // Close detail modal
+    //     console.log('Editing')
+    // }
 
 
     return (

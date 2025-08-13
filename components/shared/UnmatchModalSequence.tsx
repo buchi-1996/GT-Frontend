@@ -110,8 +110,7 @@ const unmatchOptions = [
 
 const UnmatchModalSequence = () => {
 
-    const { isUnmatchedModal, setIsUnmatchedModal, isOpen, setIsOpen } = useUIState()
-    const [isGiftedModal, setIsGiftedModal] = useState(false)
+    const { isUnmatchedModal, setIsUnmatchedModal} = useUIState()
     const [reasonModal, setReasonModal] = useState(false)
     const [feedBackModal, setFeedBackModal] = useState(false)
     const [isRelisted, setIsRelisted] = useState(false)
@@ -120,19 +119,8 @@ const UnmatchModalSequence = () => {
 
 
 
-    const handleGiftItemClose = () => {
-        setIsGiftedModal(false)
-    }
+    
 
-    const handleGiftItem = () => {
-        console.log("Item gifted successfully!");
-        setIsOpen(false);
-        setIsGiftedModal(true);
-    }
-
-    const handleUnmatchClose = () => {
-        setIsUnmatchedModal(false);
-    }
 
     const handleUnmatch = () => {
         console.log("Item un-matched successfully!");

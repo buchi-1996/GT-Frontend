@@ -5,11 +5,11 @@ import Link from 'next/link'
 import MenuItem from './MenuItem'
 import { NavigationSection } from '@/types'
 import { Card, CardContent } from '../ui/card'
-import { ChevronRight, X, Verified, Router } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
+import { ChevronRight, X, Verified  } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useUIState } from '@/hooks/useAppState'
 import User from '../header/User'
-import { useNavigation } from 'react-day-picker'
+import { useRouter } from 'next/router'
 
 
 const navigationData: NavigationSection[] = [
@@ -131,8 +131,7 @@ const MenuSidebar = () => {
 
   const pathname = usePathname()
   const { overlay, setOverlay, closeSidebar, sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed, setVerificationModalOpen } = useUIState()
-  const router = useRouter()
-
+const router = useRouter()
 
   useEffect(() => {
     const handleSidebarResize = () => {
