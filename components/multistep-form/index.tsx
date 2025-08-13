@@ -186,7 +186,6 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
             return;
         }
 
-        console.log(fromTime,)
 
         if (fromTime >= toTime) {
             toast.error("End time must be after start time", {
