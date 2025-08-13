@@ -25,7 +25,6 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   
   const [listedItems, setListedItems] = useState<ListedItem[]>([])
 
-  console.log("items", listedItems)
 
   
 

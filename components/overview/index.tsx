@@ -37,7 +37,7 @@ const OverViewScreen = () => {
                 />
                 <StatsCard
                     title="Pickups"
-                    link="/dashboard/pickups"
+                    link="/dashboard/pickup"
                     count={24}
                     weeklyStats="+5 this week"
                     Icon={<Package className="w-5 h-5 text-[#FB923C]" />}
