@@ -24,20 +24,24 @@ export default function DashBoardLayout({
     children: React.ReactNode;
 }>): React.ReactNode {
     return (
-        <html lang="en">
+                <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <Providers>
-                    <div className="relative flex h-full">
+                    <div className="relative flex h-full min-h-screen">
                         <MenuSidebar />
-                        <div className="flex-1 flex flex-col min-h-dvh w-full">
+                        <div className="flex-1 flex flex-col min-h-screen w-full">
                             <DashboardHeader />
-                            <div className="w-full md:container flex-1 mx-auto px-4 py-6 md:px-6 lg:p-12">
-                                {children}
-                            </div>
+                            {/* Remove the container constraints that limit sticky behavior */}
+                            <main className="flex-1 w-full overflow-auto">
+                                <div className="w-full md:container mx-auto px-4 py-6 md:px-6 lg:px-12 lg:py-8">
+                                    {children}
+                                </div>
+                            </main>
                         </div>
                     </div>
                 </Providers>
             </body>
         </html>
+
     );
 }

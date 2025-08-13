@@ -21,6 +21,7 @@ const OverViewScreen = () => {
             <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 sm:gap-6 xl:gap-8">
                 <StatsCard
                     title="Item Listed"
+                    link="/dashboard/item-listing"
                     count={24}
                     weeklyStats="+5 this week"
                     Icon={(<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none"><path stroke="#0D9488" d="M11.188 6.188h10M11.188 12.188h10M11.188 18.188h10M3.188 15.188h1.5c.278 0 .418 0 .534.023a1.2 1.2 0 0 1 .942.942c.024.116.024.256.024.535 0 .278 0 .418-.024.534a1.2 1.2 0 0 1-.942.942c-.116.023-.256.023-.535.023-.278 0-.418 0-.534.024a1.2 1.2 0 0 0-.942.942c-.023.116-.023.256-.023.535v.9c0 .282 0 .424.087.512.088.087.23.087.513.087h2.4M3.188 3.188h1.2a.3.3 0 0 1 .3.3v5.7m0 0h-1.5m1.5 0h1.5" /></svg>)}
@@ -28,6 +29,7 @@ const OverViewScreen = () => {
                 />
                 <StatsCard
                     title="Matches Made"
+                    link="/dashboard/matching"
                     count={24}
                     weeklyStats="+5 this week"
                     Icon={<Users className="w-5 h-5 text-[#8e6add]" />}
@@ -35,6 +37,7 @@ const OverViewScreen = () => {
                 />
                 <StatsCard
                     title="Pickups"
+                    link="/dashboard/pickups"
                     count={24}
                     weeklyStats="+5 this week"
                     Icon={<Package className="w-5 h-5 text-[#FB923C]" />}
@@ -42,6 +45,7 @@ const OverViewScreen = () => {
                 />
                 <StatsCard
                     title="Rating"
+                    link="/dashboard/reputation"
                     count={0}
                     rating={5}
                     reviews={20}

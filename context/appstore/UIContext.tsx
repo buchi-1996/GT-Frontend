@@ -36,6 +36,8 @@ interface UIContextType {
     setItemListingModalOpen: Dispatch<SetStateAction<boolean>>
     isEditMode: boolean;
     setIsEditMode: Dispatch<SetStateAction<boolean>>
+    isUnmatchedModal: boolean;
+    setIsUnmatchedModal: Dispatch<SetStateAction<boolean>>
     
 }
 
@@ -57,6 +59,7 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
     const [openCriteria, setOpenCriteria] = useState(true)
     const [verificationModalOpen, setVerificationModalOpen] = useState(false)
     const [viewAllBadgeModal, setViewAllBadgeModal] = useState(false)
+    const [isUnmatchedModal, setIsUnmatchedModal] = useState(false)
 
     const [itemListingModalOpen, setItemListingModalOpen] = useState(false)
     const [isEditMode, setIsEditMode] = useState(false)
@@ -140,7 +143,9 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         itemListingModalOpen,
         setItemListingModalOpen,
         isEditMode,
-        setIsEditMode
+        setIsEditMode,
+        isUnmatchedModal,
+        setIsUnmatchedModal
       
     }), [ isOpen,
         setIsOpen,
@@ -176,7 +181,9 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         itemListingModalOpen,
         setIsAddItemDialogOpen,
         isEditMode,
-        setIsEditMode
+        setIsEditMode,
+        isUnmatchedModal,
+        setIsUnmatchedModal
     ])
 
 

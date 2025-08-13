@@ -8,14 +8,14 @@ import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Trash2 } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
-
-interface MatchedCardProps {
-    setIsUnmatchedModal: (isOpen: boolean) => void;
-}
+import { useUIState } from '@/hooks/useAppState'
 
 
-const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
+
+
+const MatchedCard = () => {
     const isMobileBtn = useMediaQuery("(max-width: 768px)")
+    const { setIsUnmatchedModal } = useUIState()
 
     const isIconBtn = isMobileBtn ? 'icon' : "default"
 
@@ -39,23 +39,23 @@ const MatchedCard = ({ setIsUnmatchedModal }: MatchedCardProps) => {
                                         <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                         <AvatarFallback className="bg-[#0d9488] text-xs text-white">SJ</AvatarFallback>
                                     </Avatar>
-                                    <h3 className="font-normal text-xs md:text-sm capitalize text-nowrap text-gray-500">Sarah Johnson</h3>
+                                    <h3 className="font-semibold text-sm md:text-md capitalize text-nowrap text-gray-500">Sarah Johnson</h3>
                                 </div>
                                 <div className='hidden my-2 sm:my-0 flex-wrap xl:flex xl:border-l xl:pl-3  items-center gap-4'>
-                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
-                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
-                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
-                                    <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
+                                    <Badge className={`font-semibold bg-[#2563EB] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>10 pickups</Badge>
+                                    <Badge className={`font-semibold bg-[#C00F0C] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>2 no-show</Badge>
+                                    <Badge className={`font-semibold bg-[#7C843D] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>Joined 6 months ago</Badge>
+                                    <Badge className={`font-semibold bg-[#5B5B5B] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>5km away</Badge>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <div className='flex xl:hidden myy-1 md:my-2 md:my-0 flex-wrap flex items-center gap-4'>
-                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>10 pickups</Badge>
-                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>2 no-show</Badge>
-                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>Joined 6 months ago</Badge>
-                        <Badge className={`font-bold text-[#626262] bg-gray-50 py-1 lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>5km away</Badge>
+                        <Badge className={`font-normal bg-[#2563EB] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>10 pickups</Badge>
+                                    <Badge className={`font-normal bg-[#C00F0C] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>2 no-show</Badge>
+                                    <Badge className={`font-normal bg-[#7C843D] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>Joined 6 months ago</Badge>
+                                    <Badge className={`font-normal bg-[#5B5B5B] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>5km away</Badge>
                     </div>
                     <div className='absolute top-3 md:top-6 right-2 md:right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
                         <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>

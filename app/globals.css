@@ -11,6 +11,8 @@
   --text-heading-text: var(--heading-text);
   --color-app-black: var(--gray-text);
   --color-app-blue: var(--blue-bg);
+  --color-green-bg: var(--light-green);
+  --color-green-text: var(--green-text);
  
 
 
@@ -59,6 +61,8 @@
   --large-text: 2rem;
   --gray-text: #222222;
   --blue-bg: #2563EB;
+  --light-green: #E6F8F4;
+  --green-text: #0D9488;
 
 
   --banner-background: #F0F4F8;

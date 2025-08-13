@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import FeedbackReceivedAlert from './FeedbackReceivedAlert';
+import { useUIState } from '@/hooks/useAppState';
 
 
 interface PickupItemprops {
@@ -70,7 +71,7 @@ const getStatusText = (status: string) => {
     }
 }
 
-const shortFeedbackOptions = [
+const positiveFeedbackOptions = [
     {
         id: 'grateful',
         title: "Grateful",
@@ -106,6 +107,55 @@ const shortFeedbackOptions = [
     }
 ]
 
+const reportOptions = [
+    { value: "emergency-situation", label: "Emergency Situation (e.g., medical, family emergency)" },
+    { value: "work-commitment", label: "Unexpected Work Commitment" },
+    { value: "health-issues", label: "Personal Health Issues on the Day" },
+    { value: "transportation-challenges", label: "Transportation or Mobility Challenges" },
+    { value: "forgot-appointment", label: "Forgot the Appointment" },
+    { value: "dependent-care", label: "Dependent Care Responsibilities (e.g., no babysitter)" },
+    { value: "misunderstood-time", label: "Misunderstood or Confused Collection Date/Time" },
+    { value: "receiver-failed-confirm", label: "Receiver Failed to Confirm in Time" },
+    { value: "could-not-locate", label: "Could Not Locate the Receiver or Their Contact" },
+    { value: "receiver-breached-condition", label: "Receiver Breached a Pre-agreed Condition or Requirement" },
+    { value: "change-of-mind", label: "Change of Mind Due to Concerns About the Receiver" },
+    { value: "safety-concerns", label: "Safety or Security Concerns" },
+    { value: "weather-conditions", label: "Weather Conditions Prevented Travel" },
+    { value: "platform-error", label: "Platform/App Notification Error or Miscommunication" },
+    { value: "item-damaged", label: "Item Was Damaged or Lost Before Handover" },
+    { value: "double-booking", label: "Double Booking or Scheduling Conflict" },
+    { value: "other", label: "Other reasons", hasTextarea: true }
+];
+
+const negativeFeedbackOptions = [
+    {
+        id: 'no-follow-up',
+        title: "No follow-up/no-show",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#0D9488" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406Z" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" d="M5.333 9.667s1.067.608 1.6 1.5c0 0 1.6-3.5 3.733-4.667" /></svg>
+    },
+    {
+        id: 'poor-communication',
+        title: "Poor communication",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#B36ADD" stroke-linejoin="round" d="M14.666 8.212c0 3.522-2.985 6.378-6.666 6.378a6.94 6.94 0 0 1-1.29-.12c-.306-.057-.46-.086-.566-.07-.107.017-.258.097-.561.258a4.333 4.333 0 0 1-2.816.438c.365-.45.615-.988.725-1.566.066-.353-.099-.696-.346-.947-1.124-1.141-1.813-2.679-1.813-4.371C1.333 4.69 4.318 1.834 8 1.834c3.681 0 6.666 2.856 6.666 6.378Z" /><path stroke="#B36ADD" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.333" d="M7.997 8.5h.006m2.657 0h.006m-5.333 0h.006" /></svg>
+
+    },
+    {
+        id: 'entitled-behaviour',
+        title: "Entitled behaviour",
+        icon: <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.75242 8.94907H5.44644C4.45729 8.94907 3.96271 8.94907 3.7519 8.62293C3.54108 8.29687 3.74195 7.84253 4.14368 6.93389L5.35144 4.20215C5.7167 3.376 5.89934 2.96292 6.25364 2.73146C6.60794 2.5 7.05759 2.5 7.95699 2.5H9.34992C10.4425 2.5 10.9887 2.5 11.1947 2.8569C11.4008 3.2138 11.1298 3.69059 10.5877 4.64415L9.87312 5.90125C9.60366 6.3753 9.46892 6.61233 9.47079 6.80635C9.47326 7.0585 9.60732 7.2908 9.82392 7.418C9.99059 7.51593 10.2621 7.51593 10.8053 7.51593C11.4919 7.51593 11.8352 7.51593 12.014 7.6348C12.2463 7.7892 12.3679 8.06547 12.3253 8.34213C12.2925 8.55507 12.0615 8.8104 11.5997 9.32113L7.90959 13.4015C7.18479 14.203 6.82239 14.6037 6.57904 14.4769C6.33568 14.3501 6.45254 13.8215 6.68626 12.7641L7.14412 10.6931C7.32206 9.888 7.41106 9.48547 7.19706 9.21727C6.98306 8.94907 6.57284 8.94907 5.75242 8.94907Z" stroke="#3B82F6" strokeLinejoin="round" />
+        </svg>
+    },
+    {
+        id: 'leave-a-comment',
+        title: "Leave a comment",
+        icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" d="M1.667 8.5c0-2.986 0-4.479.927-5.406.928-.928 2.42-.928 5.406-.928 2.986 0 4.479 0 5.406.928.928.927.928 2.42.928 5.405 0 2.986 0 4.479-.928 5.406-.927.928-2.42.928-5.406.928-2.985 0-4.478 0-5.406-.928-.927-.927-.927-2.42-.927-5.406ZM8 5.834v5.333m2.666-2.666H5.333" /></svg>
+    }
+
+]
+
+
+
 const PickupView = () => {
     const [pickupItems] = useState<PickupItemprops[]>([
         {
@@ -113,7 +163,7 @@ const PickupView = () => {
             title: "Sdorens 118 Sofa Couch",
             image: "/assets/pickup-items/26d5c2792470ae73a928ea3596432d5ae1d5b71d.png",
             status: "scheduled",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
@@ -123,7 +173,7 @@ const PickupView = () => {
             title: "Office Chair",
             image: "/assets/pickup-items/298a5bcde4a39366ac3054cd4e4b7b6d3f856897.png",
             status: "picked-up",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
@@ -133,7 +183,7 @@ const PickupView = () => {
             title: "Sdorens 118 Sofa Couch",
             image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
             status: "pending",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
@@ -143,7 +193,7 @@ const PickupView = () => {
             title: "Vintage Desk Lamp",
             image: "/assets/pickup-items/a6caeef3522ab10e25891ab48ea01ad3e52e49a9.png",
             status: "pending",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
@@ -153,7 +203,7 @@ const PickupView = () => {
             title: "Office Chair",
             image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
             status: "dispute",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
@@ -163,13 +213,14 @@ const PickupView = () => {
             title: "Office Chair",
             image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
             status: "no-show",
-            pickupDate: "2023-10-01",
+            pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
             rating: 4.5,
         },
     ])
     const [activeTab, setActiveTab] = useState("all")
+    const {setIsUnmatchedModal} = useUIState()
 
     const filteredItems = pickupItems.filter((item) => {
         if (activeTab === "all") return true
@@ -187,7 +238,7 @@ const PickupView = () => {
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
                         <Button variant="secondary" className='py-5 w-full'>Send Message</Button>
-                        <Button variant="destructive" className='py-5 w-full'>Un-Match</Button>
+                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" className='py-5 w-full'>Un-Match</Button>
                     </div>
                 )
             case "picked-up":
@@ -233,9 +284,30 @@ const PickupView = () => {
     const [doNextValue, setDoNextValue] = useState('')
     const [doNextModal, setDoNextModal] = useState(false)
     const commentRef = useRef<string>('');
+    const [noShowUploadedFileName, setNoShowUploadedFileName] = useState('');
+    const [disputeUploadedFileName, setDisputeUploadedFileName] = useState('');
 
+    const handleNoShowFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setNoShowUploadedFileName(file.name);
+        } else {
+            setNoShowUploadedFileName('');
+        }
+    };
 
+    const handleDisputeFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setDisputeUploadedFileName(file.name);
+        } else {
+            setDisputeUploadedFileName('');
+        }
+    };
 
+    const suitableFeedbackOptions = () => {
+        return rating <= 3 ? negativeFeedbackOptions : positiveFeedbackOptions;
+    }
 
 
     const handleFeedbackButtonClick = () => {
@@ -269,7 +341,7 @@ const PickupView = () => {
         console.log("Feedback submitted:", { feedback, comment: commentRef.current, rating })
         setIsFeedbackModal(false)
         setFeedbackReceivedModal(true)
-        setRating(0)
+        // setRating(0)
         setHoveredRating(0)
         commentRef.current = '';
         // Here you can add logic to save the feedback
@@ -327,11 +399,11 @@ const PickupView = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`px-4 py-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id ? "bg-[#F9F9F9] text-app-black" : "text-gray-400 hover:text-gray-900"
-                                        }`}
+                                    className={`px-4 text-[0.9rem] py-2 whitespace-nowrap rounded-md font-medium transition-colors flex items-center gap-2   ${activeTab === tab.id ? "bg-green-bg text-green-text" : "text-gray-500 hover:text-gray-900"
+                                        } `}
                                 >
                                     {tab.label}
-                                    <Badge variant="secondary" className={`text-gray-600 text-xs ${activeTab === tab.id ? "text-app-black" : "text-gray-400"}`}>
+                                    <Badge variant="secondary" className={`text-gray-600 text-xs ${activeTab === tab.id ? "bg-white text-app-black" : "text-gray-400"}`}>
                                         {getTabCount(tab.id)}
                                     </Badge>
                                 </button>
@@ -479,10 +551,10 @@ const PickupView = () => {
                             </button>
                         ))}
                     </div>
-                    <div className='border-0  border-t w-full py-4'>
+                    {rating ? <div className='border-0  border-t w-full py-4'>
                         <h4 className="text-md font-normal text-[#222222] mb-6">Leave feedback</h4>
                         <div className='flex flex-wrap items-center gap-3 mb-4'>
-                            {shortFeedbackOptions.map((option) => (
+                            {suitableFeedbackOptions().map((option) => (
                                 <button
                                     key={option.id}
                                     className={`border rounded-full flex items-center gap-2 py-2 px-4 cursor-pointer ${feedback.includes(option.id) ? "bg-[#E6F8F4]/40 border-[#85C9C3] text-app-black" : "text-gray-500 bg-transparent hover:bg-[#F9F9F9] hover:text-app-black"
@@ -505,7 +577,8 @@ const PickupView = () => {
 
 
                         </div>
-                    </div>
+                    </div> : ''}
+
                     <Button onClick={handleFeedbackSubmit} disabled={feedback.length === 0} variant="primary" className='w-full py-6 px-6'>Submit</Button>
                     {/* Product Info */}
                     <div className="w-full flex items-center gap-3 p-3 bg-[#f9fafb] rounded-lg mt-2">
@@ -538,7 +611,7 @@ const PickupView = () => {
                 </div>
             </ResponsiveAlert> */}
             {/* Feedback Received - Mark No show */}
-            <FeedbackReceivedAlert 
+            <FeedbackReceivedAlert
                 subtext='Thank you for taking out time to give a feedback for receiver'
                 open={feedbackReceivedModal}
                 onClose={() => setFeedbackReceivedModal(false)}
@@ -587,37 +660,56 @@ const PickupView = () => {
                     </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={selectedValue} onValueChange={setSelectedValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
-                        <div className="flex items-center gap-3">
-                            <RadioGroupItem value="no response to messages" className="ring ring-app-primary  text-app-primary" id="no-response" />
-                            <Label htmlFor="no-response" className="text-gray-500 ">No response to messages</Label>
-                        </div>
+                    <RadioGroup
+                        value={selectedValue}
+                        onValueChange={setSelectedValue}
+                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4 scrollbar-hide'
+                    >
+                        {reportOptions.map((option) => (
+                            <div key={option.value} className={option.hasTextarea ? "w-full grid gap-2 items-start" : "flex items-center gap-3"}>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <RadioGroupItem
+                                        value={option.value}
+                                        className="ring ring-app-primary text-app-primary"
+                                        id={option.value}
+                                    />
+                                    <Label htmlFor={option.value} className="leading-5 text-gray-500">
+                                        {option.label}
+                                    </Label>
+                                </div>
 
-                        <div className="flex items-center gap-3">
-                            <RadioGroupItem value="never showed up" className="ring ring-app-primary  text-app-primary" id="never-showed-up" />
-                            <Label htmlFor="never-showed-up" className="text-gray-500 ">Never showed up</Label>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <RadioGroupItem value="showed at wrong time" className="ring ring-app-primary  text-app-primary" id="showed-at-wrong-time" />
-                            <Label htmlFor="showed-at-wrong-time" className="text-gray-500 ">Showed at wrong time</Label>
-                        </div>
-                        <div className="w-full grid gap-2 items-start">
-                            <div className="flex items-center gap-3 mb-4">
-                                <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
-                                <Label htmlFor="other" className="text-gray-500 ">Other reasons</Label>
+                                {option.hasTextarea && (
+                                    <Textarea
+                                        rows={7}
+                                        className='placeholder:text-gray-400 p-2 mt-1 min-w-full bg-white shadow-none border-none'
+                                        placeholder='Please describe what happened'
+                                    />
+                                )}
                             </div>
-                            <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Please described what happened' />
-                        </div>
+                        ))}
+
                         <Label htmlFor="report-no-show-file" className="mb-6 gap-2 overflow-hidden flex items-center cursor-pointer">
                             <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                                    <path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" />
+                                    <path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" />
+                                </svg>
                             </span>
-                            <div className="grid">
+                            <div className="flex items-center gap-3">
                                 <span className='text-sm text-app-primary'>Upload evidence</span>
-                                <Input type="file" className='sr-only w-1/2' id='report-no-show-file' />
+                                {noShowUploadedFileName && (
+                                    <span className="text-sm underline text-gray-500">{noShowUploadedFileName}</span>
+                                )}
+                                <Input
+                                    type="file"
+                                    className='sr-only w-1/2'
+                                    id='report-no-show-file'
+                                    onChange={handleNoShowFileUpload}
+                                />
                             </div>
                         </Label>
                     </RadioGroup>
+                    
                 </div>
                 <Button
                     onClick={handleReportNoShowSubmit}
@@ -671,7 +763,7 @@ const PickupView = () => {
 
 
             {/* Counter Dispute Modal */}
-            <ResponsiveModal open={disputeModalOpen} close={()=> setDisputeModalOpen(false)} className="max-w-full md:max-w-[500px] min-h-[90%] md:min-h-auto pb-10 px-6">
+            <ResponsiveModal open={disputeModalOpen} close={() => setDisputeModalOpen(false)} className="max-w-full md:max-w-[500px] min-h-[90%] md:min-h-auto pb-10 px-6">
                 <div className='grid gap-2 my-6 md:my-auto'>
                     <h4 className='font-bold text-xl'>Counter Dispute</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>Help us understand what happened</p>
@@ -713,8 +805,18 @@ const PickupView = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
                             </span>
                             <div className="grid">
+                                <div className="flex items-center gap-3">
                                 <span className='text-sm text-app-primary'>Upload evidence</span>
-                                <Input type="file" className='sr-only w-1/2' id='report-no-show-file' />
+                                {disputeUploadedFileName && (
+                                    <span className="text-sm underline text-gray-500">{disputeUploadedFileName}</span>
+                                )}
+                                <Input
+                                    type="file"
+                                    className='sr-only w-1/2'
+                                    id='report-no-show-file'
+                                    onChange={handleDisputeFileUpload}
+                                />
+                            </div>
                             </div>
                         </Label>
                     </RadioGroup>
@@ -727,7 +829,7 @@ const PickupView = () => {
             </ResponsiveModal>
 
             {/* Feedback Received - Counter Dispute */}
-            <FeedbackReceivedAlert 
+            <FeedbackReceivedAlert
                 subtext='we&apos;ve recorded your dispute and will follow up if needed.'
                 open={disputeFeedbackReceived}
                 onClose={() => setDisputeFeedbackReceived(false)}

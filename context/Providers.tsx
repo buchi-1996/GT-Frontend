@@ -8,6 +8,7 @@ import { UIStateProvider } from "./appstore/UIContext";
 import VerifyIdModal from "@/components/shared/VerifyId";
 import AllBadges from "@/components/shared/AllBadges";
 import AddItemModal from "@/components/multistep-form/AddItemModal";
+import UnmatchModalSequence from "@/components/shared/UnmatchModalSequence";
 
 
 const AppModals = () => {
@@ -19,6 +20,7 @@ const AppModals = () => {
             <VerifyIdModal />
             <AllBadges />
             <AddItemModal />
+            <UnmatchModalSequence />
         </>
     )
 }

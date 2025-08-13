@@ -94,7 +94,7 @@ const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState(
 
 
     return (
-        <div className="w-full">
+        <div className=" w-full">
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-[#222222]">Selection Criteria</h2>
                 <Button onClick={handleCriteriaHide} variant="ghost" size="sm" className="cursor-pointer text-[#0d9488] hover:text-[#009975]">
@@ -107,7 +107,7 @@ const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState(
 
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={selectionCriteria.map((item) => item.id)} strategy={verticalListSortingStrategy}>
-                    <div className="space-y-3">
+                    <div className="space-y-3 h-80 overflow-auto scrollbar-hide">
                         {selectionCriteria.map((criteria) => (
                             <SortableCriteriaItem key={criteria.id} criteria={criteria} />
                         ))}
