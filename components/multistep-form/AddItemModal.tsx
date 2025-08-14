@@ -11,7 +11,7 @@ const AddItemModal = () => {
 
     const {itemListingModalOpen, setItemListingModalOpen, isEditMode} = useUIState()
   return (
-    <ResponsiveModal open={itemListingModalOpen} close={()=> setItemListingModalOpen(false)} className='min-h-[90%] md:min-h-96  px-4'>
+    <ResponsiveModal open={itemListingModalOpen} close={()=> setItemListingModalOpen(false)} className=' min-h-[90%] md:min-h-96  px-2 md:px-4'>
         <MultiStepForm isEditMode={isEditMode} />
     </ResponsiveModal>
   )

@@ -28,7 +28,7 @@ export default function SettingsLayout({
                 <Providers>
                     <div className='@container flex flex-col lg:flex-row items-start gap-4 md:gap-8'>
                         <SettingsNav />
-                        <div className="overflow-x-hidden w-full h-full">
+                        <div className="w-full h-full">
                             {children}
                         </div>
                     </div>

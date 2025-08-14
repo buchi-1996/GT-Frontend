@@ -26,7 +26,7 @@ interface CriteriaItem {
 
 
 const SortableList = () => {
-const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState()
+    const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState()
 
     const isMobile = useMediaQuery("(max-width: 1280px)")
 
@@ -84,7 +84,7 @@ const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState(
     }
 
     const handleCriteriaHide = () => {
-        
+
         if (isMobile) {
             openSheet(<SortableList />)
             setIsSheetOpen(false)
@@ -94,27 +94,29 @@ const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState(
 
 
     return (
-        <div className=" w-full">
-            <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-[#222222]">Selection Criteria</h2>
-                <Button onClick={handleCriteriaHide} variant="ghost" size="sm" className="cursor-pointer text-[#0d9488] hover:text-[#009975]">
-                    Hide
-                </Button>
-            </div>
-            <div className="bg-[#fffbd4] border border-[#E5A000] rounded-lg p-3 mb-6">
-                <p className="text-sm text-[#E5A000]">Drag to prioritize how interested users appear.</p>
+        <div className="w-full">
+            <div className='sticky top-0 z-10 bg-white pt-6 pb-[8px]'>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-[#222222]">Selection Criteria</h2>
+                    <Button onClick={handleCriteriaHide} variant="ghost" size="sm" className="cursor-pointer text-[#0d9488] hover:text-[#009975]">
+                        Hide
+                    </Button>
+                </div>
+                <div className="bg-[#fffbd4] border border-[#E5A000] rounded-lg p-3 mb-2">
+                    <p className="text-sm text-[#E5A000]">Drag to prioritize how interested users appear.</p>
+                </div>
             </div>
 
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={selectionCriteria.map((item) => item.id)} strategy={verticalListSortingStrategy}>
-                    <div className="space-y-3 h-80 overflow-auto scrollbar-hide">
+                    <div className="space-y-3">
                         {selectionCriteria.map((criteria) => (
                             <SortableCriteriaItem key={criteria.id} criteria={criteria} />
                         ))}
                     </div>
                 </SortableContext>
             </DndContext>
-            
+
         </div>
     )
 }

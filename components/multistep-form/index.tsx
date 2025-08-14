@@ -438,19 +438,20 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
 
             {/* Desktop Tab Navigation */}
             <div className=" h-fit px-2 m-0">
-                <div className="flex border-b border-t border-t-transparent h-fit">
+                <div className="grid grid-cols-4 border-b border-t border-t-transparent h-fit">
                     {steps.map((step, index) => {
                         const isCompleted = index < currentStep
                         const isCurrent = index === currentStep - 1
+                        console.log('first', step.title.slice(0, 3), step.title.length)
                         return (
                             <div
                                 key={index}
-                                className={`${index === 0 ? "rounded-tl-lg border-l" : `${index === 3 && "rounded-tr-lg"}`} border-r border-t border-b flex-1 px-4 py-3 text-center transition-all duration-300 ${isCompleted || isCurrent
+                                className={`${index === 0 ? "rounded-tl-lg border-l" : `${index === 3 && "rounded-tr-lg"}`}  border-r border-t border-b flex-1  py-2 md:py-3 text-center transition-all duration-300 ${isCompleted || isCurrent
                                     ? "border-[#85C9C3] bg-[#E6F8F4] text-[#0D9488] font-medium"
                                     : "border-transparent text-gray-500 hover:text-gray-700"
                                     }`}
                             >
-                                <span className="text-sm">{isDesktop ? step.title : step.title.split(' ')[0]}</span>
+                                <span className="text-sm">{isDesktop ? step.title : step.title.length  === 10 ? step.title.slice(0, 3) : step.title.split(' ')[0]}</span>
                             </div>
                         )
                     })}
@@ -635,7 +636,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                                                                     <div key={index} className="relative">
                                                                         <div className="grid gap-2 items-center bg-green-50 rounded-lg border border-green-200 rounded p-2 w-full">
                                                                             <div className="flex gap-2 items-center justify-between">
-                                                                                <span className="text-xs text-green-700 truncate max-w-24">{file.name}</span>
+                                                                                <span className="text-xs text-green-700 truncate max-w-18 md:max-w-24">{file.name}</span>
                                                                                 <button
                                                                                     type="button"
                                                                                     onClick={(e) => {
@@ -744,7 +745,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                                             : 'border text-gray-600 hover:bg-gray-200'
                                             }`}
                                     >
-                                        Custom
+                                        {isDesktop ? 'Custom' : 'C'} 
                                     </button>
                                 </div>
 

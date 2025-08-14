@@ -3,7 +3,9 @@ import React from 'react'
 
 const Matching = () => {
   return (
-    <MactchingView />
+    <div className="min-h-screen">
+      <MactchingView />
+    </div>
   )
 }
 

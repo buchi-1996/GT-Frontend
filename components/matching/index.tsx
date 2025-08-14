@@ -160,7 +160,7 @@ const MactchingView = () => {
 
 
     return (
-        <div className="flex flex-row items-start gap-10 relative">
+        <div className="min-h-screen flex flex-row items-start gap-10">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid w-fit grid-cols-2 mb-6 gap-6 bg-gray-50 p-1 h-auto bg-transparent rounded-lg">
                     <TabsTrigger
@@ -176,8 +176,119 @@ const MactchingView = () => {
                         Matched
                     </TabsTrigger>
                 </TabsList>
+                <TabsContent value="pending" className="mt-0">
+                    <div className="flex gap-10">
+                        {/* Main content area */}
+                        <div className="flex-1">
+                            <div className="grid gap-6 md:gap-8">
+                                {items.map((item) => (
+                                    <Collapsible
+                                        key={item.id}
+                                        open={openItemId === item.id}
+                                        onOpenChange={() => handleItemToggle(item.id)}
+                                    >
+                                        <Card className="relative overflow-hidden w-full xl:min-w-[550px] pt-3 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 bg-transparent border-b shadow-none">
+                                            <CardContent className="p-0">
+                                                <CollapsibleTrigger className="w-full cursor-pointer">
+                                                    <div className="flex items-center lg:items-center justify-between gap-4">
+                                                        <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
+                                                            <Image
+                                                                width={200}
+                                                                height={200}
+                                                                src={item.image || "/placeholder.svg"}
+                                                                alt={item.title}
+                                                                className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
+                                                            />
+                                                            <div className="flex-1 text-left">
+                                                                <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">{item.title}</h2>
+                                                                <div className="flex items-start lg:items-center gap-2 md:gap-3">
+                                                                    <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
+                                                                    <Badge className="text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="absolute top-0 right-0 lg:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg lg:rounded-full text-[#0d9488]">
+                                                            <Users className="w-3 md:w-5 h-3 md:h-5" />
+                                                            <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
+                                                            <ChevronRight
+                                                                className={`w-4 md:w-5 h-4 md:h-5 transition-transform duration-200 ${openItemId === item.id ? "rotate-90 text-[#0d9488]" : "text-[#0d9488]"
+                                                                    }`}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </CollapsibleTrigger>
 
-                <TabsContent value="pending" className="flex gap-10 flex-row items-start">
+                                                <CollapsibleContent className="border-t border-[#f1f1f1] mt-2 md:mt-3 pt-6 space-y-10">
+                                                    {matchedUsers.map((user, index) => (
+                                                        <div key={user.id} className={`@container ${index < matchedUsers.length - 1 ? 'border-b pb-12' : ''}`}>
+                                                            <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
+                                                                <div className='flex gap-4 flex-row items-start'>
+                                                                    <Avatar className="w-10 md:w-12 h-10 md:h-12">
+                                                                        <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                                                        <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
+                                                                    </Avatar>
+                                                                    <div className="flex-1">
+                                                                        <div className="flex flex-col gap-1 mb-1">
+                                                                            <h3 className="text-sm md:text-md font-semibold text-[#222222]">{user.name}</h3>
+                                                                            <div className='flex items-center-safe'>
+                                                                                <div className="flex items-center gap-1 mr-1">
+                                                                                    <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
+                                                                                    <span className="text-xs md:text-sm font-medium">{user.rating}</span>
+                                                                                </div>
+                                                                                <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• {user.distance}</span>
+                                                                                <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} {user.requestedTime}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex items-center gap-1 text-sm text-[#626262]">
+                                                                    <Clock className="w-4 h-4" />
+                                                                    <span className="text-xs md:text-sm text-nowrap">Joined {user.joinedTime}</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className='grid gap-4 p-4 bg-gray-50 rounded-xl'>
+                                                                <p className="text-[#383838] text-sm mb-4">
+                                                                    &quot;{user.message}&quot;
+                                                                </p>
+                                                                <div className='@container'>
+                                                                    <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
+                                                                        <div className="flex flex-col @xl:flex-row flex-1 w-full gap-4 md:gap-6">
+                                                                            <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                                                <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
+                                                                                <div className="text-xl font-semibold text-[#222222]">{user.pickups}</div>
+                                                                            </div>
+                                                                            <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
+                                                                                <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
+                                                                                <div className="text-xl font-semibold text-[#222222]">{user.noShowRecord}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </CollapsibleContent>
+                                            </CardContent>
+                                        </Card>
+                                    </Collapsible>
+                                ))}
+                            </div>
+                        </div>
+
+                        {openCriteria && (<div className="hidden xl:block bg-white z-10">
+                            <div className="h-120 rounded-lg overflow-auto bg-white border scrollbar-hide sticky top-44 p-6 pt-0">
+                                <SortableList />
+                            </div>
+                        </div>)}
+
+
+
+                    </div>
+                </TabsContent>
+
+                {/* <TabsContent value="pending" className=" flex gap-10 flex-row items-start">
                     <div className='flex-1 grid gap-6 md:gap-8'>
                         {items.map((item) => (
                             <Collapsible
@@ -272,27 +383,25 @@ const MactchingView = () => {
                                 </Card>
                             </Collapsible>
                         ))}
-                    </div>
-                    {openCriteria && (
-                        <div className='hidden xl:block sticky top-0 h-fit self-start'>
-                            <div className='p-6 border rounded-lg min-w-[280px]'>
+                    </div> */}
+                {/* {openCriteria && (
+                        <div className='hidden xl:block sticky border rounded-lg p-6 top-40 '>
                                 <SortableList />
-                            </div>
                         </div>
-                    )}
-                    {(!openCriteria || isMobile) && (
-                        <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
-                            <span>
-                                <svg width="44" height="44" className="w-44 h-44 text-gray-900" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
-                                    <path d="M12.2422 17V12C12.2422 11.5286 12.2422 11.2929 12.0957 11.1464C11.9493 11 11.7136 11 11.2422 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M11.9922 8H12.0012" stroke="#626262" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </span>
-                            Selection Criteria
-                        </Button>
-                    )}
-                </TabsContent>
+                    )} */}
+              
+                {(!openCriteria || isMobile) && (
+                    <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
+                        <span>
+                            <svg width="44" height="44" className="w-44 h-44 text-gray-900" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M12.2422 17V12C12.2422 11.5286 12.2422 11.2929 12.0957 11.1464C11.9493 11 11.7136 11 11.2422 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M11.9922 8H12.0012" stroke="#626262" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </span>
+                        Selection Criteria
+                    </Button>
+                )}
 
                 <TabsContent value="matched">
                     <div className='grid gap-6'>
@@ -301,7 +410,6 @@ const MactchingView = () => {
                     </div>
                 </TabsContent>
             </Tabs>
-
             {/* Accept Modal */}
 
             <ResponsiveModal open={isOpen} close={handleOpenchange} className='py-6 md:py-20'>
