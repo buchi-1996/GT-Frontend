@@ -76,9 +76,9 @@ export default function VerifyIDForm({ setVerifyInProgressModal, setVerification
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent className="shadow-xl w-full border-none px-1 py-2">
-                                        <SelectItem value="passport">Passport</SelectItem>
+                                        <SelectItem value="passport">International Passport</SelectItem>
                                         <SelectItem value="driver_license">Driver&apos;s License</SelectItem>
-                                        <SelectItem value="national_id">National ID</SelectItem>
+                                        <SelectItem value="national_id">Resident Permit</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage className="text-left text-sm" />

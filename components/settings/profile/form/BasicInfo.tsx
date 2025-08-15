@@ -224,7 +224,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
           )}
         />
       </div>
-      <Button onClick={() => setVerificationModalOpen(true)} className='block md:@lg:hidden py-4 h-12' variant="secondary">Verify account</Button>
+      <Button onClick={() => setVerificationModalOpen(true)} className='block md:@lg:hidden py-4 h-12' variant="secondary">Verify ID</Button>
       
     </div>
   )

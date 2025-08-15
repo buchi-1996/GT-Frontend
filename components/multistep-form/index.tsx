@@ -155,8 +155,8 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
         return {
             title: "",
             description: "",
-            weight: 0,
-            itemWorth: 0,
+            weight: undefined,
+            itemWorth: undefined,
             itemColor: undefined,
             category: "",
             condition: "",
@@ -704,7 +704,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="shadow-xl border-none px-1 py-2">
-                                                {["New", "Good", "Fair", "Worn", "Needs repair"].map((condition) => (
+                                                {["New", "Good", "Used", "Fair", "Worn", "Needs repair"].map((condition) => (
                                                     <SelectItem key={condition} value={condition} className="py-3 px-4">
                                                         {condition}
                                                     </SelectItem>

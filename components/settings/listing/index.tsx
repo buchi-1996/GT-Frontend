@@ -23,6 +23,9 @@ const listingFormSchema = z.object({
 type ListingFormSchema = z.infer<typeof listingFormSchema>;
 
 
+const categories = ["Electronics", "Furniture", "Clothing", "Books", "Sports", "Home & Garden"]
+
+
 
 const ListingView = () => {
 
@@ -68,10 +71,12 @@ const ListingView = () => {
                                                     <SelectValue placeholder="Select an option" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="shadow-xl w-full border-none px-1 py-2">
-                                                <SelectItem value="electronics" className="py-3 px-4">Electronics</SelectItem>
-                                                <SelectItem value="home_and_furniture" className="py-3 px-4">Home & Funitures</SelectItem>
-                                                <SelectItem value="Office" className="py-3 px-4">Office</SelectItem>
+                                            <SelectContent className="shadow-xl border-none px-1 py-2">
+                                                {categories.map((cat) => (
+                                                    <SelectItem key={cat} value={cat} className="py-3 px-4">
+                                                        {cat}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -91,10 +96,12 @@ const ListingView = () => {
                                                     <SelectValue placeholder="Select an option" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="shadow-xl w-full border-none px-1 py-2">
-                                                <SelectItem value="male" className="py-3 px-4">Good</SelectItem>
-                                                <SelectItem value="female" className="py-3 px-4">Needs Repair</SelectItem>
-                                                <SelectItem value="other" className="py-3 px-4">Like New</SelectItem>
+                                            <SelectContent className="shadow-xl border-none px-1 py-2">
+                                                {["New", "Good", "Used", "Fair", "Worn", "Needs repair"].map((condition) => (
+                                                    <SelectItem key={condition} value={condition} className="py-3 px-4">
+                                                        {condition}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -210,7 +217,7 @@ const ListingView = () => {
                         </Button>
                     </div>
 
-                    
+
                 </form>
             </Form>
 

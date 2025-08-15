@@ -306,7 +306,7 @@ const PickupView = () => {
     };
 
     const suitableFeedbackOptions = () => {
-        return rating <= 3 ? negativeFeedbackOptions : positiveFeedbackOptions;
+        return rating <= 2 ? negativeFeedbackOptions : positiveFeedbackOptions;
     }
 
 

@@ -20,7 +20,7 @@ const MatchedCard = () => {
     const isIconBtn = isMobileBtn ? 'icon' : "default"
 
     return (
-        <Card className="relative w-full xl:min-w-[550px] py-2 md:py-4 md:py-6 px-2 md:px-4 rounded-lg lg:rounded-none bg-transparent  lg:border-0 lg:border-b shadow-none cursor-pointer" >
+        <Card className="relative w-full xl:min-w-[550px] py-2 md:py-4 md:py-6 px-2 md:px-4 rounded-lg lg:rounded-none bg-transparent  lg:border-0 lg:border-b shadow-none" >
             <CardContent className="p-0">
                 <div className=" flex flex-col 2xl:flex-row items-start 2xl:items-center justify-between gap-4">
                     <div className='border-b md:border-0 pb-3 md:pb-4 md:pb-0 w-full flex flex-row items-center lg:items-start gap-3 md:gap-6'>
