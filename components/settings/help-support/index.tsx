@@ -79,7 +79,7 @@ const HelpAndSupportView = () => {
                         </span>
                         <h4 className='text-gray-600 text-sm font-bold text-center'>Live Chat</h4>
                         <p className='text-center text-sm text-gray-500'>Chat with our support team in real-time</p>
-                        <Button className='mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
+                        <Button className='w-auto md:w-28 mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
 
                     </div>
                     <div className='bg-gray-50 rounded-lg p-6 grid place-items-center gap-2'>
@@ -88,7 +88,7 @@ const HelpAndSupportView = () => {
                         </span>
                         <h4 className='text-gray-600 text-sm font-bold text-center'>Request Callback</h4>
                         <p className='text-center text-sm text-gray-500'>Have our team call you back at your convenience</p>
-                        <Button className='mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Request Call</Button>
+                        <Button className='w-auto md:w-28 mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Request Call</Button>
 
                     </div>
                     <div className='bg-gray-50 col-span-1 rounded-lg p-6 grid place-items-center gap-2'>
@@ -97,7 +97,7 @@ const HelpAndSupportView = () => {
                         </span>
                         <h4 className='text-gray-600 text-sm font-bold text-center'>Submit Ticket</h4>
                         <p className='text-center text-sm text-gray-500'>Send us a detailed message about your issue</p>
-                        <Button className='mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Create Ticket</Button>
+                        <Button className='w-auto md:w-28 mt-2 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Create Ticket</Button>
                     </div>
                 </div>
             </div>
@@ -109,37 +109,37 @@ const HelpAndSupportView = () => {
                         <TabsList className="grid auto-cols-max shrink-1 grid-flow-col  bg-red-400  mb-6 gap-2 bg-gray-50 p-1 h-auto bg-transparent rounded-lg">
                             <TabsTrigger
                                 value="all"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 All
                             </TabsTrigger>
                             <TabsTrigger
                                 value="getting-started"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 Getting Started
                             </TabsTrigger>
                             <TabsTrigger
                                 value="creating-listings"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 Creating Listings
                             </TabsTrigger>
                             <TabsTrigger
                                 value="pickups"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 Pickups
                             </TabsTrigger>
                             <TabsTrigger
                                 value="safety-trust"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 Safety & Trust
                             </TabsTrigger>
                             <TabsTrigger
                                 value="account-issues"
-                                className="data-[state=active]:bg-gray-50 data-[state=active]:text-black data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
+                                className="data-[state=active]:bg-green-bg data-[state=active]:text-green-text data-[state=active]:shadow-none bg-transparent text-gray-500 hover:bg-gray-50 rounded-md px-3 py-2"
                             >
                                 Account Issues
                             </TabsTrigger>

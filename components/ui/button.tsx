@@ -12,15 +12,17 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 cursor-pointer",
         destructive:
-          "bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer hover:bg-[#ffe8e8] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "border border-[#ffe8e8] bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer hover:bg-[#ffe8e8] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        destructive_inverted:
+          "border border-red-500 bg-red-500 text-[#ffe8e8] shadow-none  cursor-pointer hover:bg-red-600 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
-          "bg-gray-50 shadow-none text-secondary-foreground  hover:bg-secondary/80 cursor-pointer",
+          "border bg-gray-50 shadow-none text-secondary-foreground  hover:bg-secondary/80 cursor-pointer",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        primary: "bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md shadow-none",
+        primary: "border border-[#0d9488] bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md shadow-none",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

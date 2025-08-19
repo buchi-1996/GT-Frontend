@@ -6,22 +6,24 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar } from 'lucide-react'
 import { PhoneInput } from "@/components/PhoneInput"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { CompleteProfileFormData } from "@/lib/schema"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useUIState } from "@/hooks/useAppState"
+import { useState } from "react"
+import { DatePicker } from "@/components/DatePicker"
 
 interface BasicInfoSectionProps {
   form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function BasicInfoSection({ form }: BasicInfoSectionProps) {
-    const { setVerificationModalOpen } = useUIState()
+  const { setVerificationModalOpen } = useUIState()
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
 
-  
+
 
   return (
     <div className="@container grid gap-8 border py-6 px-4 md:px-6 rounded-lg">
@@ -50,7 +52,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
             </div>
           </div>
         </div>
-        <Button onClick={() => setVerificationModalOpen(true)} className='hidden md:@lg:block' variant="secondary">Verify account</Button>
+        <Button onClick={() => setVerificationModalOpen(true)} className='hidden md:@lg:block' variant="secondary">Verify ID</Button>
       </div>
       <h3 className="font-semibold text-[#222222]">Basic Information</h3>
 
@@ -97,22 +99,17 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="profile.dateOfBirth"
-          render={({ field }) => (
+        
             <FormItem>
               <FormLabel className="text-gray-500">Date of Birth</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input {...field} placeholder="DD/MM/YY" className="py-6 rounded-lg shadow-none" />
-                  <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#626262]" />
-                </div>
-              </FormControl>
-              <FormMessage />
+              <DatePicker
+                date={selectedDate}
+                onSelect={setSelectedDate}
+                placeholder="DD/MM/YY"
+                disablePastDates={true}
+              />
             </FormItem>
-          )}
-        />
+        
 
         <FormField
           control={form.control}
@@ -225,7 +222,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
         />
       </div>
       <Button onClick={() => setVerificationModalOpen(true)} className='block md:@lg:hidden py-4 h-12' variant="secondary">Verify ID</Button>
-      
+
     </div>
   )
 }

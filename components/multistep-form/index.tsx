@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { itemListingSchema, ItemListingSchemaData, ListedItem } from "@/lib/schema";
 import { useAppState, useUIState } from "@/hooks/useAppState";
 import ResponsiveModal from "../modal/ResponsiveModal";
+import { conditionOptions } from "@/lib/data"
 
 // Type definitions
 type DayAbbreviation = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
@@ -704,7 +705,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="shadow-xl border-none px-1 py-2">
-                                                {["New", "Good", "Used", "Fair", "Worn", "Needs repair"].map((condition) => (
+                                                {conditionOptions.map((condition) => (
                                                     <SelectItem key={condition} value={condition} className="py-3 px-4">
                                                         {condition}
                                                     </SelectItem>

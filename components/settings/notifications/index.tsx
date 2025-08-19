@@ -20,7 +20,9 @@ const notificationsViewSchema = z.object({
     notificationFrequency: z.string().optional(),
     newInterestReceivedAlert: z.boolean().optional(),
     pickupRemindersAlert: z.boolean().optional(),
+    platformCampaignsAlert: z.boolean().optional(),
     feedbackAndThankyouNotesAlert: z.boolean().optional(),
+
     weeklyDigestSettings: z.object({
         dayOfWeek: z.string(),
         time: z.string()
@@ -40,10 +42,11 @@ const NotificationsView = () => {
             emailNotifications: true,
             smsNotifications: false,
             pushNotifications: true,
-            notificationFrequency: "",
+            notificationFrequency: "real_time",
             newInterestReceivedAlert: true,
-            pickupRemindersAlert: false,
+            pickupRemindersAlert: true,
             feedbackAndThankyouNotesAlert: true,
+            platformCampaignsAlert: true,
             weeklyDigestSettings: {
                 dayOfWeek: "",
                 time: ""
@@ -63,8 +66,8 @@ const NotificationsView = () => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className='grid hidden lg:block pb-6'>
-                        <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Cancellation Preferences</h4>
-                        <p className='text-gray-500 text-sm'>Manage your cancellation settings and pre-saved reasons</p>
+                        <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Notification Settings</h4>
+                        <p className='text-gray-500 text-sm'>Choose how and when you want to receive notifications</p>
                     </div>
                     <div className='py-6 border-t-0 lg:border-t  border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Notification Channels</h3>
@@ -143,10 +146,10 @@ const NotificationsView = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <RadioGroup value={field.value || ""} onValueChange={field.onChange} className='grid gap-6'>
+                                        <RadioGroup defaultValue={field.value || ""} value={field.value || ""} onValueChange={field.onChange} className='grid gap-6'>
                                             <div className="flex items-start gap-3">
-                                                <RadioGroupItem value="reschedule with the same person" className="ring ring-app-primary  text-app-primary" id="reschedule" />
-                                                <Label htmlFor="reschedule" className="text-gray-500 grid gap-2">
+                                                <RadioGroupItem value="real_time" className="ring ring-app-primary  text-app-primary" id="real_time" />
+                                                <Label htmlFor="real_time" className="text-gray-500 grid gap-2">
                                                     <h4 className='text-gray-800 font-semibold'>Real-time</h4>
                                                     <p className='text-sm text-gray-500'>Receive notifications immediately</p>
                                                 </Label>
@@ -186,6 +189,10 @@ const NotificationsView = () => {
                                                                             <SelectItem value="monday" className="py-3 px-4">Monday</SelectItem>
                                                                             <SelectItem value="tuesday" className="py-3 px-4">Tuesday</SelectItem>
                                                                             <SelectItem value="wednesday" className="py-3 px-4">Wednesday</SelectItem>
+                                                                            <SelectItem value="thursday" className="py-3 px-4">Thursday</SelectItem>
+                                                                            <SelectItem value="friday" className="py-3 px-4">Friday</SelectItem>
+                                                                            <SelectItem value="saturday" className="py-3 px-4">Saturday</SelectItem>
+                                                                            <SelectItem value="sunday" className="py-3 px-4">Sunday</SelectItem>
                                                                         </SelectContent>
                                                                     </Select>
                                                                 </FormControl>
@@ -206,9 +213,9 @@ const NotificationsView = () => {
                                                                             </SelectTrigger>
                                                                         </FormControl>
                                                                         <SelectContent className="shadow-xl w-full border-none px-1 py-2">
-                                                                            <SelectItem value="11:00" className="py-3 px-4">11:00</SelectItem>
-                                                                            <SelectItem value="13:00" className="py-3 px-4">13:00</SelectItem>
-                                                                            <SelectItem value="16:00" className="py-3 px-4">16:00</SelectItem>
+                                                                            <SelectItem value="11:00" className="py-3 px-4">16:00</SelectItem>
+                                                                            <SelectItem value="13:00" className="py-3 px-4">17:00</SelectItem>
+                                                                            <SelectItem value="16:00" className="py-3 px-4">18:00</SelectItem>
                                                                         </SelectContent>
                                                                     </Select>
                                                                 </FormControl>
@@ -279,6 +286,27 @@ const NotificationsView = () => {
                                             <div>
                                                 <h4 className="font-semibold text-sm text-[#222222] mb-1">Feedback & Thank-you Notes</h4>
                                                 <p className="text-sm text-[#626262]">When receivers leave feedback or thank you</p>
+                                            </div>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-[#14ae7d]"
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="platformCampaignsAlert"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                            <div>
+                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Platform Campaigns & Community Events</h4>
+                                                <p className="text-sm text-[#626262]">Updates about special events and campaigns</p>
                                             </div>
                                             <FormControl>
                                                 <Switch

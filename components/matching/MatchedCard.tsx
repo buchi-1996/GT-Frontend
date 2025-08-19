@@ -1,93 +1,87 @@
 "use client"
 
 import React from 'react'
-import { Card, CardContent } from '../ui/card'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { Trash2 } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useUIState } from '@/hooks/useAppState'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
 
 
 
 
 const MatchedCard = () => {
-    const isMobileBtn = useMediaQuery("(max-width: 768px)")
     const { setIsUnmatchedModal } = useUIState()
 
-    const isIconBtn = isMobileBtn ? 'icon' : "default"
 
     return (
-        <Card className="relative w-full xl:min-w-[550px] py-2 md:py-4 md:py-6 px-2 md:px-4 rounded-lg lg:rounded-none bg-transparent  lg:border-0 lg:border-b shadow-none" >
-            <CardContent className="p-0">
-                <div className=" flex flex-col 2xl:flex-row items-start 2xl:items-center justify-between gap-4">
-                    <div className='border-b md:border-0 pb-3 md:pb-4 md:pb-0 w-full flex flex-row items-center lg:items-start gap-3 md:gap-6'>
-                        <Image
-                            width={200}
-                            height={200}
-                            src={"/assets/giver-items/Frame 2087328010-2.png"}
-                            alt="Item Image"
-                            className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
-                        />
-                        <div className="flex-1">
-                            <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">Vintage Desk Lamp</h2>
-                            <div className='flex flex-row items-start xl:items-center gap-4'>
-                                <div className='flex gap-3 flex-row items-center'>
-                                    <Avatar className="w-6 h-6">
-                                        <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                        <AvatarFallback className="bg-[#0d9488] text-xs text-white">SJ</AvatarFallback>
-                                    </Avatar>
-                                    <h3 className="font-semibold text-sm md:text-md capitalize text-nowrap text-gray-500">Sarah Johnson</h3>
-                                </div>
-                                <div className='hidden my-2 sm:my-0 flex-wrap xl:flex xl:border-l xl:pl-3  items-center gap-4'>
-                                    <Badge className={`font-semibold bg-[#2563EB] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>10 pickups</Badge>
-                                    <Badge className={`font-semibold bg-[#C00F0C] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>2 no-show</Badge>
-                                    <Badge className={`font-semibold bg-[#7C843D] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>Joined 6 months ago</Badge>
-                                    <Badge className={`font-semibold bg-[#5B5B5B] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-sm lg:text-md`}>5km away</Badge>
-                                </div>
+        <div className='rounded-xl border overflow-hidden'>
+            <div className='relative'>
+                <Image
+                    src="/assets/pickup-items/26d5c2792470ae73a928ea3596432d5ae1d5b71d.png"
+                    alt="Matched Item"
+                    width={1000}
+                    height={1000}
+                    className="w-full h-48 object-cover"
+                />
+                <Badge className={`absolute bottom-5 right-5 font-semibold bg-[#F3EAFD] text-[#8E6ADD]  py-1 border-none px-2 lg:px-3 rounded-full text-xs lg:text-sm`}>Fair</Badge>
+            </div>
+            <div className='p-5'>
+                <HoverCard>
+                    <HoverCardTrigger className='cursor-default'>
+                        <h4 className='font-[500px] text-md'>Sdorens 118&quot; Sofa Couch</h4>
+                        <div className='flex gap-2 border-b pb-3 flex-row items-center'>
+                            <Avatar className="w-6 h-6">
+                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                <AvatarFallback className="bg-[#0d9488] text-xs text-white">SJ</AvatarFallback>
+                            </Avatar>
+                            <div className='flex items-baseline  justify-between w-full'>
+                                <h3 className="font-normal text-xs capitalize text-nowrap text-gray-500 flex gap-2 ">Sarah Johnson <span className='flex gap-2 items-center'>• 4 pickups • 0 no-show</span></h3>
                             </div>
                         </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent align="start" className="w-80 shadow-2xl shadow-[#eeeeee] border-none">
+                        <ul className="flex flex-col justify-between gap-4">
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" d="M10.666 1.334v2.667M5.333 1.334v2.667M8.667 2.666H7.333c-2.514 0-3.77 0-4.552.781C2 4.228 2 5.485 2 8v1.334c0 2.514 0 3.77.781 4.552.781.781 2.038.781 4.552.781h1.334c2.514 0 3.77 0 4.552-.781.781-.781.781-2.038.781-4.552V7.999c0-2.514 0-3.77-.781-4.552-.781-.781-2.038-.781-4.552-.781ZM2 6.666h12" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">Member since January 2025</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#FB923C" strokeLinecap="round" strokeLinejoin="round" d="M8 14.666c-.545 0-1.067-.22-2.109-.66C3.297 12.91 2 12.362 2 11.44V4.666m6 10c.545 0 1.067-.22 2.109-.66C12.703 12.91 14 12.362 14 11.44V4.666m-6 10V7.569M5.55 6.462l-1.947-.943C2.534 5.002 2 4.743 2 4.334c0-.41.534-.668 1.603-1.185l1.948-.943C6.753 1.625 7.354 1.334 8 1.334c.646 0 1.247.29 2.45.872l1.947.943C13.466 3.666 14 3.925 14 4.334c0 .41-.534.668-1.603 1.185l-1.948.943c-1.202.581-1.803.872-2.449.872-.646 0-1.247-.29-2.45-.872ZM4 8l1.333.667M11.334 2.666 4.667 5.999" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">4 pickups</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#C00F0C" strokeLinecap="round" strokeLinejoin="round" d="M3.35 14c.012-1.157.012-2.297.007-3.386m0 0c-.015-3.64-.082-6.706.106-7.919.244-1.575 2.799-.142 5.85 1.037l1.375.593c1.012.436 2.457 1.21 1.822 2.116-.261.372-.804.799-1.805 1.27l-7.348 2.903Z" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">0 no-show</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.50197 2.79723L2.68339 3.27209C2.0246 3.65425 1.6952 3.84533 1.5141 4.16322C1.33301 4.4811 1.33301 4.86822 1.33301 5.64245V11.0855C1.33301 12.1028 1.33301 12.6115 1.56118 12.8945C1.71301 13.0829 1.92578 13.2095 2.16101 13.2515C2.51451 13.3146 2.94733 13.0635 3.81292 12.5614C4.40071 12.2204 4.96641 11.8663 5.66959 11.9623C5.98945 12.006 6.29455 12.1577 6.90474 12.4611L9.44734 13.7253C9.99727 13.9988 10.0023 14 10.6139 14H11.9997C13.2567 14 13.8853 14 14.2758 13.6009C14.6663 13.2017 14.6663 12.5593 14.6663 11.2745V6.781C14.6663 5.49615 14.6663 4.85373 14.2758 4.45459C13.8853 4.05544 13.2567 4.05544 11.9997 4.05544H10.6139C10.0023 4.05544 9.99727 4.05426 9.44734 3.7808L7.22627 2.67642C6.2989 2.21531 5.83522 1.98476 5.34126 2.00078C4.84729 2.01681 4.39885 2.27695 3.50197 2.79723Z" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M5.33301 2V11.6667" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M10 4.33398V13.6673" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
 
-                    </div>
-                    <div className='flex xl:hidden myy-1 md:my-2 md:my-0 flex-wrap flex items-center gap-4'>
-                        <Badge className={`font-normal bg-[#2563EB] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>10 pickups</Badge>
-                                    <Badge className={`font-normal bg-[#C00F0C] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>2 no-show</Badge>
-                                    <Badge className={`font-normal bg-[#7C843D] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>Joined 6 months ago</Badge>
-                                    <Badge className={`font-normal bg-[#5B5B5B] text-white py-1 lg:py-1 px-2 lg:px-3 rounded-full text-xs`}>5km away</Badge>
-                    </div>
-                    <div className='absolute top-3 md:top-6 right-2 md:right-4 xl:top-auto xl:right-auto xl:relative lg:mt-2 flex items-center gap-2 md:gap-3'>
-                        <Button onClick={() => setIsUnmatchedModal(true)} variant="destructive" size={isIconBtn} className=' w-8 h-8 md:w-10 md:h-10 lg:h-0 lg:w-auto lg:py-6 bg-[#ffe8e8] text-red-500 shadow-none  cursor-pointer'>
-                            <Trash2 size={8} className="size-4 md:size-5 block lg:hidden" />
-                            <span className="hidden lg:block">
-                                Un-Match
-                            </span>
-                        </Button>
-                        <Button variant="primary" size={isIconBtn} className='py-4 px-[16px] lg:px-auto lg:py-6 w-6 h-6 md:w-10 md:h-10 lg:h-0 lg:w-auto'>
-                            <span className="block lg:hidden text-white">
-                                <svg
-                                    className="size-[17px] m-0 p-0 md:size-[18px] font-bold stroke-2 text-white stroke-white"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke="currentColor" d="M8.5 14.5h7m-7-5H12"></path>
-                                    <path
-                                        stroke="currentColor"
-                                        d="M14.17 20.89c4.184-.277 7.516-3.657 7.79-7.9.053-.83.053-1.69 0-2.52-.274-4.242-3.606-7.62-7.79-7.899a33 33 0 0 0-4.34 0c-4.184.278-7.516 3.657-7.79 7.9-.053.83-.053 1.69 0 2.52.1 1.545.783 2.976 1.588 4.184.467.845.159 1.9-.328 2.823-.35.665-.526.997-.385 1.237.14.24.455.248 1.084.263 1.245.03 2.084-.322 2.75-.813.377-.279.566-.418.696-.434s.387.09.899.3c.46.19.995.307 1.485.34 1.425.094 2.914.094 4.342 0Z"
-                                    ></path>
-                                </svg>
-                            </span>
-                            <span className="hidden lg:block">Send Message</span>
-                        </Button>
-                    </div>
+                                </span>
+                                <span className="text-sm text-gray-600">2.4km away</span>
+                            </li>
+                        </ul>
+                    </HoverCardContent>
+                </HoverCard>
+                <div className='grid grid-cols-2 gap-4 mt-4'>
+                    <Button variant="secondary" className='py-5'>Send Message</Button>
+                    <Button onClick={()=> setIsUnmatchedModal(true)} variant="destructive" className='py-5'>Un-Match</Button>
                 </div>
-
-            </CardContent>
-        </Card>
+            </div>
+        </div >
     )
 }
 

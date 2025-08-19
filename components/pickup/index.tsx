@@ -15,6 +15,7 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import FeedbackReceivedAlert from './FeedbackReceivedAlert';
 import { useUIState } from '@/hooks/useAppState';
+import { toast } from 'sonner';
 
 
 interface PickupItemprops {
@@ -49,6 +50,8 @@ const getStatusColor = (status: string) => {
             return "bg-[#FFDDDD] text-[#C00F0C] border-gray-200"
         case "pending":
             return "bg-[#E7EFF9] text-[#2563EB] border-red-200"
+        case "dispute":
+            return "bg-[#E7EFF9] text-[#2563EB] border-red-200"
         default:
             return "bg-gray-100 text-gray-800 border-gray-200"
     }
@@ -65,7 +68,7 @@ const getStatusText = (status: string) => {
         case "dispute":
             return "Dispute"
         case "pending":
-            return "Pending  Confirmation"
+            return "Pickup Pending"
         default:
             return status
     }
@@ -191,8 +194,8 @@ const PickupView = () => {
         {
             id: "4",
             title: "Vintage Desk Lamp",
-            image: "/assets/pickup-items/a6caeef3522ab10e25891ab48ea01ad3e52e49a9.png",
-            status: "pending",
+            image: "/assets/pickup-items/9df6ff8665696f806e931303f6305ec6e85e89d0.png",
+            status: "dispute",
             pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
@@ -201,8 +204,8 @@ const PickupView = () => {
         {
             id: "5",
             title: "Office Chair",
-            image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
-            status: "dispute",
+            image: "/assets/pickup-items/cfa5b76f7683cbb3b70e5c6075ef96b40b3c4cc8.png",
+            status: "no-show",
             pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
@@ -210,9 +213,9 @@ const PickupView = () => {
         },
         {
             id: "6",
-            title: "Office Chair",
-            image: "/assets/pickup-items/4238693ee6ba2a233895d815749f8745323d13ed.png",
-            status: "no-show",
+            title: "Sdorens 118 Sofa Couch",
+            image: "/assets/pickup-items/a6caeef3522ab10e25891ab48ea01ad3e52e49a9.png",
+            status: "pending",
             pickupDate: "Oct 1, 2025",
             location: "Capitol Hill, Seattle",
             receiver: "John Doe",
@@ -220,7 +223,7 @@ const PickupView = () => {
         },
     ])
     const [activeTab, setActiveTab] = useState("all")
-    const {setIsUnmatchedModal} = useUIState()
+    const { setIsUnmatchedModal } = useUIState()
 
     const filteredItems = pickupItems.filter((item) => {
         if (activeTab === "all") return true
@@ -247,19 +250,23 @@ const PickupView = () => {
                 )
             case "no-show":
                 return (
-                    <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item moved to draft</div>
+                    <div className='grid grid-cols-2 w-full gap-3'>
+                        <Button  variant="secondary" className='py-5 w-full'>Archive</Button>
+                        <Button  variant="primary" className='py-5 w-full'>Relist</Button>
+                    </div>
+                    // <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item moved to draft</div>
                 )
             case "pending":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button onClick={() => handleMarkNoShow(id)} variant="destructive" className='py-5 w-full'>Mark as No-show</Button>
+                        <Button onClick={() => handleMarkNoShow(id)} variant="destructive_inverted" className='py-5 w-full'>Mark as No-show</Button>
                         <Button onClick={() => handlePickupConfirmation(id)} variant="primary" className='py-5 w-full'>Mark as Picked up</Button>
                     </div>
                 )
             case "dispute":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button variant="secondary" className='py-5 w-full'>Widthdraw Pickup</Button>
+                        <Button variant="secondary" className='py-5 w-full'>Give Reason</Button>
                         <Button onClick={() => setDisputeModalOpen(true)} variant="primary" className='py-5 w-full'>Counter Dispute</Button>
                     </div>
                 )
@@ -323,17 +330,17 @@ const PickupView = () => {
 
     const handleFeedbackSubmit = () => {
         if (feedback.length === 0) {
-            alert("Please select at least one feedback option.")
+            toast.error("Please select at least one feedback option.")
             return
         }
         if (rating === 0) {
-            alert("Please select a rating.")
+            toast.error("Please select a rating.")
             return
         }
 
         if (feedback.includes('leave-a-comment')) {
             if (commentRef.current.trim().length < 10) {
-                alert("Comment must be at least 10 characters long.");
+                toast.error("Comment must be at least 10 characters long.")
                 return;
             }
         }
@@ -425,7 +432,7 @@ const PickupView = () => {
                                 height={1000}
                                 className="w-full h-48 object-cover"
                             />
-                            <Badge className={`absolute bottom-2 right-2 font-semibold text-[#626262] ${getStatusColor(item.status)} py-1 border-none lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>{getStatusText(item.status)}</Badge>
+                            <Badge className={`absolute bottom-5 right-5 font-semibold text-[#626262] ${getStatusColor(item.status)} py-1 border-none lg:py-1 px-2 lg:px-3 rounded-full text-[0.6rem] lg:text-sm`}>{getStatusText(item.status)}</Badge>
                         </div>
                         <div className='flex flex-col p-4'>
                             <h4 className='font-[500px] text-md'>{item.title}</h4>
@@ -457,23 +464,34 @@ const PickupView = () => {
                                     </span>
                                     <p className="text-xs text-gray-500">Capoitol Hill, Seattle</p>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                {item.status === "dispute" ? (<div className="flex items-center gap-2">
                                     <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
-                                            <path
-                                                stroke="#3B82F6"
-                                                d="M8 15.503A6.667 6.667 0 1 0 8 2.17a6.667 6.667 0 0 0 0 13.333Z"
-                                            ></path>
-                                            <path
-                                                stroke="#3B82F6"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="m6.333 7.17 2.334 2.333m2-3.333L7.333 9.503"
-                                            ></path>
-                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M8 15.505A6.667 6.667 0 1 0 8 2.172a6.667 6.667 0 0 0 0 13.333ZM8 11.504v-3" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M8 6.179v-.007" /></svg>
                                     </span>
-                                    <p className="text-xs text-[#2563EB]">Pickup: {item.pickupDate} at 14:00</p>
-                                </div>
+                                    <p className="text-xs">Item marked as no show</p>
+                                </div>)
+                                    : item.status === "no-show" ? (<div className="flex items-center gap-2">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M8 15.505A6.667 6.667 0 1 0 8 2.172a6.667 6.667 0 0 0 0 13.333ZM8 11.504v-3" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M8 6.179v-.007" /></svg>
+                                    </span><p className="text-xs">Receiver never showed up</p>
+                                    </div>) :
+                                        <div className="flex items-center gap-2">
+                                            <span>
+                                                <svg className="text-gray-500" xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
+                                                    <path
+                                                        stroke="currentColor"
+                                                        d="M8 15.503A6.667 6.667 0 1 0 8 2.17a6.667 6.667 0 0 0 0 13.333Z"
+                                                    ></path>
+                                                    <path
+                                                        stroke="currentColor"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="m6.333 7.17 2.334 2.333m2-3.333L7.333 9.503"
+                                                    ></path>
+                                                </svg>
+                                            </span>
+                                            <p className="text-xs">Pickup: {item.pickupDate} at 14:00</p>
+                                        </div>}
                             </div>
                             {/* action buttons */}
                             <div className='mt-auto'>
@@ -709,7 +727,7 @@ const PickupView = () => {
                             </div>
                         </Label>
                     </RadioGroup>
-                    
+
                 </div>
                 <Button
                     onClick={handleReportNoShowSubmit}
@@ -806,17 +824,17 @@ const PickupView = () => {
                             </span>
                             <div className="grid">
                                 <div className="flex items-center gap-3">
-                                <span className='text-sm text-app-primary'>Upload evidence</span>
-                                {disputeUploadedFileName && (
-                                    <span className="text-sm underline text-gray-500">{disputeUploadedFileName}</span>
-                                )}
-                                <Input
-                                    type="file"
-                                    className='sr-only w-1/2'
-                                    id='report-no-show-file'
-                                    onChange={handleDisputeFileUpload}
-                                />
-                            </div>
+                                    <span className='text-sm text-app-primary'>Upload evidence</span>
+                                    {disputeUploadedFileName && (
+                                        <span className="text-sm underline text-gray-500">{disputeUploadedFileName}</span>
+                                    )}
+                                    <Input
+                                        type="file"
+                                        className='sr-only w-1/2'
+                                        id='report-no-show-file'
+                                        onChange={handleDisputeFileUpload}
+                                    />
+                                </div>
                             </div>
                         </Label>
                     </RadioGroup>

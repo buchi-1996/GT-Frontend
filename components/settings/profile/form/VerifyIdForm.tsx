@@ -123,7 +123,7 @@ export default function VerifyIDForm({ setVerifyInProgressModal, setVerification
                         rules={{ required: "Selfie is required" }}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Upload Selfie</FormLabel>
+                                <FormLabel>Upload ID</FormLabel>
                                 <FormControl>
                                     <div
                                         className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer"

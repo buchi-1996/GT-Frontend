@@ -32,12 +32,12 @@ const PrivacyAndVisibilityView = () => {
     const form = useForm<PrivacyVisibilitySchemaData>({
         resolver: zodResolver(privacyVisibilitySchema),
         defaultValues: {
-            profileVisibility: "",
+            profileVisibility: "public",
             showPastGivingHistory: true,
-            showAchievements: false,
-            allowPublicAcknowledgments: true,
+            showAchievements: true,
+            allowPublicAcknowledgments: false,
             allowAnalytics: true,
-            personalizedContents: false
+            personalizedContents: true
         }
     })
 
@@ -63,25 +63,25 @@ const PrivacyAndVisibilityView = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <RadioGroup value={field.value || ""} onValueChange={field.onChange} className='grid gap-6'>
+                                        <RadioGroup defaultValue={field.value || ""} value={field.value || ""} onValueChange={field.onChange} className='grid gap-6'>
                                             <div className="flex items-start gap-3">
-                                                <RadioGroupItem value="reschedule with the same person" className="ring ring-app-primary  text-app-primary" id="reschedule" />
-                                                <Label htmlFor="reschedule" className="text-gray-500 grid gap-2">
+                                                <RadioGroupItem value="public" className="ring ring-app-primary  text-app-primary" id="public" />
+                                                <Label htmlFor="public" className="text-gray-500 grid gap-2">
                                                     <h4 className='text-gray-800 font-semibold'>Public</h4>
                                                     <p className='text-sm text-gray-500'>Anyone can view your profile</p>
                                                 </Label>
                                             </div>
 
                                             <div className="flex items-start gap-3">
-                                                <RadioGroupItem value="daily_digest" className="ring ring-app-primary  text-app-primary" id="daily_digest" />
-                                                <Label htmlFor="daily_digest" className="text-gray-500 grid gap-2">
+                                                <RadioGroupItem value="gt_members_only" className="ring ring-app-primary  text-app-primary" id="gt_members_only" />
+                                                <Label htmlFor="gt_members_only" className="text-gray-500 grid gap-2">
                                                     <h4 className='text-gray-800 font-semibold'>GT Members Only</h4>
                                                     <p className='text-sm text-gray-500'>Only GT members can view your profile</p>
                                                 </Label>
                                             </div>
                                             <div className="flex items-start gap-3">
-                                                <RadioGroupItem value="weekly_summary" className="ring ring-app-primary  text-app-primary" id="weekly_summary" />
-                                                <Label htmlFor="weekly_summary" className="text-gray-500 grid gap-2">
+                                                <RadioGroupItem value="private" className="ring ring-app-primary  text-app-primary" id="private" />
+                                                <Label htmlFor="private" className="text-gray-500 grid gap-2">
                                                     <h4 className='text-gray-800 font-semibold'>Private</h4>
                                                     <p className='text-sm text-gray-500'>Only you can view your full profile</p>
                                                 </Label>

@@ -64,6 +64,8 @@ const AccountSettingsView = () => {
                                                 <SelectContent className="shadow-xl w-full border-none px-1 py-2">
                                                     <SelectItem value="english" className="py-3 px-4">English</SelectItem>
                                                     <SelectItem value="dutch" className="py-3 px-4">Dutch</SelectItem>
+                                                    <SelectItem value="french" className="py-3 px-4">French</SelectItem>
+                                                    <SelectItem value="germany" className="py-3 px-4">Germany</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -85,7 +87,7 @@ const AccountSettingsView = () => {
                                                 </FormControl>
                                                 <SelectContent className="shadow-xl w-full border-none px-1 py-2">
                                                     <SelectItem value="euro" className="py-3 px-4">Euro (€)</SelectItem>
-                                                    <SelectItem value="usd" className="py-3 px-4">Usd ($)</SelectItem>
+                                                    <SelectItem value="usd" className="py-3 px-4">GBP (£)</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -99,24 +101,24 @@ const AccountSettingsView = () => {
                         <div className="grid gap-6">
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
                                 <div>
-                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Push Notifications</h4>
-                                    <p className="text-sm text-[#626262]">Receive notifications on your device</p>
+                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Facebbook</h4>
+                                    <p className="text-sm text-[#626262]">Not connected</p>
                                 </div>
-                                <Button className='cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
+                                <Button className='w-auto md:w-28 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
                             </div>
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
                                 <div>
-                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Push Notifications</h4>
-                                    <p className="text-sm text-[#626262]">Receive notifications on your device</p>
+                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Twitter</h4>
+                                    <p className="text-sm text-[#626262]">Not connected</p>
                                 </div>
-                                <Button className='cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
+                                <Button className='w-auto md:w-28 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
                             </div>
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
                                 <div>
-                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Push Notifications</h4>
-                                    <p className="text-sm text-[#626262]">Receive notifications on your device</p>
+                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Instagram</h4>
+                                    <p className="text-sm text-[#626262]">Connected</p>
                                 </div>
-                                <Button className='cursor-pointer py-5 bg-white text-red-500 shadow-none border hover:bg-white hover:text-red-500'>Disconnect</Button>
+                                <Button className='w-auto md:w-28 cursor-pointer py-5 bg-white text-red-500 shadow-none border hover:bg-white hover:text-red-500'>Disconnect</Button>
                             </div>
                         </div>
                         <div className="px-4 md:px-6 py-6 bg-[#E7EFF9] rounded-lg border border-[#D4E6FF] mt-8">
@@ -131,7 +133,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Download Your Data</h4>
                                     <p className="text-sm text-[#626262]">Download a copy of your account data including listings, recipients, and feedback</p>
                                 </div>
-                                <Button className='cursor-pointer w-full lg:w-auto py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Download</Button>
+                                <Button className='cursor-pointer w-full lg:w-28 py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Download</Button>
                             </div>
 
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex flex-col lg:flex-row items-center  gap-4 justify-between">
@@ -139,7 +141,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Activity History</h4>
                                     <p className="text-sm text-[#626262]">View your complete giving history, feedback received, and community interactions</p>
                                 </div>
-                                <Button className='cursor-pointer w-full lg:w-auto py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>View History</Button>
+                                <Button className='cursor-pointer w-full lg:w-28 py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>View History</Button>
                             </div>
                         </div>
 
@@ -152,7 +154,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Deactivate Account</h4>
                                     <p className="text-sm text-[#626262]">Temporarily disable your account. You can reactivate it anytime by logging in.</p>
                                 </div>
-                                <Button variant="destructive" className='w-full lg:w-auto cursor-pointer py-5'>Deactivate</Button>
+                                <Button variant="destructive" className='w-full lg:w-28 cursor-pointer py-5'>Deactivate</Button>
                             </div>
 
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex flex-col lg:flex-row  items-center  gap-4 justify-between">
@@ -160,7 +162,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Delete Account</h4>
                                     <p className="text-sm text-[#626262]">Permanently delete your account and all associated data. This action cannot be undone.</p>
                                 </div>
-                                <Button className='w-full lg:w-auto cursor-pointer py-5 bg-red-600 text-white shadow-none border hover:bg-red-700 hover:text-white'>Delete</Button>
+                                <Button className='w-full lg:w-28 cursor-pointer py-5 bg-red-600 text-white shadow-none border hover:bg-red-700 hover:text-white'>Delete</Button>
                             </div>
                         </div>
 

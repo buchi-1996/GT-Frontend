@@ -78,16 +78,17 @@ const InterestManagement = () => {
                             render={({ field }) => (
                                 <FormItem className="mb-6 col-span-2 lg:col-auto">
                                     <FormLabel className="text-gray-500">Maximum requests per listing</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                                    <Select defaultValue='50' onValueChange={field.onChange} value={field.value || ""}>
                                         <FormControl>
                                             <SelectTrigger className="py-6 w-full shadow-none">
                                                 <SelectValue placeholder="Select an option" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent className="shadow-xl w-full border-none px-1 py-2">
-                                            <SelectItem value="1" className="py-3 px-4">1</SelectItem>
-                                            <SelectItem value="2" className="py-3 px-4">2</SelectItem>
-                                            <SelectItem value="3" className="py-3 px-4">3</SelectItem>
+                                            <SelectItem value="50" className="py-3 px-4">50</SelectItem>
+                                            <SelectItem value="100" className="py-3 px-4">100</SelectItem>
+                                            <SelectItem value="150" className="py-3 px-4">150</SelectItem>
+                                            <SelectItem value="unlimited" className="py-3 px-4">Unlimited</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />

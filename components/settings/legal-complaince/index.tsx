@@ -8,10 +8,10 @@ import React, { useState } from 'react'
 const LegalAndComplianceView = () => {
 
     const [analyticsDataSharing, setAnalyticsDataSharing] = useState(true)
-    const [marketingCommunications, setMarketingCommunications] = useState(false)
+    const [marketingCommunications, setMarketingCommunications] = useState(true)
     const [functionalCookies, setFunctionalCookies] = useState(true)
-    const [performanceCookies, setPerformanceCookies] = useState(false)
-    const [targetCookies, setTargetCookies] = useState(false)
+    const [performanceCookies, setPerformanceCookies] = useState(true)
+    const [targetCookies, setTargetCookies] = useState(true)
 
     return (
         <div className='p-4 md:p-6 rounded-lg border'>

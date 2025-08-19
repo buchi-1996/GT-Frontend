@@ -9,6 +9,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { z } from 'zod';
 import { Switch } from '@/components/ui/switch';
+import { conditionOptions } from '@/lib/data';
 
 const listingFormSchema = z.object({
     defaultCategory: z.string(),
@@ -97,7 +98,7 @@ const ListingView = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="shadow-xl border-none px-1 py-2">
-                                                {["New", "Good", "Used", "Fair", "Worn", "Needs repair"].map((condition) => (
+                                                {conditionOptions.map((condition) => (
                                                     <SelectItem key={condition} value={condition} className="py-3 px-4">
                                                         {condition}
                                                     </SelectItem>

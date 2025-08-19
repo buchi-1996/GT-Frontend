@@ -28,9 +28,9 @@ const BadgesAndRecognitionView = () => {
         resolver: zodResolver(badgesAndRecognitionSchema),
         defaultValues: {
             showBadgesOnProfile: true,
-            allowBadgeSharing: false,
+            allowBadgeSharing: true,
             badgeEarnedNotification: true,
-            badgeSuggestions: false,
+            badgeSuggestions: true,
         }
     })
 
