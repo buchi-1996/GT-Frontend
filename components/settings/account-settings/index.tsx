@@ -4,10 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form'
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react'
+import React, { useState } from 'react'
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { z } from 'zod';
+import ResponsiveModal from '@/components/modal/ResponsiveModal';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 
 
@@ -20,6 +23,14 @@ const accountSettingsSchema = z.object({
 type AccountSettingsSchemaData = z.infer<typeof accountSettingsSchema>;
 
 const AccountSettingsView = () => {
+
+    const [consentDelete, setConsentDelete] = useState<string>('')
+    const [confirmDelete, setConfirmDelete] = useState<boolean>(false)
+    const [consentDeactivate, setConsentDeactivate] = useState<string>('')
+    const [confirmDeactivate, setConfirmDeactivate] = useState<boolean>(false)
+
+
+
 
     const form = useForm<AccountSettingsSchemaData>({
         resolver: zodResolver(accountSettingsSchema),
@@ -154,7 +165,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Deactivate Account</h4>
                                     <p className="text-sm text-[#626262]">Temporarily disable your account. You can reactivate it anytime by logging in.</p>
                                 </div>
-                                <Button variant="destructive" className='w-full lg:w-28 cursor-pointer py-5'>Deactivate</Button>
+                                <Button onClick={() => setConfirmDeactivate(true)} variant="destructive" className='w-full lg:w-28 cursor-pointer py-5'>Deactivate</Button>
                             </div>
 
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex flex-col lg:flex-row  items-center  gap-4 justify-between">
@@ -162,7 +173,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Delete Account</h4>
                                     <p className="text-sm text-[#626262]">Permanently delete your account and all associated data. This action cannot be undone.</p>
                                 </div>
-                                <Button className='w-full lg:w-28 cursor-pointer py-5 bg-red-600 text-white shadow-none border hover:bg-red-700 hover:text-white'>Delete</Button>
+                                <Button onClick={() => setConfirmDelete(true)} className='w-full lg:w-28 cursor-pointer py-5 bg-red-600 text-white shadow-none border hover:bg-red-700 hover:text-white'>Delete</Button>
                             </div>
                         </div>
 
@@ -178,6 +189,69 @@ const AccountSettingsView = () => {
                     </div>
                 </form>
             </Form>
+
+            <ResponsiveModal className="p-4 md:p-6" open={confirmDelete} close={setConfirmDelete}>
+                 <h4 className="mb-4 md:mb-0 font-semibold text-xl">Confirm Account Deletion</h4>
+                <p className="text-sm text-gray-600 mb-4">Please type <span className='font-semibold'>DELETE</span> to confirm you want to permanently delete your account and all associated data.</p>
+                <Input
+                    type="text"
+                    value={consentDelete}
+                    onChange={(e) => setConsentDelete(e.target.value)}
+                    className="py-6 w-full mb-4 shadow-none"
+                    placeholder="Type DELETE to confirm"
+                />
+                <div className="flex justify-end">
+                    <Button
+                        variant="destructive_inverted"
+                        onClick={() => {
+                            if (consentDelete === 'DELETE') {
+                                // Handle account deletion logic here
+                                console.log('Account deleted');
+                                setConfirmDelete(false);
+                                setConsentDelete('');
+                                toast.success('Your account has been successfully deleted.');
+                            }   
+                            else {
+                                toast.error('Please type DELETE to confirm account deletion.');     
+                            }   
+                        }}
+                        className="py-6 text-white"
+                    >
+                        Confirm Deletion
+                    </Button>
+                </div>
+            </ResponsiveModal>
+            <ResponsiveModal className="p-4 md:p-6" open={confirmDeactivate} close={setConfirmDeactivate}>
+                 <h4 className="mb-4 md:mb-0 font-semibold text-xl">Deactivate Account</h4>
+                <p className="text-sm text-gray-600 mb-4">Please type <span className='font-semibold'>DEACTIVATE</span> to confirm you want to temporarily Deactivate your account.</p>
+                <Input
+                    type="text"
+                    value={consentDeactivate}
+                    onChange={(e) => setConsentDeactivate(e.target.value)}
+                    className="py-6 w-full mb-4 shadow-none"
+                    placeholder="Type DEACTIVATE to confirm"
+                />
+                <div className="flex justify-end">
+                    <Button
+                        variant="destructive"
+                        onClick={() => {
+                            if (consentDeactivate === 'DEACTIVATE') {
+                                // Handle account deletion logic here
+                                console.log('Account deactivate');
+                                setConfirmDeactivate(false);
+                                setConsentDeactivate('');
+                                toast.success('Your account has been successfully deactivate.');
+                            }   
+                            else {
+                                toast.error('type DEACTIVATE to deactivate account.');     
+                            }   
+                        }}
+                        className="py-6"
+                    >
+                        Deactivate Account
+                    </Button>
+                </div>
+            </ResponsiveModal>
         </div>
     )
 }
