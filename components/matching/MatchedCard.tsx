@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import { useUIState } from '@/hooks/useAppState'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
 
