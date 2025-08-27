@@ -61,7 +61,7 @@ const OverViewScreen = () => {
                 <Card className=" shadow-none border">
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start  justify-between text-md sm:text-[1rem] text-[#222222]">
-                            <span>Recent Activity</span>
+                            <span>Activity History</span>
                             <button onClick={() => openSheet(<AllActivities />)} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
