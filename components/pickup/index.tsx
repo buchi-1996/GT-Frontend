@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import FeedbackReceivedAlert from './FeedbackReceivedAlert';
 import { useUIState } from '@/hooks/useAppState';
 import { toast } from 'sonner';
+import { GiverNoshowReasons } from '@/lib/data';
 
 
 interface PickupItemprops {
@@ -110,25 +111,7 @@ const positiveFeedbackOptions = [
     }
 ]
 
-const reportOptions = [
-    { value: "emergency-situation", label: "Emergency Situation (e.g., medical, family emergency)" },
-    { value: "work-commitment", label: "Unexpected Work Commitment" },
-    { value: "health-issues", label: "Personal Health Issues on the Day" },
-    { value: "transportation-challenges", label: "Transportation or Mobility Challenges" },
-    { value: "forgot-appointment", label: "Forgot the Appointment" },
-    { value: "dependent-care", label: "Dependent Care Responsibilities (e.g., no babysitter)" },
-    { value: "misunderstood-time", label: "Misunderstood or Confused Collection Date/Time" },
-    { value: "receiver-failed-confirm", label: "Receiver Failed to Confirm in Time" },
-    { value: "could-not-locate", label: "Could Not Locate the Receiver or Their Contact" },
-    { value: "receiver-breached-condition", label: "Receiver Breached a Pre-agreed Condition or Requirement" },
-    { value: "change-of-mind", label: "Change of Mind Due to Concerns About the Receiver" },
-    { value: "safety-concerns", label: "Safety or Security Concerns" },
-    { value: "weather-conditions", label: "Weather Conditions Prevented Travel" },
-    { value: "platform-error", label: "Platform/App Notification Error or Miscommunication" },
-    { value: "item-damaged", label: "Item Was Damaged or Lost Before Handover" },
-    { value: "double-booking", label: "Double Booking or Scheduling Conflict" },
-    { value: "other", label: "Other reasons", hasTextarea: true }
-];
+
 
 const negativeFeedbackOptions = [
     {
@@ -223,7 +206,7 @@ const PickupView = () => {
         },
     ])
     const [activeTab, setActiveTab] = useState("all")
-    const { setIsUnmatchedModal } = useUIState()
+    const { setIsUnmatchedModal, setGiverDisputeModal, setReasonModal, disputeModalOpen, setDisputeModalOpen } = useUIState()
 
     const filteredItems = pickupItems.filter((item) => {
         if (activeTab === "all") return true
@@ -266,7 +249,7 @@ const PickupView = () => {
             case "dispute":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button variant="secondary" className='py-5 w-full'>Give Reason</Button>
+                        <Button onClick={() => setReasonModal(true)} variant="secondary" className='py-5 w-full'>Give Reason</Button>
                         <Button onClick={() => setDisputeModalOpen(true)} variant="primary" className='py-5 w-full'>Counter Dispute</Button>
                     </div>
                 )
@@ -287,7 +270,7 @@ const PickupView = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [selectedDisputeValue, setSelectedDisputeValue] = useState('')
     const [disputeFeedbackReceived, setDisputeFeedbackReceived] = useState(false)
-    const [disputeModalOpen, setDisputeModalOpen] = useState(false)
+    
     const [doNextValue, setDoNextValue] = useState('')
     const [doNextModal, setDoNextModal] = useState(false)
     const commentRef = useRef<string>('');
@@ -389,6 +372,10 @@ const PickupView = () => {
         console.log("Do next action submitted with value:", doNextValue);
     }
 
+    //    Open Giver dispute Modal on Load
+        useEffect(() => {
+            setGiverDisputeModal(true)
+        }, [setGiverDisputeModal])
 
     const handleSubmitDispute = () => {
         setDisputeModalOpen(false)
@@ -642,7 +629,7 @@ const PickupView = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="89" height="85" fill="none"><rect width="80.497" height="80.496" x=".876" y=".75" fill="#F1F3DE" rx="40.248" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M41.138 60.75c-1.637 0-3.2-.66-6.326-1.981-7.783-3.288-11.674-4.931-11.674-7.696V30.75m18 30c1.636 0 3.2-.66 6.326-1.981 7.782-3.288 11.674-4.931 11.674-7.696V30.75m-18 30V39.46M33.79 36.133l-5.843-2.827c-3.206-1.552-4.81-2.327-4.81-3.556s1.604-2.004 4.81-3.556l5.842-2.827c3.606-1.745 5.41-2.617 7.349-2.617 1.94 0 3.742.872 7.348 2.617l5.842 2.827c3.206 1.552 4.81 2.328 4.81 3.556 0 1.229-1.603 2.004-4.81 3.556l-5.842 2.827c-3.606 1.745-5.409 2.617-7.348 2.617-1.94 0-3.743-.872-7.349-2.617Z" /><path stroke="#989F42" stroke-linecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m29.138 40.75 4 2" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m51.138 24.75-20 10" /><circle cx="65.124" cy="61.248" r="21.5" fill="#D33737" stroke="#fff" strokeWidth="3" /><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.143" d="M62.933 54.923c1.033 1.033 1.55 1.55 2.191 1.55.642 0 1.158-.517 2.191-1.55l2.192-2.191c.51-.51.765-.765 1.03-.918 1.333-.77 2.43-.005 3.353.918.924.923 1.687 2.02.918 3.354-.153.264-.408.52-.917 1.029l-2.192 2.191c-1.033 1.033-1.55 1.55-1.55 2.192 0 .642.517 1.158 1.55 2.191l2.192 2.192c.509.51.764.765.917 1.03.77 1.333.006 2.43-.918 3.353-.922.924-2.02 1.687-3.353.918-.265-.153-.52-.408-1.03-.918l-2.191-2.191c-1.033-1.033-1.55-1.55-2.192-1.55-.642 0-1.159.517-2.191 1.55l-2.192 2.191c-.51.51-.764.765-1.03.918-1.332.77-2.43.006-3.353-.918-.924-.923-1.687-2.02-.918-3.353.153-.265.408-.52.918-1.03l2.191-2.192c1.033-1.033 1.55-1.55 1.55-2.19 0-.643-.517-1.16-1.55-2.193l-2.192-2.191c-.509-.51-.764-.765-.917-1.03-.77-1.333-.006-2.43.918-3.353.923-.923 2.02-1.687 3.353-.918.266.153.52.408 1.03.917l2.192 2.192Z" /></svg>
                     </span>
                     <h4 className='text-xl md:text-2xl font-semibold'>Mark as No-show?</h4>
-                    <p className='text-sm text-gray-500 sm:max-w-sm'>You’re reporting that the receiver did not come for the pickup as agreed.</p>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>You&apos;re reporting that the receiver did not come for the pickup as agreed.</p>
                     <div className="bg-[#FFFBD4] border-[#FDE68A] border-1 rounded-lg p-4 mt-4 max-w-md">
                         <p className="text-[#E5A000] text-sm text-left leading-5">Before reporting: Consider messaging the receiver first. They might have had an emergency or misunderstood the pickup details.</p>
                     </div>
@@ -683,7 +670,7 @@ const PickupView = () => {
                         onValueChange={setSelectedValue}
                         className='py-1 grid gap-4 px-6 overflow-y-auto mb-4 scrollbar-hide'
                     >
-                        {reportOptions.map((option) => (
+                        {GiverNoshowReasons.map((option) => (
                             <div key={option.value} className={option.hasTextarea ? "w-full grid gap-2 items-start" : "flex items-center gap-3"}>
                                 <div className="flex items-center gap-3 mb-4">
                                     <RadioGroupItem

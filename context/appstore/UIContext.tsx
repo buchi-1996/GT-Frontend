@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from 'react'
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
 
 interface UIContextType {
     isOpen: boolean;
@@ -38,12 +38,20 @@ interface UIContextType {
     setIsEditMode: Dispatch<SetStateAction<boolean>>
     isUnmatchedModal: boolean;
     setIsUnmatchedModal: Dispatch<SetStateAction<boolean>>
-    
+    giverDisputeModal: boolean;
+    setGiverDisputeModal: Dispatch<SetStateAction<boolean>>
+    giveReasonModal: boolean;
+    setReasonModal: Dispatch<SetStateAction<boolean>>
+    disputeModalOpen: boolean;
+    setDisputeModalOpen: Dispatch<SetStateAction<boolean>>
+    ratingModal: boolean;
+    setRatingModal: Dispatch<SetStateAction<boolean>>
+
 }
 
 export const UIContext = createContext<UIContextType | undefined>(undefined);
 
-export const UIStateProvider = ({children}: { children: ReactNode }) => {
+export const UIStateProvider = ({ children }: { children: ReactNode }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -63,7 +71,11 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
 
     const [itemListingModalOpen, setItemListingModalOpen] = useState(false)
     const [isEditMode, setIsEditMode] = useState(false)
-    
+    const [giverDisputeModal, setGiverDisputeModal] = useState(false)
+    const [giveReasonModal, setReasonModal] = useState(false)
+    const [disputeModalOpen, setDisputeModalOpen] = useState(false)
+    const [ratingModal, setRatingModal] = useState(false)
+
 
     const openModal = useCallback((content: ReactNode) => {
         setModalContent(content);
@@ -101,14 +113,16 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         setIsAddItemDialogOpen(true);
     }, []);
 
+
+
     const closeAddItem = useCallback(() => {
         setIsAddItemDialogOpen(false);
         setListingsContent(null);
     }, []);
 
-   
 
-    const UIData = useMemo(() => ({
+
+    const UIData = useMemo(()   => ({
         isOpen,
         setIsOpen,
         modalContent,
@@ -145,9 +159,17 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         isEditMode,
         setIsEditMode,
         isUnmatchedModal,
-        setIsUnmatchedModal
-      
-    }), [ isOpen,
+        setIsUnmatchedModal,
+        giverDisputeModal,
+        setGiverDisputeModal,
+        giveReasonModal,
+        setReasonModal,
+        disputeModalOpen,
+      setDisputeModalOpen,
+      ratingModal,
+      setRatingModal  
+
+    }), [isOpen,
         setIsOpen,
         modalContent,
         openModal,
@@ -183,7 +205,16 @@ export const UIStateProvider = ({children}: { children: ReactNode }) => {
         isEditMode,
         setIsEditMode,
         isUnmatchedModal,
-        setIsUnmatchedModal
+        setIsUnmatchedModal,
+        giverDisputeModal,
+        setGiverDisputeModal,
+        giveReasonModal,
+        setReasonModal,
+        disputeModalOpen,
+        setDisputeModalOpen,
+        ratingModal,
+        setRatingModal
+
     ])
 
 

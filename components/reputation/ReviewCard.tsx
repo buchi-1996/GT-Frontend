@@ -1,6 +1,8 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { StarIcon } from 'lucide-react';
+import { useUIState } from '@/hooks/useAppState';
+import Review from '../shared/Review';
 
 
 interface ReviewCardProps {
@@ -14,12 +16,25 @@ interface ReviewCardProps {
     className?: string
 }
 
-const ReviewCard = ({itemTitle, giverName, receiverName, reviewText, isGiver, className}: ReviewCardProps) => {
 
-    const avatarFallback = (giverName?.charAt(0)?.toUpperCase() ?? '') + (giverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') || (receiverName?.charAt(0)?.toUpperCase() ?? '') + (receiverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') 
+
+const ReviewCard = ({ itemTitle, giverName, receiverName, reviewText, isGiver, className }: ReviewCardProps) => {
+
+    const avatarFallback = (giverName?.charAt(0)?.toUpperCase() ?? '') + (giverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') || (receiverName?.charAt(0)?.toUpperCase() ?? '') + (receiverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '')
+
+    const { ratingModal, setRatingModal } = useUIState()
+
+    const handleRating = () => {
+        // Open the rating modal
+        setRatingModal(true)
+
+        console.log('Open rating modal', ratingModal)
+
+    }
+
 
     return (
-        <div className={`@container border-b py-6 ${className}`}>
+        <div className={`@container py-6 ${className}`}>
             <div className="flex flex-col justify-between sm:@md:flex-row items-start gap-4 mb-4">
                 <div className='flex gap-2 sm:gap-4 flex-row items-start'>
                     <Avatar className="w-10 md:w-12 h-10 md:h-12">
@@ -45,12 +60,15 @@ const ReviewCard = ({itemTitle, giverName, receiverName, reviewText, isGiver, cl
                             </div>
                             <span className="text-xs md:text-sm text-nowrap"> • 2 days ago</span>
                         </div>
-                        {isGiver && <button className="hidden sm:@md:block cursor-pointer text-app-primary">Add Review</button>}
+                        {isGiver && <button onClick={handleRating} className="hidden sm:@md:block cursor-pointer text-app-primary">Add Review</button>}
                     </div>
                 </div>
             </div>
-            <p className="  text-[#383838] text-sm">{reviewText}</p>
-            {isGiver && <button className="block sm:@md:hidden text-sm mt-4 cursor-pointer text-app-primary">Add Review</button>}
+            <p className="text-[#383838] text-sm">{reviewText}</p>
+            {isGiver && <button onClick={handleRating} className="block sm:@md:hidden text-sm mt-4 cursor-pointer text-app-primary">Add Review</button>}
+            <Review id={itemTitle || ''} open={ratingModal} close={setRatingModal} />
+            {/* Feedback Received - Counter Dispute */}
+            
         </div>
     )
 }

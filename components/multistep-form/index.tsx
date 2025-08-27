@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Clock8Icon, Trash2Icon, Upload, X } from "lucide-react"
+import { Trash2, Upload, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,21 +13,29 @@ import Image from "next/image";
 import { Plus } from 'lucide-react';
 import { DatePicker } from "../DatePicker";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Badge } from "../ui/badge";
-import { toast } from "sonner";
 import { itemListingSchema, ItemListingSchemaData, ListedItem } from "@/lib/schema";
 import { useAppState, useUIState } from "@/hooks/useAppState";
 import ResponsiveModal from "../modal/ResponsiveModal";
 import { conditionOptions } from "@/lib/data"
+import { Switch } from "../ui/switch"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { toast } from "sonner"
+import { Label } from "../ui/label"
 
 // Type definitions
-type DayAbbreviation = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 type DayFull = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 interface TimeSlot {
     start: string;
     end: string;
 }
+
+
+interface DaySchedule {
+    enabled: boolean
+    slots: TimeSlot[]
+}
+
 
 interface WeeklySchedule {
     day: DayFull;
@@ -44,6 +52,10 @@ interface Availability {
     customDates: CustomDate[];
 }
 
+interface CustomDateEntry {
+    date: string
+    slots: TimeSlot[]
+}
 
 
 
@@ -75,6 +87,20 @@ const provinces = [
     "Zuid-Holland",
 ];
 
+const timeOptions = [
+    "8:00 am",
+    "9:00 am",
+    "10:00 am",
+    "11:00 am",
+    "12:00 pm",
+    "1:00 pm",
+    "2:00 pm",
+    "3:00 pm",
+    "4:00 pm",
+    "5:00 pm",
+    "6:00 pm",
+]
+
 interface StepsObject {
     id: number;
     title: string
@@ -98,38 +124,157 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
     const [showSuccessModal, setShowSuccessModal] = useState(false)
 
     // Availability state
-    const [selectedMode, setSelectedMode] = useState<'weekdays' | 'custom'>('weekdays');
-    const [selectedDays, setSelectedDays] = useState<Set<DayAbbreviation>>(new Set());
-    const [customDate, setCustomDate] = useState<Date | undefined>(undefined);
-    const [fromTime, setFromTime] = useState<string>('');
-    const [toTime, setToTime] = useState<string>('');
+    const [availabilityType, setAvailabilityType] = useState("weekly")
+    const [customDates, setCustomDates] = useState<CustomDateEntry[]>([])
 
-    const [availability, setAvailability] = useState<Availability>({
-        weeklySchedule: [],
-        customDates: []
-    });
 
-    const dayMapping: Record<DayAbbreviation, DayFull> = {
-        'Mon': 'monday',
-        'Tue': 'tuesday',
-        'Wed': 'wednesday',
-        'Thu': 'thursday',
-        'Fri': 'friday',
-        'Sat': 'saturday',
-        'Sun': 'sunday'
-    };
+    const [schedule, setSchedule] = useState<Record<string, DaySchedule>>({
+        Monday: {
+            enabled: true,
+            slots: [
+                { start: "9:00 am", end: "5:00 pm" },
+            ],
+        },
+        Tuesday: { enabled: true, slots: [{ start: "8:00 am", end: "5:00 pm" }] },
+        Wednesday: { enabled: true, slots: [{ start: "9:00 am", end: "5:00 pm" }] },
+        Thursday: { enabled: true, slots: [{ start: "9:00 am", end: "5:00 pm" }] },
+        Friday: { enabled: true, slots: [{ start: "9:00 am", end: "5:00 pm" }] },
+        Saturday: { enabled: false, slots: [{ start: "9:00 am", end: "5:00 pm" }] },
+        Sunday: { enabled: false, slots: [{ start: "9:00 am", end: "5:00 pm" }] },
+    })
 
-    const days: DayAbbreviation[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-    const toggleDay = (day: DayAbbreviation) => {
-        const newSelected = new Set(selectedDays);
-        if (newSelected.has(day)) {
-            newSelected.delete(day);
-        } else {
-            newSelected.add(day);
+
+
+
+
+
+
+    const toggleDay = (day: string) => {
+        setSchedule((prev) => ({
+            ...prev,
+            [day]: { ...prev[day], enabled: !prev[day].enabled },
+        }))
+    }
+
+
+    const addTimeSlot = (day: string) => {
+        setSchedule((prev) => ({
+            ...prev,
+            [day]: {
+                ...prev[day],
+                slots: [...prev[day].slots, { start: "9:00 am", end: "5:00 pm" }],
+            },
+        }))
+
+    }
+
+    const removeTimeSlot = (day: string, index: number) => {
+        setSchedule((prev) => ({
+            ...prev,
+            [day]: {
+                ...prev[day],
+                slots: prev[day].slots.filter((_, i) => i !== index),
+            },
+        }))
+
+        
+    }
+
+
+    const updateTimeSlot = (day: string, slotIndex: number, field: "start" | "end", value: string) => {
+        setSchedule((prev) => ({
+            ...prev,
+            [day]: {
+                ...prev[day],
+                slots: prev[day].slots.map((slot, i) => (i === slotIndex ? { ...slot, [field]: value } : slot)),
+            },
+        }))
+        
+    }
+
+
+    const addCustomTimeSlot = (dateIndex: number) => {
+        setCustomDates((prev) =>
+            prev.map((entry, i) =>
+                i === dateIndex ? { ...entry, slots: [...entry.slots, { start: "9:00 am", end: "5:00 pm" }] } : entry,
+            ),
+        )
+     
+    }
+
+
+    const removeCustomTimeSlot = (dateIndex: number, slotIndex: number) => {
+        setCustomDates((prev) =>
+            prev.map((entry, i) =>
+                i === dateIndex ? { ...entry, slots: entry.slots.filter((_, si) => si !== slotIndex) } : entry,
+            ),
+        )
+   
+    }
+
+
+    const updateCustomTimeSlot = (dateIndex: number, slotIndex: number, field: "start" | "end", value: string) => {
+        setCustomDates((prev) =>
+            prev.map((entry, i) =>
+                i === dateIndex
+                    ? {
+                        ...entry,
+                        slots: entry.slots.map((slot, si) => (si === slotIndex ? { ...slot, [field]: value } : slot)),
+                    }
+                    : entry,
+            ),
+        )
+    }
+
+
+    const removeCustomDate = (dateIndex: number) => {
+        setCustomDates((prev) => prev.filter((_, i) => i !== dateIndex))
+
+    }
+
+    const handleDateSelect = (selectedDate: Date | undefined) => {
+        if (selectedDate) {
+            const formattedDate = selectedDate.toLocaleDateString("en-GB") // DD/MM/YYYY format
+            const newCustomDate: CustomDateEntry = {
+                date: formattedDate,
+                slots: [{ start: "9:00 am", end: "5:00 pm" }], // Default time slot when date is selected
+            }
+            setCustomDates((prev) => [...prev, newCustomDate])
         }
-        setSelectedDays(newSelected);
-    };
+    }
+
+    // Get availability data in required format
+    const getAvailabilityData = (): Availability => {
+        const availability: Availability = {
+            weeklySchedule: [],
+            customDates: []
+        }
+
+        const weeklySchedule: WeeklySchedule[] = []
+        Object.entries(schedule).forEach(([dayName, daySchedule]) => {
+            if (daySchedule.enabled && daySchedule.slots.length > 0) {
+                weeklySchedule.push({
+                    day: dayName.toLowerCase() as WeeklySchedule["day"],
+                    timeSlots: daySchedule.slots,
+                })
+            }
+        })
+
+        if (weeklySchedule.length > 0) {
+            availability.weeklySchedule = weeklySchedule
+        }
+
+        if (customDates.length > 0) {
+            const customDatesData: CustomDate[] = customDates.map((entry) => ({
+                date: new Date(entry.date.split("/").reverse().join("-")), // Convert DD/MM/YYYY to Date
+                timeSlots: entry.slots,
+            }))
+            availability.customDates = customDatesData
+        }
+
+        return availability
+    }
 
 
     const getDefaultValues = () => {
@@ -179,157 +324,9 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
         defaultValues: getDefaultValues()
     });
 
-    const addTimeSlot = () => {
-        if (!fromTime || !toTime) {
-            toast.error("Please select both start and end times", {
-                id: "start-end-times"
-            })
-            return;
-        }
-
-
-        if (fromTime >= toTime) {
-            toast.error("End time must be after start time", {
-                id: "end-comes-after"
-            })
-            return;
-        }
-
-        const newSlot: TimeSlot = { start: fromTime, end: toTime };
-
-        if (selectedMode === 'weekdays') {
-            if (selectedDays.size === 0) {
-                toast.error("Please select at least one day", {
-                    id: "warning-day-select"
-                })
-                return;
-            }
-
-            // Check for duplicates in weekly schedule
-            let hasDuplicate = false;
-            selectedDays.forEach((day: DayAbbreviation) => {
-                const dayName = dayMapping[day];
-                const existingDay = availability.weeklySchedule.find((item: WeeklySchedule) => item.day === dayName);
-                if (existingDay) {
-                    const duplicate = existingDay.timeSlots.find((slot: TimeSlot) =>
-                        slot.start === newSlot.start && slot.end === newSlot.end
-                    );
-                    if (duplicate) {
-                        hasDuplicate = true;
-                    }
-                }
-            });
-
-            if (hasDuplicate) {
-
-                toast.error("This time slot already exists for one or more selected days", {
-                    id: "time-slot-exist"
-                })
-
-                return;
-            }
-
-            const newWeeklySchedule: WeeklySchedule[] = [...availability.weeklySchedule];
-
-            selectedDays.forEach((day: DayAbbreviation) => {
-                const dayName = dayMapping[day];
-                const existingDayIndex = newWeeklySchedule.findIndex((item: WeeklySchedule) => item.day === dayName);
-
-                if (existingDayIndex >= 0) {
-                    newWeeklySchedule[existingDayIndex].timeSlots.push(newSlot);
-                } else {
-                    newWeeklySchedule.push({
-                        day: dayName,
-                        timeSlots: [newSlot]
-                    } as WeeklySchedule);
-                }
-            });
-
-            setAvailability({
-                ...availability,
-                weeklySchedule: newWeeklySchedule
-            });
-        } else {
-            if (!customDate) {
-                toast.error("Please select a custom date", {
-                    id: "missing-custom-date"
-                })
-
-                return;
-            }
-
-            const newCustomDates: CustomDate[] = [...availability.customDates];
-            const existingDateIndex = newCustomDates.findIndex(
-                (item: CustomDate) => item.date.toDateString() === new Date(customDate).toDateString()
-            );
-
-            // Check for duplicates in custom dates
-            if (existingDateIndex >= 0) {
-                const duplicate = newCustomDates[existingDateIndex].timeSlots.find((slot: TimeSlot) =>
-                    slot.start === newSlot.start && slot.end === newSlot.end
-                );
-                if (duplicate) {
-                    toast.error("This time slot already exists for the selected date", {
-                        id: "custom-date-duplicate"
-                    })
-                    return;
-                }
-                newCustomDates[existingDateIndex].timeSlots.push(newSlot);
-            } else {
-                newCustomDates.push({
-                    date: new Date(customDate),
-                    timeSlots: [newSlot]
-                } as CustomDate);
-            }
-
-            setAvailability({
-                ...availability,
-                customDates: newCustomDates
-            });
-        }
-
-        // Reset form
-        setFromTime('')
-        setToTime('')
 
 
 
-        if (selectedMode === 'weekdays') {
-            setSelectedDays(new Set());
-        }
-    };
-
-    const removeTimeSlot = (type: 'weekly' | 'custom', index: number, slotIndex?: number) => {
-        if (type === 'weekly') {
-            const newWeeklySchedule = [...availability.weeklySchedule];
-            if (slotIndex !== undefined) {
-                newWeeklySchedule[index].timeSlots.splice(slotIndex, 1);
-                if (newWeeklySchedule[index].timeSlots.length === 0) {
-                    newWeeklySchedule.splice(index, 1);
-                }
-            } else {
-                newWeeklySchedule.splice(index, 1);
-            }
-            setAvailability({
-                ...availability,
-                weeklySchedule: newWeeklySchedule
-            });
-        } else {
-            const newCustomDates = [...availability.customDates];
-            if (slotIndex !== undefined) {
-                newCustomDates[index].timeSlots.splice(slotIndex, 1);
-                if (newCustomDates[index].timeSlots.length === 0) {
-                    newCustomDates.splice(index, 1);
-                }
-            } else {
-                newCustomDates.splice(index, 1);
-            }
-            setAvailability({
-                ...availability,
-                customDates: newCustomDates
-            });
-        }
-    };
 
     const handleConfirmSubmit = () => {
         setShowConfirmModal(true)
@@ -350,6 +347,8 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
         setIsSubmitting(true)
         setShowConfirmModal(false)
 
+        // Get current availability data and update form
+        const currentAvailabilityData = getAvailabilityData();
 
         await new Promise((resolve) => setTimeout(resolve, 2000))
 
@@ -359,11 +358,11 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
             id: Date.now().toString(),
             imageUrls,
             status: "under-review" as const,
-            availability: availability
+            availability: currentAvailabilityData
         };
 
-        
-        
+
+
         setListedItems([...listedItems, finalData])
         setShowSuccessModal(true)
         console.log('Form submitted:', finalData);
@@ -372,13 +371,15 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
 
     const handleSaveAsDraft = () => {
         const data = form.getValues()
+        // Get current availability data and update form
+        const currentAvailabilityData = getAvailabilityData();
         const imageUrls = data.images.map((file) => URL.createObjectURL(file))
         const finalData = {
             ...data,
             id: Date.now().toString(),
             imageUrls,
             status: "draft" as const,
-            availability: availability
+            availability: currentAvailabilityData
         };
         setListedItems([...listedItems, finalData])
         setShowConfirmModal(false)
@@ -387,26 +388,144 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
     }
 
 
+
+
+    // Helper function to convert time strings to minutes for comparison
+    const convertTimeToMinutes = (timeString: string): number => {
+        const [time, period] = timeString.toLowerCase().split(' ');
+        const [hoursStr, minutesStr = '0'] = time.split(':');
+        const hours = parseInt(hoursStr, 10);
+        const minutes = parseInt(minutesStr, 10);
+
+        let totalMinutes = hours * 60 + minutes;
+
+        // Handle AM/PM conversion
+        if (period === 'pm' && hours !== 12) {
+            totalMinutes += 12 * 60; // Add 12 hours for PM (except 12 PM)
+        } else if (period === 'am' && hours === 12) {
+            totalMinutes = minutes; // 12 AM is actually 0 hours
+        }
+
+        return totalMinutes;
+    };
+
+    // Helper function to check for duplicate time slots
+    const checkDuplicateSlots = (slots: TimeSlot[]): boolean => {
+        const slotStrings = slots.map(slot => `${slot.start}-${slot.end}`);
+        const uniqueSlots = new Set(slotStrings);
+        return slotStrings.length !== uniqueSlots.size;
+    };
+    // Updated handleNext function with comprehensive validation
     const handleNext = React.useCallback(async () => {
-        const fields = steps[currentStep - 1].fields
-        console.log(fields)
+        const fields = steps[currentStep - 1].fields;
+        console.log(fields);
+
+        // Update form with current availability
+        const currentAvailabilityData = getAvailabilityData();
+        form.setValue('availability', currentAvailabilityData);
 
         if (currentStep === 3) {
             // Check if either weekly schedule or custom dates have time slots
-            const hasWeeklySlots = availability.weeklySchedule.length > 0 &&
-                availability.weeklySchedule.some(schedule => schedule.timeSlots.length > 0);
-            const hasCustomSlots = availability.customDates.length > 0 &&
-                availability.customDates.some(custom => custom.timeSlots.length > 0);
-
-            if (!hasWeeklySlots && !hasCustomSlots) {
+            if (currentAvailabilityData.weeklySchedule.length === 0 && currentAvailabilityData.customDates.length === 0) {
                 toast.error("Please add at least one availability time slot", {
                     id: "add-time-slot"
-                })
+                });
                 return;
             }
 
-            // Update form with current availability
-            form.setValue('availability', availability);
+            // Validate weekly schedule time slots (from schedule state)
+            for (const [dayName, daySchedule] of Object.entries(schedule)) {
+                // Only validate enabled days
+                if (daySchedule.enabled && daySchedule.slots.length > 0) {
+                    // Check for invalid time ranges (start >= end)
+                    for (const slot of daySchedule.slots) {
+                        const startTime = convertTimeToMinutes(slot.start);
+                        const endTime = convertTimeToMinutes(slot.end);
+
+                        if (startTime >= endTime) {
+                            toast.error(`End time must be after start time for ${dayName}`, {
+                                id: "end-comes-after"
+                            });
+                            return;
+                        }
+                    }
+
+                    // Check for duplicate time slots within the same day
+                    if (checkDuplicateSlots(daySchedule.slots)) {
+                        toast.error(`Duplicate time slots found for ${dayName}. Please remove duplicates.`, {
+                            id: "duplicate-weekly-slots"
+                        });
+                        return;
+                    }
+                }
+            }
+
+            // Validate custom date time slots (from customDates state)
+            for (const customDateEntry of customDates) {
+                const dateString = customDateEntry.date;
+
+                // Check for invalid time ranges (start >= end)
+                for (const slot of customDateEntry.slots) {
+                    const startTime = convertTimeToMinutes(slot.start);
+                    const endTime = convertTimeToMinutes(slot.end);
+
+                    if (startTime >= endTime) {
+                        toast.error(`End time must be after start time for ${dateString}`, {
+                            id: "end-comes-after"
+                        });
+                        return;
+                    }
+                }
+
+                // Check for duplicate time slots within the same custom date
+                if (checkDuplicateSlots(customDateEntry.slots)) {
+                    toast.error(`Duplicate time slots found for ${dateString}. Please remove duplicates.`, {
+                        id: "duplicate-custom-slots"
+                    });
+                    return;
+                }
+
+                // Optional: Check if custom date is in the past
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const entryDate = new Date(customDateEntry.date.split("/").reverse().join("-")); // Convert DD/MM/YYYY to Date
+
+                if (entryDate < today) {
+                    toast.error(`Custom date ${dateString} cannot be in the past`, {
+                        id: "past-date-error"
+                    });
+                    return;
+                }
+            }
+
+            // Check for overlapping time slots across different days/dates (optional)
+            // This validates against the actual state data structure
+            const allSlots: Array<{ type: 'weekly' | 'custom', identifier: string, slots: TimeSlot[] }> = [];
+
+            // Add weekly slots from schedule state
+            Object.entries(schedule).forEach(([dayName, daySchedule]) => {
+                if (daySchedule.enabled && daySchedule.slots.length > 0) {
+                    allSlots.push({
+                        type: 'weekly',
+                        identifier: dayName,
+                        slots: daySchedule.slots
+                    });
+                }
+            });
+
+            // Add custom date slots from customDates state
+            customDates.forEach(customDateEntry => {
+                if (customDateEntry.slots.length > 0) {
+                    allSlots.push({
+                        type: 'custom',
+                        identifier: customDateEntry.date,
+                        slots: customDateEntry.slots
+                    });
+                }
+            });
+
+            // Optional: Check for overlapping slots within the same time period
+            // (This is more complex and depends on your business logic)
 
             // Trigger validation for availability
             const isAvailabilityValid = await form.trigger('availability');
@@ -420,13 +539,20 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
         }
 
         // For other steps, validate normally
-        const isValid = await form.trigger(fields as (keyof ItemListingSchemaData)[])
-        console.log('isValid', isValid)
+        const isValid = await form.trigger(fields as (keyof ItemListingSchemaData)[]);
+        console.log('isValid', isValid);
 
         if (isValid) {
-            setCurrentStep(prev => prev + 1)
+            setCurrentStep(prev => prev + 1);
         }
-    }, [currentStep, form, availability])
+    }, [currentStep, form, schedule, customDates, getAvailabilityData]);
+
+
+
+
+
+
+
 
     const handlePrevious = () => {
         setCurrentStep(prev => prev - 1)
@@ -443,7 +569,6 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                     {steps.map((step, index) => {
                         const isCompleted = index < currentStep
                         const isCurrent = index === currentStep - 1
-                        console.log('first', step.title.slice(0, 3), step.title.length)
                         return (
                             <div
                                 key={index}
@@ -452,7 +577,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                                     : "border-transparent text-gray-500 hover:text-gray-700"
                                     }`}
                             >
-                                <span className="text-sm">{isDesktop ? step.title : step.title.length  === 10 ? step.title.slice(0, 3) : step.title.split(' ')[0]}</span>
+                                <span className="text-sm">{isDesktop ? step.title : step.title.length === 10 ? step.title.slice(0, 3) : step.title.split(' ')[0]}</span>
                             </div>
                         )
                     })}
@@ -720,268 +845,238 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
 
                         {currentStep === 3 && (
                             <>
-                                {/* Day buttons + Custom toggle */}
-                                <div className="flex w-full h-fit items-center gap-1 mb-4">
-                                    {days.map((day) => (
-                                        <button
-                                            type="button"
-                                            key={day}
-                                            onClick={() => toggleDay(day)}
-                                            disabled={selectedMode === 'custom'}
-                                            className={`flex-1 py-2 px-3 text-sm rounded ${selectedMode === 'weekdays' && selectedDays.has(day)
-                                                ? 'bg-teal-600 text-white'
-                                                : selectedMode === 'custom'
-                                                    ? 'border text-gray-400 cursor-not-allowed'
-                                                    : 'border text-gray-600 hover:bg-gray-200'
-                                                }`}
-                                        >
-                                            {isDesktop ? day : day[0]}
-                                        </button>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        onClick={() => setSelectedMode(selectedMode === 'custom' ? 'weekdays' : 'custom')}
-                                        className={`px-4 py-2 text-sm rounded ${selectedMode === 'custom'
-                                            ? 'border border-teal-600 bg-teal-600 text-white'
-                                            : 'border text-gray-600 hover:bg-gray-200'
-                                            }`}
-                                    >
-                                        {isDesktop ? 'Custom' : 'C'} 
-                                    </button>
-                                </div>
 
-                                {/* Custom Date */}
-                                {selectedMode === 'custom' && (
-                                    <div className="w-full mb-4">
-                                        <FormField
-                                            control={form.control}
-                                            name="availability.customDates.0.date"
-                                            render={({ field }) => (
 
-                                                <FormItem>
-                                                    <FormLabel className="text-app-black">Custom Date</FormLabel>
-                                                    <DatePicker
-                                                        date={field.value}
-                                                        onSelect={(date) => {
-                                                            field.onChange(date)
-                                                            setCustomDate(date)
-                                                        }}
-                                                        placeholder="DD/MM/YY"
-                                                        disablePastDates={true}
-                                                    />
-                                                    <FormMessage />
-                                                </FormItem>
+                                <div className="w-full">
+                                    <div className="space-y-6">
+                                        {/* Set weekly availability */}
+                                        <div className="space-y-4 bg-gray-50  px-3 py-4 md:px-5 rounded-lg" onClick={() => setAvailabilityType("weekly")}>
+                                            <div className="flex items-center space-x-3 " >
+                                                <div
+                                                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${availabilityType === "weekly" ? "border-[#0d9488] bg-[#0d9488]" : "border-[#d9d9d9]"
+                                                        }`}
+                                                >
+                                                    {availabilityType === "weekly" && <div className="w-2 h-2 bg-white rounded-full" />}
+                                                </div>
+                                                <span className="font-medium text-sm md:text-[0.9rem]">Set weekly availability</span>
+                                            </div>
+
+                                            {availabilityType === "weekly" && (
+                                                <ul className="grid divide-y max-h-54 overflow-y-auto bg-white rounded-lg">
+                                                    {Object.entries(schedule).map(([day, daySchedule]) => (
+                                                        <li key={day} className="min-h-14 space-y-2 px-2 md:px-4 ">
+                                                            <div className="grid grid-cols-6 place-items-start gap-1 md:gap-4 py-4">
+                                                                <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center gap-2">
+                                                                    <Switch
+                                                                        checked={daySchedule.enabled}
+                                                                        onCheckedChange={() => toggleDay(day)}
+                                                                        className="data-[state=checked]:bg-[#0d9488]"
+                                                                    />
+                                                                    <Label htmlFor="monday" className="text-xs md:text-[0.9rem]">{isDesktop ? day : day.slice(0, 3)}</Label>
+                                                                </div>
+
+                                                                {daySchedule.enabled && (
+                                                                    <div className="col-span-5 md:col-span-4 ml-auto space-y-2">
+                                                                        {daySchedule.slots.map((slot, slotIndex) => (
+                                                                            <div key={slotIndex} className="flex items-center space-x-2">
+                                                                                <DropdownMenu>
+                                                                                    <DropdownMenuTrigger asChild>
+                                                                                        <Button
+                                                                                            variant="outline"
+                                                                                            className={`text-xs md:text-sm w-[80px] md:w-auto md:min-w-[100px] shadow-none text-gray-500`}
+                                                                                        >
+                                                                                            {slot.start}
+                                                                                        </Button>
+                                                                                    </DropdownMenuTrigger>
+                                                                                    <DropdownMenuContent>
+                                                                                        {timeOptions.map((time) => (
+                                                                                            <DropdownMenuItem
+                                                                                                key={time}
+                                                                                                onClick={() => updateTimeSlot(day, slotIndex, "start", time)}
+                                                                                                className="flex items-center justify-between"
+                                                                                            >
+                                                                                                {time}
+                                                                                            </DropdownMenuItem>
+                                                                                        ))}
+                                                                                    </DropdownMenuContent>
+                                                                                </DropdownMenu>
+
+                                                                                <span className="text-[#757575]">–</span>
+
+                                                                                <DropdownMenu>
+                                                                                    <DropdownMenuTrigger asChild>
+                                                                                        <Button
+                                                                                            variant="outline"
+                                                                                            className="text-xs md:text-sm w-[80px] md:w-auto md:min-w-[100px] shadow-none text-gray-500"
+                                                                                        >
+                                                                                            {slot.end}
+                                                                                        </Button>
+                                                                                    </DropdownMenuTrigger>
+                                                                                    <DropdownMenuContent>
+                                                                                        {timeOptions.map((time) => (
+                                                                                            <DropdownMenuItem
+                                                                                                key={time}
+                                                                                                onClick={() => updateTimeSlot(day, slotIndex, "end", time)}
+                                                                                            >
+                                                                                                {time}
+                                                                                            </DropdownMenuItem>
+                                                                                        ))}
+                                                                                    </DropdownMenuContent>
+                                                                                </DropdownMenu>
+
+                                                                                {slotIndex === daySchedule.slots.length - 1 && (
+                                                                                    <button
+                                                                                        onClick={() => addTimeSlot(day)}
+                                                                                        className="p-1 cursor-pointer text-[#757575] hover:text-[#0d9488] transition-colors"
+                                                                                    >
+                                                                                        <Plus size={16} />
+                                                                                    </button>
+                                                                                )}
+
+                                                                                {daySchedule.slots.length > 1 && (
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        onClick={() => removeTimeSlot(day, slotIndex)}
+                                                                                        className="cursor-pointer text-[#757575] hover:text-red-500 transition-colors"
+                                                                                    >
+                                                                                        <Trash2 size={16} />
+                                                                                    </button>
+                                                                                )}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+
+
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             )}
-                                        />
-
-                                    </div>
-                                )}
-
-                                {/* Time Selection */}
-                                <div className="w-full grid gap-4 mb-4">
-                                    <div className="flex-1 grid grid-cols-2 items-baseline gap-4">
-                                        {/* <FormField
-                                        control={form.control}
-                                        name={`${selectedMode === "weekdays" ? 'availability.weeklySchedule.0.timeSlots.0.start' : 'availability.customDates.0.timeSlots.0.start'}`}
-                                        render={({ field }) => (
-
-                                            <FormItem>
-                                                <FormLabel className="text-app-black">From</FormLabel>
-                                                <FormControl>
-                                                    <div className='w-full space-y-2'>
-                                                        <div className='relative'>
-                                                            <div className='text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50'>
-                                                                <Clock8Icon className='size-4' />
-                                                            </div>
-                                                            <Input
-                                                                type='time'
-                                                                id='time-picker'
-                                                                {...field}
-                                                                value={field.value || ""}
-                                                                onChange={(e) => {
-                                                                    field.onChange(e); // Update the form field
-                                                                    setFromTime(e.target.value); // Update your state
-                                                                }}
-                                                                // defaultValue='00:00:00'
-                                                                className='shadow-none py-6 peer bg-background appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    /> */}
-                                        {/* <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
-                                            <input
-                                                type="time"
-                                                value={fromTime}
-                                                onChange={(e) => setFromTime(e.target.value)}
-                                                className="appearance-none w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                            />
-                                        </div> */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
-
-                                            <div className='relative'>
-
-                                                <div className='text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50'>
-                                                    <Clock8Icon className='size-4' />
-                                                </div>
-                                                <Input
-                                                    type='time'
-                                                    id='time-picker'
-                                                    value={fromTime}
-                                                    onChange={(e) => setFromTime(e.target.value)}
-                                                    className='shadow-none py-6 peer bg-background appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-                                                />
-                                            </div>
                                         </div>
 
-                                        {/* <FormField
-                                        control={form.control}
-                                        name={`${selectedMode === "weekdays" ? 'availability.weeklySchedule.0.timeSlots.0.end' : 'availability.customDates.0.timeSlots.0.end'}`}
-                                        render={({ field }) => (
-
-                                            <FormItem>
-                                                <FormLabel className="text-app-black">To</FormLabel>
-                                                <FormControl>
-                                                    <div className='w-full space-y-2'>
-                                                        <div className='relative'>
-                                                            <div className='text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50'>
-                                                                <Clock8Icon className='size-4' />
-                                                            </div>
-                                                            <Input
-                                                                type='time'
-                                                                id='time-picker'
-                                                                {...field}
-                                                                value={field.value || ""}
-
-                                                                onChange={(e) => {
-                                                                    field.onChange(e); // Update the form field
-                                                                    setToTime(e.target.value); // Update your state
-                                                                }}
-                                                                // defaultValue='00:00:00'
-                                                                className='shadow-none py-6 peer bg-background appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    /> */}
-                                        {/* <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
-                                            <Input
-                                                type="time"
-                                                value={toTime}
-                                                onChange={(e) => setToTime(e.target.value)}
-                                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                            />
-                                        </div> */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
-
-                                            <div className='relative'>
-
-                                                <div className='text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50'>
-                                                    <Clock8Icon className='size-4' />
+                                        {/* Custom date and time option */}
+                                        <div className="space-y-4  px-3 py-4 md:px-5 bg-gray-50 rounded-lg" onClick={() => setAvailabilityType("custom")}>
+                                            <div
+                                                className="flex items-center space-x-3 rounded-lg overflow-y-auto">
+                                                <div
+                                                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${availabilityType === "custom" ? "border-[#0d9488] bg-[#0d9488]" : "border-[#d9d9d9]"
+                                                        }`}
+                                                >
+                                                    {availabilityType === "custom" && <div className="w-2 h-2 bg-white rounded-full" />}
                                                 </div>
-                                                <Input
-                                                    type='time'
-                                                    id='time-picker'
-                                                    value={toTime}
-                                                    onChange={(e) => setToTime(e.target.value)}
-                                                    className='shadow-none py-6 peer bg-background appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-                                                />
+                                                <span className="font-medium text-sm md:text-[0.9rem]">Set multiple custom date and time</span>
                                             </div>
+
+                                            {availabilityType === "custom" && (
+                                                <div className="space-y-4">
+                                                    {/* Date picker input */}
+                                                    <div className="w-full">
+                                                        <DatePicker placeholder="Select a date" onSelect={handleDateSelect} />
+                                                    </div>
+
+                                                    <div className="bg-white rounded-lg">
+                                                        {/* Custom date entries */}
+                                                        {customDates.length > 0 && (
+                                                            <ul className="divide-y max-h-52 overflow-y-auto">
+                                                                {customDates.map((dateEntry, dateIndex) => (
+                                                                    <li key={dateIndex} className="space-y-2">
+                                                                        <div className="relative flex items-start gap-2 md:grid grid-cols-6 place-items-start px-2 py-4">
+                                                                            <div className="col-span-2 flex flex-row items-center gap-1 md:gap-4">
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => removeCustomDate(dateIndex)}
+                                                                                    className="p-1 text-[#757575] hover:text-red-500 transition-colors"
+                                                                                >
+                                                                                    <X size={16} />
+                                                                                </button>
+                                                                                <span className="text-xs md:text-sm font-semibold">{isDesktop ? dateEntry.date : `${dateEntry.date.split('/')[0]}/${dateEntry.date.split('/')[1]}`}</span>
+                                                                            </div>
+                                                                            <div className="col-sapn-5 md:col-span-4 ml-auto space-y-2">
+                                                                                {dateEntry.slots.map((slot, slotIndex) => (
+                                                                                    <div key={slotIndex} className="flex items-center space-x-2">
+                                                                                        <DropdownMenu>
+                                                                                            <DropdownMenuTrigger asChild>
+                                                                                                <Button
+                                                                                                    variant="outline"
+                                                                                                    className="text-xs md:text-sm w-[80px] md:w-auto md:min-w-[100px] shadow-none text-gray-500"
+                                                                                                >
+                                                                                                    {slot.start}
+                                                                                                </Button>
+                                                                                            </DropdownMenuTrigger>
+                                                                                            <DropdownMenuContent>
+                                                                                                {timeOptions.map((time) => (
+                                                                                                    <DropdownMenuItem
+                                                                                                        key={time}
+                                                                                                        onClick={() => updateCustomTimeSlot(dateIndex, slotIndex, "start", time)}
+                                                                                                    >
+                                                                                                        {time}
+                                                                                                    </DropdownMenuItem>
+                                                                                                ))}
+                                                                                            </DropdownMenuContent>
+                                                                                        </DropdownMenu>
+
+                                                                                        <span className="text-[#757575]">–</span>
+
+                                                                                        <DropdownMenu>
+                                                                                            <DropdownMenuTrigger asChild>
+                                                                                                <Button
+                                                                                                    variant="outline"
+                                                                                                    className="text-xs md:text-sm w-[80px] md:w-auto md:min-w-[100px] shadow-none text-gray-500"
+                                                                                                >
+                                                                                                    {slot.end}
+                                                                                                </Button>
+                                                                                            </DropdownMenuTrigger>
+                                                                                            <DropdownMenuContent>
+                                                                                                {timeOptions.map((time) => (
+                                                                                                    <DropdownMenuItem
+                                                                                                        key={time}
+                                                                                                        onClick={() => updateCustomTimeSlot(dateIndex, slotIndex, "end", time)}
+                                                                                                    >
+                                                                                                        {time}
+                                                                                                    </DropdownMenuItem>
+                                                                                                ))}
+                                                                                            </DropdownMenuContent>
+                                                                                        </DropdownMenu>
+
+                                                                                        {slotIndex === dateEntry.slots.length - 1 && (
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                onClick={() => addCustomTimeSlot(dateIndex)}
+                                                                                                className="p-1 text-[#757575] hover:text-[#0d9488] transition-colors"
+                                                                                            >
+                                                                                                <Plus size={16} />
+                                                                                            </button>
+                                                                                        )}
+
+                                                                                        {dateEntry.slots.length > 1 && (
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                onClick={() => removeCustomTimeSlot(dateIndex, slotIndex)}
+                                                                                                className="text-[#757575] hover:text-red-500 transition-colors"
+                                                                                            >
+                                                                                                <Trash2 size={16} />
+                                                                                            </button>
+                                                                                        )}
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </div>
+
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                    {/* Add Button */}
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        onClick={addTimeSlot}
-                                        className="w-auto ml-auto place-self-start py-6"
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                        Add
-                                    </Button>
                                 </div>
-
-
-
-                                {/* Display Weekly Schedule */}
-                                {availability.weeklySchedule.length > 0 && (
-                                    <div className="w-full space-y-4">
-                                        <h3 className="font-medium text-gray-900 mb-2">Weekly Schedule:</h3>
-                                        {availability.weeklySchedule.map((schedule, index) => (
-                                            <div key={index} className="bg-gray-50 p-3 rounded-md mb-2">
-                                                <div className="flex w-auto justify-between items-center mb-3">
-                                                    <span className="font-medium text-sm text-gray-600 capitalize">{schedule.day}</span>
-                                                    <Button
-                                                        variant="destructive"
-                                                        onClick={() => removeTimeSlot('weekly', index)}
-                                                    >
-                                                        <Trash2Icon />
-                                                    </Button>
-                                                </div>
-                                                <div className="flex items-center gap-2 md:gap-4 flex-wrap">
-                                                    {schedule.timeSlots.map((slot, slotIndex) => (
-
-                                                        <Badge key={slotIndex} className="flex gap-4 justify-between items-center text-sm bg-white rounded-full text-gray-700 px-3 py-2">
-                                                            <span>{slot.start} - {slot.end}</span>
-                                                            <button
-                                                                onClick={() => removeTimeSlot('weekly', index, slotIndex)}
-                                                                className="text-gray-400 hover:text-gray-600"
-                                                            >
-                                                                <X className="w-4 h-4" />
-                                                            </button>
-                                                        </Badge>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Display Custom Dates */}
-                                {availability.customDates.length > 0 && (
-                                    <div className="w-full space-y-4">
-                                        <h3 className="font-medium text-gray-900 mb-2">Custom Dates:</h3>
-                                        {availability.customDates.map((custom, index) => (
-                                            <div key={index} className="bg-blue-50 p-3 rounded-md mb-2">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="font-medium text-sm">{custom.date.toDateString()}</span>
-                                                    <Button
-                                                        variant="destructive"
-                                                        onClick={() => removeTimeSlot('custom', index)}
-                                                    >
-                                                        <Trash2Icon />
-                                                    </Button>
-                                                </div>
-                                                <div className="flex items-center gap-2 md:gap-4 flex-wrap">
-                                                    {custom.timeSlots.map((slot, slotIndex) => (
-
-                                                        <Badge key={slotIndex} className="flex gap-4 justify-between items-center text-sm bg-white rounded-full text-gray-700 px-3 py-2">
-                                                            <span>{slot.start} - {slot.end}</span>
-                                                            <button
-                                                                onClick={() => removeTimeSlot('weekly', index, slotIndex)}
-                                                                className="text-gray-400 hover:text-gray-600"
-                                                            >
-                                                                <X className="w-4 h-4" />
-                                                            </button>
-                                                        </Badge>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
                             </>
                         )}
+
 
                         {currentStep === 4 && <div className="w-full space-y-8">
                             <div className="grid grid-cols-1 sm:grid-cols-2 items-baseline gap-6">
@@ -1108,7 +1203,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                             Save as Draft
                         </Button>
                         <Button
-                        type="button"
+                            type="button"
                             variant="primary"
                             onClick={handleFinalSubmit}
                             disabled={isSubmitting}
@@ -1121,22 +1216,22 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
                 </div>
             </ResponsiveModal>
             <ResponsiveModal close={() => { }} open={showSuccessModal} >
-          <div className="flex flex-col items-center justify-center text-center space-y-4 py-12">
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="110" height="111" fill="none"><rect width="82.687" height="109.9" x=".778" y=".551" fill="url(#a)" rx="8.373" /><rect width="30.353" height="4.187" x="19.095" y="74.863" fill="#C9D377" rx="1.047" /><path fill="#C9D377" d="M51.542 74.863h13.607v4.187H51.542z" /><rect width="46.053" height="4.187" x="19.095" y="83.238" fill="#C9D377" rx="1.047" /><rect width="46.053" height="4.187" x="19.095" y="91.609" fill="#C9D377" rx="1.047" /><rect width="55" height="43" x="16.747" y="21.828" fill="#C9D377" rx="8" /><path stroke="#7C843D" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m37.247 47.163 3.725-3.725a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0l2.058 2.058M47.664 40.493a.417.417 0 0 0 0-.833m0 .834a.417.417 0 0 1 0-.834m0 .834v-.834" /><path stroke="#7C843D" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M37.829 50.283c-.998-1.169-.998-2.931-.998-6.456 0-3.525 0-5.287.998-6.456.142-.166.296-.32.462-.463 1.17-.998 2.931-.998 6.456-.998 3.525 0 5.287 0 6.456.998.166.142.32.297.463.463.998 1.169.998 2.931.998 6.456 0 3.525 0 5.287-.998 6.456-.142.166-.297.32-.463.462-1.169.998-2.931.998-6.456.998-3.525 0-5.287 0-6.456-.998a4.162 4.162 0 0 1-.462-.462Z" /><g clipPath="url(#b)"><rect width="38.493" height="5.309" x="18.044" y="53.406" fill="#E9EBED" rx="1.327" /></g><rect width="33.493" height="33.493" x="51.956" y="53.262" stroke="#B6CC5E" strokeWidth="1.047" rx="16.747" /><path fill="#F1F3DE" stroke="#7C843D" strokeWidth=".386" d="m86.751 93.622 5.278-5.465a1.459 1.459 0 0 1 2.062-.037l12.622 12.189a3.109 3.109 0 0 1 .076 4.396l-2.984 3.09a3.108 3.108 0 0 1-4.396.077L86.787 95.684a1.458 1.458 0 0 1-.036-2.062Z" /><mask id="c" fill="#fff"><path d="m80.363 87.453 5.353-5.543 6.308 6.092-5.353 5.543-6.308-6.092Z" /></mask><path fill="#989F42" d="m80.363 87.453 5.353-5.543 6.308 6.092-5.353 5.543-6.308-6.092Z" /><path fill="#7C843D" d="m85.716 81.91-.268.278 6.308 6.092.268-.278.268-.277-6.308-6.092-.268.277Zm.956 11.635.268-.278-6.309-6.091-.268.277-.268.278 6.308 6.092.268-.278Z" mask="url(#c)" /><mask id="d" fill="#fff"><path d="M90.592 70.224c0 11.97-9.703 21.672-21.673 21.672-11.97 0-21.673-9.703-21.673-21.672 0-11.97 9.703-21.673 21.673-21.673 11.97 0 21.673 9.703 21.673 21.673Zm-38.496 0c0 9.29 7.532 16.823 16.823 16.823s16.823-7.532 16.823-16.823c0-9.292-7.532-16.824-16.823-16.824s-16.823 7.532-16.823 16.824Z" /></mask><path fill="#F1F3DE" stroke="#7C843D" stroke-width=".772" d="M90.592 70.224c0 11.97-9.703 21.672-21.673 21.672-11.97 0-21.673-9.703-21.673-21.672 0-11.97 9.703-21.673 21.673-21.673 11.97 0 21.673 9.703 21.673 21.673Zm-38.496 0c0 9.29 7.532 16.823 16.823 16.823s16.823-7.532 16.823-16.823c0-9.292-7.532-16.824-16.823-16.824s-16.823 7.532-16.823 16.824Z" mask="url(#d)" /><defs><linearGradient id="a" x1="42.122" x2="42.122" y1=".551" y2="110.451" gradientUnits="userSpaceOnUse"><stop stopColor="#CCECE9" /><stop offset="1" stopColor="#E4E9CF" /></linearGradient><clipPath id="b"><rect width="34.54" height="34.54" x="51.433" y="52.738" fill="#fff" rx="17.27" /></clipPath></defs></svg>
-            </span>
-            <h3 className="text-xl my-4 font-semibold text-gray-900">Item verification in progress...</h3>
-            <p className="text-gray-600">
-              We&apos;ll notify you once your item has been published
-            </p>
+                <div className="flex flex-col items-center justify-center text-center space-y-4 py-12">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="110" height="111" fill="none"><rect width="82.687" height="109.9" x=".778" y=".551" fill="url(#a)" rx="8.373" /><rect width="30.353" height="4.187" x="19.095" y="74.863" fill="#C9D377" rx="1.047" /><path fill="#C9D377" d="M51.542 74.863h13.607v4.187H51.542z" /><rect width="46.053" height="4.187" x="19.095" y="83.238" fill="#C9D377" rx="1.047" /><rect width="46.053" height="4.187" x="19.095" y="91.609" fill="#C9D377" rx="1.047" /><rect width="55" height="43" x="16.747" y="21.828" fill="#C9D377" rx="8" /><path stroke="#7C843D" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m37.247 47.163 3.725-3.725a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0l2.058 2.058M47.664 40.493a.417.417 0 0 0 0-.833m0 .834a.417.417 0 0 1 0-.834m0 .834v-.834" /><path stroke="#7C843D" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M37.829 50.283c-.998-1.169-.998-2.931-.998-6.456 0-3.525 0-5.287.998-6.456.142-.166.296-.32.462-.463 1.17-.998 2.931-.998 6.456-.998 3.525 0 5.287 0 6.456.998.166.142.32.297.463.463.998 1.169.998 2.931.998 6.456 0 3.525 0 5.287-.998 6.456-.142.166-.297.32-.463.462-1.169.998-2.931.998-6.456.998-3.525 0-5.287 0-6.456-.998a4.162 4.162 0 0 1-.462-.462Z" /><g clipPath="url(#b)"><rect width="38.493" height="5.309" x="18.044" y="53.406" fill="#E9EBED" rx="1.327" /></g><rect width="33.493" height="33.493" x="51.956" y="53.262" stroke="#B6CC5E" strokeWidth="1.047" rx="16.747" /><path fill="#F1F3DE" stroke="#7C843D" strokeWidth=".386" d="m86.751 93.622 5.278-5.465a1.459 1.459 0 0 1 2.062-.037l12.622 12.189a3.109 3.109 0 0 1 .076 4.396l-2.984 3.09a3.108 3.108 0 0 1-4.396.077L86.787 95.684a1.458 1.458 0 0 1-.036-2.062Z" /><mask id="c" fill="#fff"><path d="m80.363 87.453 5.353-5.543 6.308 6.092-5.353 5.543-6.308-6.092Z" /></mask><path fill="#989F42" d="m80.363 87.453 5.353-5.543 6.308 6.092-5.353 5.543-6.308-6.092Z" /><path fill="#7C843D" d="m85.716 81.91-.268.278 6.308 6.092.268-.278.268-.277-6.308-6.092-.268.277Zm.956 11.635.268-.278-6.309-6.091-.268.277-.268.278 6.308 6.092.268-.278Z" mask="url(#c)" /><mask id="d" fill="#fff"><path d="M90.592 70.224c0 11.97-9.703 21.672-21.673 21.672-11.97 0-21.673-9.703-21.673-21.672 0-11.97 9.703-21.673 21.673-21.673 11.97 0 21.673 9.703 21.673 21.673Zm-38.496 0c0 9.29 7.532 16.823 16.823 16.823s16.823-7.532 16.823-16.823c0-9.292-7.532-16.824-16.823-16.824s-16.823 7.532-16.823 16.824Z" /></mask><path fill="#F1F3DE" stroke="#7C843D" stroke-width=".772" d="M90.592 70.224c0 11.97-9.703 21.672-21.673 21.672-11.97 0-21.673-9.703-21.673-21.672 0-11.97 9.703-21.673 21.673-21.673 11.97 0 21.673 9.703 21.673 21.673Zm-38.496 0c0 9.29 7.532 16.823 16.823 16.823s16.823-7.532 16.823-16.823c0-9.292-7.532-16.824-16.823-16.824s-16.823 7.532-16.823 16.824Z" mask="url(#d)" /><defs><linearGradient id="a" x1="42.122" x2="42.122" y1=".551" y2="110.451" gradientUnits="userSpaceOnUse"><stop stopColor="#CCECE9" /><stop offset="1" stopColor="#E4E9CF" /></linearGradient><clipPath id="b"><rect width="34.54" height="34.54" x="51.433" y="52.738" fill="#fff" rx="17.27" /></clipPath></defs></svg>
+                    </span>
+                    <h3 className="text-xl my-4 font-semibold text-gray-900">Item verification in progress...</h3>
+                    <p className="text-gray-600">
+                        We&apos;ll notify you once your item has been published
+                    </p>
 
-            <div className="pt-4">
-              <Button variant="primary" onClick={handleSuccessClose} className="py-6 w-full sm:w-44">
-                Got it
-              </Button>
-            </div>
-          </div>
-        </ResponsiveModal>
+                    <div className="pt-4">
+                        <Button variant="primary" onClick={handleSuccessClose} className="py-6 w-full sm:w-44">
+                            Got it
+                        </Button>
+                    </div>
+                </div>
+            </ResponsiveModal>
         </div >
     )
 }

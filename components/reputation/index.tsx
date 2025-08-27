@@ -53,7 +53,7 @@ const ReputationView = () => {
 
                             </div>
                         </TabsList>
-                        <TabsContent value="received">
+                        <TabsContent value="received" className="grid divide-y">
                             {/* <p className="text-gray-500">No reviews received yet.</p> */}
                             {/* Sarah Johnson */}
                             <ReviewCard
@@ -73,7 +73,7 @@ const ReputationView = () => {
                                 className="border-none"
                             />
                         </TabsContent>
-                        <TabsContent value="given">
+                        <TabsContent value="given" className="grid divide-y">
                             {/* <p className="text-gray-500">No reviews received yet.</p> */}
                             <ReviewCard
                                 itemTitle='Vintage Desk Lamp'

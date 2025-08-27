@@ -18,6 +18,7 @@ import { useUIState } from '@/hooks/useAppState'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import ResponsiveModal from '../modal/ResponsiveModal'
 import MatchedCard from './MatchedCard'
+import ReviewCard from '../reputation/ReviewCard'
 
 const items = [
     {
@@ -126,6 +127,7 @@ const MactchingView = () => {
     const [activeTab, setActiveTab] = useState("pending")
     const [openItemId, setOpenItemId] = useState<string | null>(null)
     const [isGiftedModal, setIsGiftedModal] = useState(false)
+    const [receiverDetailsPreviewModal, setReceiverDetailsPreviewModal] = useState(false)
 
 
     const { openCriteria, setOpenCriteria, openSheet, setIsSheetOpen, isOpen, setIsOpen } = useUIState()
@@ -222,7 +224,7 @@ const MactchingView = () => {
                                                     {matchedUsers.map((user, index) => (
                                                         <div key={user.id} className={`@container ${index < matchedUsers.length - 1 ? 'border-b pb-12' : ''}`}>
                                                             <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                                <div className='flex gap-4 flex-row items-start'>
+                                                                <div onClick={() => setReceiverDetailsPreviewModal(true)} className='cursor-pointer flex gap-4 flex-row items-center'>
                                                                     <Avatar className="w-10 md:w-12 h-10 md:h-12">
                                                                         <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                                                         <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
@@ -267,6 +269,75 @@ const MactchingView = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <ResponsiveModal open={receiverDetailsPreviewModal} close={setReceiverDetailsPreviewModal} className='py-8 px-4 md:px-6'>
+                                                                <div className='grid gap-4 max-h-[80vh] overflow-y-auto scrollbar-hide'>
+                                                                    <div className='grid gap-4 bg-gray-50 rounded-lg p-6'>
+                                                                        <div className='cursor-pointer flex gap-4 flex-row items-center'>
+                                                                            <Avatar className="w-10 md:w-12 h-10 md:h-12">
+                                                                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                                                                <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
+                                                                            </Avatar>
+                                                                            <div className="flex-1">
+                                                                                <div className="flex flex-col gap-1 mb-1">
+                                                                                    <h3 className="text-sm md:text-lg font-semibold text-[#222222]">{user.name}</h3>
+                                                                                    <div className='flex items-center'>
+                                                                                        <div className="flex items-center gap-1 mr-1">
+                                                                                            <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
+                                                                                            <span className="text-xs md:text-sm font-medium">{user.rating}</span>
+                                                                                        </div>
+                                                                                        <p className="text-xs md:text-sm text-nowrap font-medium text-[#626262] mr-1">(23 reviews)</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p className='text-gray-700 text-sm my-2'>Passionate about sustainability and helping others. I believe in giving items a second life!</p>
+                                                                        <ul className="flex flex-col justify-between gap-3">
+                                                                            <li className="flex gap-2 items-center">
+                                                                                <span>
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" d="M10.666 1.334v2.667M5.333 1.334v2.667M8.667 2.666H7.333c-2.514 0-3.77 0-4.552.781C2 4.228 2 5.485 2 8v1.334c0 2.514 0 3.77.781 4.552.781.781 2.038.781 4.552.781h1.334c2.514 0 3.77 0 4.552-.781.781-.781.781-2.038.781-4.552V7.999c0-2.514 0-3.77-.781-4.552-.781-.781-2.038-.781-4.552-.781ZM2 6.666h12" /></svg>
+                                                                                </span>
+                                                                                <span className="text-sm text-gray-600">Member since January 2025</span>
+                                                                            </li>
+                                                                            <li className="flex gap-2 items-center">
+                                                                                <span>
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#FB923C" strokeLinecap="round" strokeLinejoin="round" d="M8 14.666c-.545 0-1.067-.22-2.109-.66C3.297 12.91 2 12.362 2 11.44V4.666m6 10c.545 0 1.067-.22 2.109-.66C12.703 12.91 14 12.362 14 11.44V4.666m-6 10V7.569M5.55 6.462l-1.947-.943C2.534 5.002 2 4.743 2 4.334c0-.41.534-.668 1.603-1.185l1.948-.943C6.753 1.625 7.354 1.334 8 1.334c.646 0 1.247.29 2.45.872l1.947.943C13.466 3.666 14 3.925 14 4.334c0 .41-.534.668-1.603 1.185l-1.948.943c-1.202.581-1.803.872-2.449.872-.646 0-1.247-.29-2.45-.872ZM4 8l1.333.667M11.334 2.666 4.667 5.999" /></svg>
+                                                                                </span>
+                                                                                <span className="text-sm text-gray-600">4 pickups</span>
+                                                                            </li>
+                                                                            <li className="flex gap-2 items-center">
+                                                                                <span>
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#C00F0C" strokeLinecap="round" strokeLinejoin="round" d="M3.35 14c.012-1.157.012-2.297.007-3.386m0 0c-.015-3.64-.082-6.706.106-7.919.244-1.575 2.799-.142 5.85 1.037l1.375.593c1.012.436 2.457 1.21 1.822 2.116-.261.372-.804.799-1.805 1.27l-7.348 2.903Z" /></svg>
+                                                                                </span>
+                                                                                <span className="text-sm text-gray-600">0 no-show</span>
+                                                                            </li>
+                                                                            <li className="flex gap-2 items-center">
+                                                                                <span>
+                                                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M3.50197 2.79723L2.68339 3.27209C2.0246 3.65425 1.6952 3.84533 1.5141 4.16322C1.33301 4.4811 1.33301 4.86822 1.33301 5.64245V11.0855C1.33301 12.1028 1.33301 12.6115 1.56118 12.8945C1.71301 13.0829 1.92578 13.2095 2.16101 13.2515C2.51451 13.3146 2.94733 13.0635 3.81292 12.5614C4.40071 12.2204 4.96641 11.8663 5.66959 11.9623C5.98945 12.006 6.29455 12.1577 6.90474 12.4611L9.44734 13.7253C9.99727 13.9988 10.0023 14 10.6139 14H11.9997C13.2567 14 13.8853 14 14.2758 13.6009C14.6663 13.2017 14.6663 12.5593 14.6663 11.2745V6.781C14.6663 5.49615 14.6663 4.85373 14.2758 4.45459C13.8853 4.05544 13.2567 4.05544 11.9997 4.05544H10.6139C10.0023 4.05544 9.99727 4.05426 9.44734 3.7808L7.22627 2.67642C6.2989 2.21531 5.83522 1.98476 5.34126 2.00078C4.84729 2.01681 4.39885 2.27695 3.50197 2.79723Z" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                                                                        <path d="M5.33301 2V11.6667" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                                                                        <path d="M10 4.33398V13.6673" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                                                                    </svg>
+
+                                                                                </span>
+                                                                                <span className="text-sm text-gray-600">2.4km away</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div className='grid gap-4 bg-gray-50 divide-y rounded-lg p-6'>
+                                                                        <ReviewCard
+                                                                            itemTitle='Vintage Desk Lamp'
+                                                                            receiverName='Sarah Johnson'
+                                                                            reviewText='James was so kind, and the lamp was exactly as he described. Great communication and easy pickup'
+                                                                        />
+                                                                        <ReviewCard
+                                                                            itemTitle='Kitchen Blender'
+                                                                            receiverName='Michael Chen'
+                                                                            reviewText='The blender works perfectly. Ben was responsive and flexible with pickup times.'
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                            </ResponsiveModal>
                                                         </div>
                                                     ))}
                                                 </CollapsibleContent>
@@ -407,7 +478,7 @@ const MactchingView = () => {
                     <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
                         <MatchedCard />
                         <MatchedCard />
-                        
+
                     </div>
                 </TabsContent>
             </Tabs>

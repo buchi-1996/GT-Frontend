@@ -9,6 +9,7 @@ import VerifyIdModal from "@/components/shared/VerifyId";
 import AllBadges from "@/components/shared/AllBadges";
 import AddItemModal from "@/components/multistep-form/AddItemModal";
 import UnmatchModalSequence from "@/components/shared/UnmatchModalSequence";
+import GiverDisputeFlow from "@/components/shared/dispute/GiverDisputeFlow";
 
 
 const AppModals = () => {
@@ -21,6 +22,7 @@ const AppModals = () => {
             <AllBadges />
             <AddItemModal />
             <UnmatchModalSequence />
+            <GiverDisputeFlow />
         </>
     )
 }

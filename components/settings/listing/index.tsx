@@ -12,8 +12,10 @@ import { Switch } from '@/components/ui/switch';
 import { conditionOptions } from '@/lib/data';
 
 const listingFormSchema = z.object({
+    defaultAvailability: z.boolean(),
     defaultCategory: z.string(),
     defaultCondition: z.string(),
+    preferredTimeFormat: z.string(),
     setDaily: z.boolean().optional(),
     setWeekly: z.boolean().optional(),
     setWeekend: z.boolean().optional(),
@@ -33,8 +35,10 @@ const ListingView = () => {
     const form = useForm<ListingFormSchema>({
         resolver: zodResolver(listingFormSchema),
         defaultValues: {
+            defaultAvailability: true,
             defaultCategory: "",
             defaultCondition: "",
+            preferredTimeFormat: "24",
             setDaily: false,
             setWeekly: true,
             setWeekend: true,
@@ -117,7 +121,55 @@ const ListingView = () => {
                     <div className='grid border-b gap-4 py-6'>
                         <h3 className="font-semibold text-[#222222] mb-6">Pickup Availability Settings</h3>
                         <div className='grid gap-4'>
+
+                                <FormField
+                                    control={form.control}
+                                    name="preferredTimeFormat"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Preferred time format</h4>
+                                                
+                                                <FormControl>
+                                                    <Select onValueChange={field.onChange} value={field.value || "24"}>
+                                                        <SelectTrigger className="w-full py-6 shadow-none">
+                                                            <SelectValue placeholder="Select an option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="shadow-xl border-none px-1 py-2">
+                                                            <SelectItem value="12" className="py-3 px-4">
+                                                                12 hours
+                                                            </SelectItem>
+                                                            <SelectItem value="24" className="py-3 px-4">
+                                                                24 hours
+                                                            </SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+
                             <FormField
+                                control={form.control}
+                                name="defaultAvailability"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                            <div>
+                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Default Availability</h4>
+                                                <p className="text-sm text-[#626262]">set a weekly recurring schedule (e.g. every Mon–Fri, 9 AM–5 PM).</p>
+                                            </div>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-[#14ae7d]"
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                            {/* <FormField
                                 control={form.control}
                                 name="setDaily"
                                 render={({ field }) => (
@@ -179,7 +231,7 @@ const ListingView = () => {
                                         </div>
                                     </FormItem>
                                 )}
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div className='grid border-b gap-4 py-6'>

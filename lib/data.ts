@@ -86,3 +86,23 @@ export const defaultUnmatchOptions = [
         id: "incomplete-or-misleading"
     }
 ];
+
+export const GiverNoshowReasons = [
+    { value: "emergency-situation", label: "Emergency Situation (e.g., medical, family emergency)" },
+    { value: "work-commitment", label: "Unexpected Work Commitment" },
+    { value: "health-issues", label: "Personal Health Issues on the Day" },
+    { value: "transportation-challenges", label: "Transportation or Mobility Challenges" },
+    { value: "forgot-appointment", label: "Forgot the Appointment" },
+    { value: "dependent-care", label: "Dependent Care Responsibilities (e.g., no babysitter)" },
+    { value: "misunderstood-time", label: "Misunderstood or Confused Collection Date/Time" },
+    { value: "receiver-failed-confirm", label: "Receiver Failed to Confirm in Time" },
+    { value: "could-not-locate", label: "Could Not Locate the Receiver or Their Contact" },
+    { value: "receiver-breached-condition", label: "Receiver Breached a Pre-agreed Condition or Requirement" },
+    { value: "change-of-mind", label: "Change of Mind Due to Concerns About the Receiver" },
+    { value: "safety-concerns", label: "Safety or Security Concerns" },
+    { value: "weather-conditions", label: "Weather Conditions Prevented Travel" },
+    { value: "platform-error", label: "Platform/App Notification Error or Miscommunication" },
+    { value: "item-damaged", label: "Item Was Damaged or Lost Before Handover" },
+    { value: "double-booking", label: "Double Booking or Scheduling Conflict" },
+    { value: "other", label: "Other reasons", hasTextarea: true }
+];
