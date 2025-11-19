@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/collapsible"
 import Image from 'next/image'
 import SortableList from './SortableList'
-import { useUIState } from '@/hooks/useAppState'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import ResponsiveModal from '../modal/ResponsiveModal'
 import MatchedCard from './MatchedCard'
 import ReviewCard from '../reputation/ReviewCard'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { openSheet, setCurrentProfileId, showAcceptReceiverModal, showCriteriaModal, showReceiverPreviewModal } from '@/redux/slices/modalSlice'
 
 const items = [
     {
@@ -127,38 +128,46 @@ const MactchingView = () => {
     const [activeTab, setActiveTab] = useState("pending")
     const [openItemId, setOpenItemId] = useState<string | null>(null)
     const [isGiftedModal, setIsGiftedModal] = useState(false)
-    const [receiverDetailsPreviewModal, setReceiverDetailsPreviewModal] = useState(false)
 
-
-    const { openCriteria, setOpenCriteria, openSheet, setIsSheetOpen, isOpen, setIsOpen } = useUIState()
+    const dispatch = useAppDispatch()
+    const { profile, isCriteriaOpen, acceptReceiverModalOpen } = useAppSelector((state) => state.modal);
     const isMobile = useMediaQuery("(max-width: 1280px)")
 
     const handleCriteriaShow = () => {
         if (isMobile) {
-            openSheet(<SortableList />)
-            setIsSheetOpen(true)
+            dispatch(openSheet(<SortableList />))
         }
-        setOpenCriteria(true)
+        // setOpenCriteria(true)
+        dispatch(showCriteriaModal(true))
     }
 
     const handleItemToggle = (itemId: string) => {
         setOpenItemId(openItemId === itemId ? null : itemId)
     }
 
-    const handleOpenchange = () => {
-        setIsOpen(false)
-    }
+
 
     const handleGiftItemClose = () => {
         setIsGiftedModal(false)
+
     }
 
     const handleGiftItem = () => {
         console.log("Item gifted successfully!");
-        setIsOpen(false);
+        // setIsOpen(false);
+        dispatch(showAcceptReceiverModal(false));
+
         setIsGiftedModal(true);
     }
 
+    const { currentProfileId, profilePreviewModalOpen } = profile
+
+    const handleReceiverPreviewModal = (currentId: number) => {
+        dispatch(showReceiverPreviewModal(true))
+        dispatch(setCurrentProfileId(currentId))
+        // open the modal;
+        // set the currentId
+    }
 
 
     return (
@@ -189,9 +198,9 @@ const MactchingView = () => {
                                         open={openItemId === item.id}
                                         onOpenChange={() => handleItemToggle(item.id)}
                                     >
-                                        <Card className="relative overflow-hidden w-full xl:min-w-[550px] pt-3 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 bg-transparent border-b shadow-none">
+                                        <Card className="relative overflow-hidden w-full xl:min-w-[550px] p-0 bg-transparent border-b shadow-none">
                                             <CardContent className="p-0">
-                                                <CollapsibleTrigger className="w-full cursor-pointer">
+                                                <CollapsibleTrigger className="pt-0 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 w-full cursor-pointer">
                                                     <div className="flex items-center lg:items-center justify-between gap-4">
                                                         <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
                                                             <Image
@@ -220,11 +229,11 @@ const MactchingView = () => {
                                                     </div>
                                                 </CollapsibleTrigger>
 
-                                                <CollapsibleContent className="border-t border-[#f1f1f1] mt-2 md:mt-3 pt-6 space-y-10">
+                                                <CollapsibleContent className="border-t px-3 md:px-6 border-[#f1f1f1] mt-2 md:mt-3 py-6 space-y-10">
                                                     {matchedUsers.map((user, index) => (
                                                         <div key={user.id} className={`@container ${index < matchedUsers.length - 1 ? 'border-b pb-12' : ''}`}>
                                                             <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                                <div onClick={() => setReceiverDetailsPreviewModal(true)} className='cursor-pointer flex gap-4 flex-row items-center'>
+                                                                <div onClick={() => handleReceiverPreviewModal(index)} className='cursor-pointer flex gap-4 flex-row items-center'>
                                                                     <Avatar className="w-10 md:w-12 h-10 md:h-12">
                                                                         <AvatarImage src="/placeholder.svg?height=48&width=48" />
                                                                         <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
@@ -265,79 +274,10 @@ const MactchingView = () => {
                                                                                 <div className="text-xl font-semibold text-[#222222]">{user.noShowRecord}</div>
                                                                             </div>
                                                                         </div>
-                                                                        <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
+                                                                        <Button onClick={() => dispatch(showAcceptReceiverModal(true))} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <ResponsiveModal open={receiverDetailsPreviewModal} close={setReceiverDetailsPreviewModal} className='py-8 px-4 md:px-6'>
-                                                                <div className='grid gap-4 max-h-[80vh] overflow-y-auto scrollbar-hide'>
-                                                                    <div className='grid gap-4 bg-gray-50 rounded-lg p-6'>
-                                                                        <div className='cursor-pointer flex gap-4 flex-row items-center'>
-                                                                            <Avatar className="w-10 md:w-12 h-10 md:h-12">
-                                                                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                                                                <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
-                                                                            </Avatar>
-                                                                            <div className="flex-1">
-                                                                                <div className="flex flex-col gap-1 mb-1">
-                                                                                    <h3 className="text-sm md:text-lg font-semibold text-[#222222]">{user.name}</h3>
-                                                                                    <div className='flex items-center'>
-                                                                                        <div className="flex items-center gap-1 mr-1">
-                                                                                            <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
-                                                                                            <span className="text-xs md:text-sm font-medium">{user.rating}</span>
-                                                                                        </div>
-                                                                                        <p className="text-xs md:text-sm text-nowrap font-medium text-[#626262] mr-1">(23 reviews)</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <p className='text-gray-700 text-sm my-2'>Passionate about sustainability and helping others. I believe in giving items a second life!</p>
-                                                                        <ul className="flex flex-col justify-between gap-3">
-                                                                            <li className="flex gap-2 items-center">
-                                                                                <span>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" d="M10.666 1.334v2.667M5.333 1.334v2.667M8.667 2.666H7.333c-2.514 0-3.77 0-4.552.781C2 4.228 2 5.485 2 8v1.334c0 2.514 0 3.77.781 4.552.781.781 2.038.781 4.552.781h1.334c2.514 0 3.77 0 4.552-.781.781-.781.781-2.038.781-4.552V7.999c0-2.514 0-3.77-.781-4.552-.781-.781-2.038-.781-4.552-.781ZM2 6.666h12" /></svg>
-                                                                                </span>
-                                                                                <span className="text-sm text-gray-600">Member since January 2025</span>
-                                                                            </li>
-                                                                            <li className="flex gap-2 items-center">
-                                                                                <span>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#FB923C" strokeLinecap="round" strokeLinejoin="round" d="M8 14.666c-.545 0-1.067-.22-2.109-.66C3.297 12.91 2 12.362 2 11.44V4.666m6 10c.545 0 1.067-.22 2.109-.66C12.703 12.91 14 12.362 14 11.44V4.666m-6 10V7.569M5.55 6.462l-1.947-.943C2.534 5.002 2 4.743 2 4.334c0-.41.534-.668 1.603-1.185l1.948-.943C6.753 1.625 7.354 1.334 8 1.334c.646 0 1.247.29 2.45.872l1.947.943C13.466 3.666 14 3.925 14 4.334c0 .41-.534.668-1.603 1.185l-1.948.943c-1.202.581-1.803.872-2.449.872-.646 0-1.247-.29-2.45-.872ZM4 8l1.333.667M11.334 2.666 4.667 5.999" /></svg>
-                                                                                </span>
-                                                                                <span className="text-sm text-gray-600">4 pickups</span>
-                                                                            </li>
-                                                                            <li className="flex gap-2 items-center">
-                                                                                <span>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#C00F0C" strokeLinecap="round" strokeLinejoin="round" d="M3.35 14c.012-1.157.012-2.297.007-3.386m0 0c-.015-3.64-.082-6.706.106-7.919.244-1.575 2.799-.142 5.85 1.037l1.375.593c1.012.436 2.457 1.21 1.822 2.116-.261.372-.804.799-1.805 1.27l-7.348 2.903Z" /></svg>
-                                                                                </span>
-                                                                                <span className="text-sm text-gray-600">0 no-show</span>
-                                                                            </li>
-                                                                            <li className="flex gap-2 items-center">
-                                                                                <span>
-                                                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                        <path d="M3.50197 2.79723L2.68339 3.27209C2.0246 3.65425 1.6952 3.84533 1.5141 4.16322C1.33301 4.4811 1.33301 4.86822 1.33301 5.64245V11.0855C1.33301 12.1028 1.33301 12.6115 1.56118 12.8945C1.71301 13.0829 1.92578 13.2095 2.16101 13.2515C2.51451 13.3146 2.94733 13.0635 3.81292 12.5614C4.40071 12.2204 4.96641 11.8663 5.66959 11.9623C5.98945 12.006 6.29455 12.1577 6.90474 12.4611L9.44734 13.7253C9.99727 13.9988 10.0023 14 10.6139 14H11.9997C13.2567 14 13.8853 14 14.2758 13.6009C14.6663 13.2017 14.6663 12.5593 14.6663 11.2745V6.781C14.6663 5.49615 14.6663 4.85373 14.2758 4.45459C13.8853 4.05544 13.2567 4.05544 11.9997 4.05544H10.6139C10.0023 4.05544 9.99727 4.05426 9.44734 3.7808L7.22627 2.67642C6.2989 2.21531 5.83522 1.98476 5.34126 2.00078C4.84729 2.01681 4.39885 2.27695 3.50197 2.79723Z" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
-                                                                                        <path d="M5.33301 2V11.6667" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
-                                                                                        <path d="M10 4.33398V13.6673" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
-                                                                                    </svg>
-
-                                                                                </span>
-                                                                                <span className="text-sm text-gray-600">2.4km away</span>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div className='grid gap-4 bg-gray-50 divide-y rounded-lg p-6'>
-                                                                        <ReviewCard
-                                                                            itemTitle='Vintage Desk Lamp'
-                                                                            receiverName='Sarah Johnson'
-                                                                            reviewText='James was so kind, and the lamp was exactly as he described. Great communication and easy pickup'
-                                                                        />
-                                                                        <ReviewCard
-                                                                            itemTitle='Kitchen Blender'
-                                                                            receiverName='Michael Chen'
-                                                                            reviewText='The blender works perfectly. Ben was responsive and flexible with pickup times.'
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                            </ResponsiveModal>
                                                         </div>
                                                     ))}
                                                 </CollapsibleContent>
@@ -348,7 +288,7 @@ const MactchingView = () => {
                             </div>
                         </div>
 
-                        {openCriteria && (<div className="hidden xl:block bg-white z-10">
+                        {isCriteriaOpen && (<div className="hidden xl:block bg-white z-10">
                             <div className="h-120 rounded-lg overflow-auto bg-white border scrollbar-hide sticky top-44 p-6 pt-0">
                                 <SortableList />
                             </div>
@@ -359,109 +299,7 @@ const MactchingView = () => {
                     </div>
                 </TabsContent>
 
-                {/* <TabsContent value="pending" className=" flex gap-10 flex-row items-start">
-                    <div className='flex-1 grid gap-6 md:gap-8'>
-                        {items.map((item) => (
-                            <Collapsible
-                                key={item.id}
-                                open={openItemId === item.id}
-                                onOpenChange={() => handleItemToggle(item.id)}
-                            >
-                                <Card className="relative overflow-hidden w-full xl:min-w-[550px] pt-3 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 bg-transparent border-b shadow-none">
-                                    <CardContent className="p-0">
-                                        <CollapsibleTrigger className="w-full cursor-pointer">
-                                            <div className="flex items-center lg:items-center justify-between gap-4">
-                                                <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
-                                                    <Image
-                                                        width={200}
-                                                        height={200}
-                                                        src={item.image || "/placeholder.svg"}
-                                                        alt={item.title}
-                                                        className="w-20 md:w-24 h-16 md:h-18 rounded-lg object-cover"
-                                                    />
-                                                    <div className="flex-1 text-left">
-                                                        <h2 className="text-sm lg:text-lg font-semibold text-[#222222] mb-2 truncate w-38 lg:w-full">{item.title}</h2>
-                                                        <div className="flex items-start lg:items-center gap-2 md:gap-3">
-                                                            <Badge className={`${getStatusColor(item.status)} py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm`}>{item.status}</Badge>
-                                                            <Badge className="text-[#626262] bg-gray-50 py-1 md:py-2 px-2 md:px-3 rounded-full text-[0.6rem] md:text-sm ">{item.category}</Badge>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="absolute top-0 right-0 lg:relative flex items-center gap-2 bg-[#E6F8F4] p-2 md:p-3 rounded-bl-lg lg:rounded-full text-[#0d9488]">
-                                                    <Users className="w-3 md:w-5 h-3 md:h-5" />
-                                                    <span className="text-xs md:text-sm font-semibold">{item.interestedCount}</span>
-                                                    <ChevronRight
-                                                        className={`w-4 md:w-5 h-4 md:h-5 transition-transform duration-200 ${openItemId === item.id ? "rotate-90 text-[#0d9488]" : "text-[#0d9488]"
-                                                            }`}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </CollapsibleTrigger>
-
-                                        <CollapsibleContent className="border-t border-[#f1f1f1] mt-2 md:mt-3 pt-6 space-y-10">
-                                            {matchedUsers.map((user, index) => (
-                                                <div key={user.id} className={`@container ${index < matchedUsers.length - 1 ? 'border-b pb-12' : ''}`}>
-                                                    <div className="flex flex-col justify-between @xl:flex-row items-start gap-4 mb-4">
-                                                        <div className='flex gap-4 flex-row items-start'>
-                                                            <Avatar className="w-10 md:w-12 h-10 md:h-12">
-                                                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
-                                                                <AvatarFallback className={`${user.avatarBg} text-white`}>{user.avatarFallback}</AvatarFallback>
-                                                            </Avatar>
-                                                            <div className="flex-1">
-                                                                <div className="flex flex-col gap-1 mb-1">
-                                                                    <h3 className="text-sm md:text-md font-semibold text-[#222222]">{user.name}</h3>
-                                                                    <div className='flex items-center-safe'>
-                                                                        <div className="flex items-center gap-1 mr-1">
-                                                                            <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
-                                                                            <span className="text-xs md:text-sm font-medium">{user.rating}</span>
-                                                                        </div>
-                                                                        <span className="text-xs md:text-sm text-nowrap text-[#626262] mr-1">• {user.distance}</span>
-                                                                        <span className="text-xs md:text-sm text-nowrap text-[#626262]">• {!isMobile && 'Requested'} {user.requestedTime}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-1 text-sm text-[#626262]">
-                                                            <Clock className="w-4 h-4" />
-                                                            <span className="text-xs md:text-sm text-nowrap">Joined {user.joinedTime}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='grid gap-4 p-4 bg-gray-50 rounded-xl'>
-                                                        <p className="text-[#383838] text-sm mb-4">
-                                                            &quot;{user.message}&quot;
-                                                        </p>
-                                                        <div className='@container'>
-                                                            <div className='@container flex flex-col @xl:flex-row items-center gap-6'>
-                                                                <div className="flex flex-col @xl:flex-row flex-1 w-full gap-4 md:gap-6">
-                                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No. of pickups</div>
-                                                                        <div className="text-xl font-semibold text-[#222222]">{user.pickups}</div>
-                                                                    </div>
-                                                                    <div className="flex flex-1 py-2 px-6 items-center bg-white justify-between rounded-lg">
-                                                                        <div className="text-sm text-[#626262] whitespace-nowrap">No-Show Record</div>
-                                                                        <div className="text-xl font-semibold text-[#222222]">{user.noShowRecord}</div>
-                                                                    </div>
-                                                                </div>
-                                                                <Button onClick={() => setIsOpen(true)} variant="primary" className="py-6 w-full @xl:w-44">Accept</Button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </CollapsibleContent>
-                                    </CardContent>
-                                </Card>
-                            </Collapsible>
-                        ))}
-                    </div> */}
-                {/* {openCriteria && (
-                        <div className='hidden xl:block sticky border rounded-lg p-6 top-40 '>
-                                <SortableList />
-                        </div>
-                    )} */}
-
-                {(!openCriteria || isMobile) && (
+                {(!isCriteriaOpen || isMobile) && (
                     <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="border-none rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
                         <span>
                             <svg width="44" height="44" className="w-44 h-44 text-gray-900" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -484,7 +322,76 @@ const MactchingView = () => {
             </Tabs>
             {/* Accept Modal */}
 
-            <ResponsiveModal open={isOpen} close={handleOpenchange} className='py-6 md:py-20'>
+            <ResponsiveModal open={profilePreviewModalOpen} close={() => dispatch(showReceiverPreviewModal(false))} className='py-8 px-4 md:px-6'>
+                <div className='grid gap-4 max-h-[80vh] overflow-y-auto scrollbar-hide'>
+                    <div className='grid gap-4 bg-gray-50 rounded-lg p-6'>
+                        <div className='cursor-pointer flex gap-4 flex-row items-center'>
+                            <Avatar className="w-10 md:w-12 h-10 md:h-12">
+                                <AvatarImage src="/placeholder.svg?height=48&width=48" />
+                                <AvatarFallback className={`${matchedUsers[currentProfileId as number]?.avatarBg} text-white`}>{matchedUsers[currentProfileId as number]?.avatarFallback}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                                <div className="flex flex-col gap-1 mb-1">
+                                    <h3 className="text-sm md:text-lg font-semibold text-[#222222]">{matchedUsers[currentProfileId as number]?.name}</h3>
+                                    <div className='flex items-center'>
+                                        <div className="flex items-center gap-1 mr-1">
+                                            <StarIcon className="w-4 h-4 stroke-0 fill-amber-300 text-[#E8B931]" />
+                                            <span className="text-xs md:text-sm font-medium">{matchedUsers[currentProfileId as number]?.rating}</span>
+                                        </div>
+                                        <p className="text-xs md:text-sm text-nowrap font-medium text-[#626262] mr-1">(23 reviews)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p className='text-gray-700 text-sm my-2'>Passionate about sustainability and helping others. I believe in giving items a second life!</p>
+                        <ul className="flex flex-col justify-between gap-3">
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#14AE7D" strokeLinecap="round" strokeLinejoin="round" d="M10.666 1.334v2.667M5.333 1.334v2.667M8.667 2.666H7.333c-2.514 0-3.77 0-4.552.781C2 4.228 2 5.485 2 8v1.334c0 2.514 0 3.77.781 4.552.781.781 2.038.781 4.552.781h1.334c2.514 0 3.77 0 4.552-.781.781-.781.781-2.038.781-4.552V7.999c0-2.514 0-3.77-.781-4.552-.781-.781-2.038-.781-4.552-.781ZM2 6.666h12" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">Member since January 2025</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#FB923C" strokeLinecap="round" strokeLinejoin="round" d="M8 14.666c-.545 0-1.067-.22-2.109-.66C3.297 12.91 2 12.362 2 11.44V4.666m6 10c.545 0 1.067-.22 2.109-.66C12.703 12.91 14 12.362 14 11.44V4.666m-6 10V7.569M5.55 6.462l-1.947-.943C2.534 5.002 2 4.743 2 4.334c0-.41.534-.668 1.603-1.185l1.948-.943C6.753 1.625 7.354 1.334 8 1.334c.646 0 1.247.29 2.45.872l1.947.943C13.466 3.666 14 3.925 14 4.334c0 .41-.534.668-1.603 1.185l-1.948.943c-1.202.581-1.803.872-2.449.872-.646 0-1.247-.29-2.45-.872ZM4 8l1.333.667M11.334 2.666 4.667 5.999" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">4 pickups</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#C00F0C" strokeLinecap="round" strokeLinejoin="round" d="M3.35 14c.012-1.157.012-2.297.007-3.386m0 0c-.015-3.64-.082-6.706.106-7.919.244-1.575 2.799-.142 5.85 1.037l1.375.593c1.012.436 2.457 1.21 1.822 2.116-.261.372-.804.799-1.805 1.27l-7.348 2.903Z" /></svg>
+                                </span>
+                                <span className="text-sm text-gray-600">0 no-show</span>
+                            </li>
+                            <li className="flex gap-2 items-center">
+                                <span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.50197 2.79723L2.68339 3.27209C2.0246 3.65425 1.6952 3.84533 1.5141 4.16322C1.33301 4.4811 1.33301 4.86822 1.33301 5.64245V11.0855C1.33301 12.1028 1.33301 12.6115 1.56118 12.8945C1.71301 13.0829 1.92578 13.2095 2.16101 13.2515C2.51451 13.3146 2.94733 13.0635 3.81292 12.5614C4.40071 12.2204 4.96641 11.8663 5.66959 11.9623C5.98945 12.006 6.29455 12.1577 6.90474 12.4611L9.44734 13.7253C9.99727 13.9988 10.0023 14 10.6139 14H11.9997C13.2567 14 13.8853 14 14.2758 13.6009C14.6663 13.2017 14.6663 12.5593 14.6663 11.2745V6.781C14.6663 5.49615 14.6663 4.85373 14.2758 4.45459C13.8853 4.05544 13.2567 4.05544 11.9997 4.05544H10.6139C10.0023 4.05544 9.99727 4.05426 9.44734 3.7808L7.22627 2.67642C6.2989 2.21531 5.83522 1.98476 5.34126 2.00078C4.84729 2.01681 4.39885 2.27695 3.50197 2.79723Z" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M5.33301 2V11.6667" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M10 4.33398V13.6673" stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+
+                                </span>
+                                <span className="text-sm text-gray-600">2.4km away</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='grid gap-4 bg-gray-50 divide-y rounded-lg p-6'>
+                        <ReviewCard
+                            itemTitle='Vintage Desk Lamp'
+                            receiverName='Sarah Johnson'
+                            reviewText='James was so kind, and the lamp was exactly as he described. Great communication and easy pickup'
+                        />
+                        <ReviewCard
+                            itemTitle='Kitchen Blender'
+                            receiverName='Michael Chen'
+                            reviewText='The blender works perfectly. Ben was responsive and flexible with pickup times.'
+                        />
+                    </div>
+                </div>
+
+            </ResponsiveModal>
+            <ResponsiveModal open={acceptReceiverModalOpen} close={() => dispatch(showAcceptReceiverModal(false))} className='py-6 md:py-20'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-6'>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none"><rect width="80" height="80" fill="#F1F3DE" rx="40" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.219" d="M49.407 57.416v-4.355c0-2.666-1.2-5.28-3.626-6.386-2.959-1.348-6.507-2.134-10.322-2.134-3.815 0-7.364.786-10.323 2.134-2.425 1.106-3.625 3.72-3.625 6.386v4.355M57.99 57.418v-4.355c0-2.666-1.2-5.28-3.626-6.385a21.84 21.84 0 0 0-1.739-.703M35.459 38.105a7.51 7.51 0 1 0 0-15.021 7.51 7.51 0 0 0 0 15.02ZM46.188 23.393a7.514 7.514 0 0 1 0 14.398" /></svg>
@@ -492,7 +399,7 @@ const MactchingView = () => {
                     <h4 className='text-xl font-semibold'>Are you sure?</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>Accepting to gift a recipient will automatically reject other request</p>
                     <div className='flex items-center justify-center gap-4 mt-6'>
-                        <Button onClick={() => setIsOpen(false)} variant="secondary" className='w-28 py-6 px-6 cursor-pointer'>Go Back</Button>
+                        <Button onClick={() => dispatch(showAcceptReceiverModal(false))} variant="secondary" className='w-28 py-6 px-6 cursor-pointer'>Go Back</Button>
                         <Button onClick={handleGiftItem} variant="primary" className='w-28 py-6 px-6'>Gift Item</Button>
                     </div>
                 </div>

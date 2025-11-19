@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import Providers from "@/context/Providers";
+import ReduxProviders from "@/redux/providers";
+
+
 import AuthScreenBanner from "@/components/auth/AuthScreenBanner";
 
 
@@ -26,14 +28,14 @@ export default function AuthLayout({
     return (
         <html lang="en">
             <body className={`${inter.variable} flex flex-col  antialiased`}>
-                <Providers>
+                <ReduxProviders>
                     <div className="min-h-screen lg:grid grid-cols-5 items-stretch">
                         <AuthScreenBanner />
                         <main className="min-h-full grid col-span-3 bg-white overflow-y-auto">
                             {children}
                         </main>
                     </div>
-                </Providers>
+                </ReduxProviders>
             </body>
         </html>
     );

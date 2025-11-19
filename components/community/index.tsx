@@ -5,7 +5,8 @@ import { Card, CardContent } from '../ui/card'
 import { CommunityStar, EcoChampion, FirstGive, GenerousSoul, NeighbourhoodHero, ReliableGiver, SteadyGiver, SwiftResponder, VerifiedGiver } from './badges'
 import ContributorListItem from './ContributorListItem'
 import BadgeCard from './BadgeCard'
-import { useUIState } from '@/hooks/useAppState'
+import { useAppDispatch } from '@/hooks/redux-hooks'
+import { showAllBadgeModal } from '@/redux/slices/modalSlice'
 
 
 const topContributors = [
@@ -43,7 +44,7 @@ const topContributors = [
 
 
 const CommunityView = () => {
-    const { setViewAllBadgeModal } = useUIState()
+    const dispatch = useAppDispatch()
 
 
     return (
@@ -138,7 +139,7 @@ const CommunityView = () => {
                 <div className="col-auto xl:col-span-4 p-4 md:p-6 border rounded-lg">
                     <div className="flex items-center justify-between mb-6">
                         <h4 className='font-semibold'>Earned Badges</h4>
-                        <button onClick={() => setViewAllBadgeModal(true)} className='text-app-primary text-sm cursor-pointer'>View all</button>
+                        <button onClick={() => dispatch(showAllBadgeModal(true))} className='text-app-primary text-sm cursor-pointer'>View all</button>
                     </div>
                     {/* Badges */}
                     <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>

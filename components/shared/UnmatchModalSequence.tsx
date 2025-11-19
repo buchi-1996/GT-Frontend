@@ -7,7 +7,8 @@ import ResponsiveAlert from '../modal/ResponsiveAlert'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
-import { useUIState } from '@/hooks/useAppState'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { showUnmatchModal } from '@/redux/slices/modalSlice'
 
 
 const unmatchOptions = [
@@ -109,8 +110,8 @@ const unmatchOptions = [
 
 
 const UnmatchModalSequence = () => {
-
-    const { isUnmatchedModal, setIsUnmatchedModal} = useUIState()
+    const dispatch = useAppDispatch()
+    const {unmatchModalOpen} = useAppSelector((state) => state.modal);
     const [reasonModal, setReasonModal] = useState(false)
     const [feedBackModal, setFeedBackModal] = useState(false)
     const [isRelisted, setIsRelisted] = useState(false)
@@ -124,7 +125,7 @@ const UnmatchModalSequence = () => {
 
     const handleUnmatch = () => {
         console.log("Item un-matched successfully!");
-        setIsUnmatchedModal(false);
+        dispatch(showUnmatchModal(false));
         setReasonModal(true);
     }
 
@@ -153,7 +154,7 @@ const UnmatchModalSequence = () => {
 
     return (
         <>
-            <ResponsiveModal open={isUnmatchedModal} close={() => setIsUnmatchedModal(false)} className='py-6 md:py-20' >
+            <ResponsiveModal open={unmatchModalOpen} close={() => dispatch(showUnmatchModal(false))} className='py-6 md:py-20' >
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-6'>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="87" height="84" fill="none"><rect width="80" height="80" y=".25" fill="#F1F3DE" rx="40" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.219" d="M49.407 57.666v-4.355c0-2.666-1.2-5.28-3.626-6.386-2.959-1.348-6.507-2.134-10.322-2.134-3.815 0-7.364.786-10.323 2.134-2.425 1.106-3.625 3.72-3.625 6.386v4.355M57.99 57.668v-4.355c0-2.666-1.2-5.28-3.626-6.385a21.84 21.84 0 0 0-1.739-.703M35.459 38.355a7.51 7.51 0 1 0 0-15.021 7.51 7.51 0 0 0 0 15.02ZM46.188 23.643a7.514 7.514 0 0 1 0 14.398" /><circle cx="64" cy="60.75" r="21.5" fill="#D33737" stroke="#fff" stroke-width="3" /><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.143" d="M61.809 54.425c1.033 1.033 1.55 1.55 2.191 1.55.642 0 1.158-.517 2.191-1.55l2.192-2.191c.51-.51.765-.765 1.03-.918 1.333-.77 2.43-.006 3.353.917.924.924 1.687 2.022.918 3.354-.153.265-.408.52-.917 1.03l-2.192 2.191c-1.033 1.033-1.55 1.55-1.55 2.192 0 .642.517 1.158 1.55 2.191l2.191 2.192c.51.51.765.764.918 1.03.77 1.333.006 2.43-.918 3.353-.922.924-2.02 1.687-3.353.918-.265-.153-.52-.408-1.03-.918l-2.191-2.191c-1.033-1.033-1.55-1.55-2.192-1.55-.642 0-1.159.517-2.191 1.55l-2.192 2.191c-.51.51-.765.765-1.03.918-1.332.77-2.43.006-3.354-.918-.923-.923-1.686-2.02-.917-3.354.153-.265.408-.52.917-1.029l2.192-2.192c1.033-1.033 1.55-1.55 1.55-2.191 0-.642-.517-1.159-1.55-2.192l-2.192-2.191c-.51-.51-.764-.765-.917-1.03-.77-1.333-.006-2.43.917-3.354.924-.923 2.022-1.686 3.354-.917.265.153.52.408 1.03.917l2.192 2.192Z" /></svg>
@@ -161,7 +162,7 @@ const UnmatchModalSequence = () => {
                     <h4 className='text-xl font-semibold'>Are you sure?</h4>
                     <p className='text-sm text-gray-500 sm:max-w-sm'>Un-matching the recipient will automatically list the item as available to the public.</p>
                     <div className='flex items-center justify-center gap-4 mt-6'>
-                        <Button onClick={() => setIsUnmatchedModal(false)} variant="secondary" className='py-6 px-6 cursor-pointer'>No, Cancel</Button>
+                        <Button onClick={() => dispatch(showUnmatchModal(false))} variant="secondary" className='py-6 px-6 cursor-pointer'>No, Cancel</Button>
                         <Button onClick={handleUnmatch} variant="primary" className='py-6 px-6'>Yes, Un-match</Button>
                     </div>
                 </div>

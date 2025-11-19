@@ -5,11 +5,13 @@ import Link from 'next/link'
 import MenuItem from './MenuItem'
 import { NavigationSection } from '@/types'
 import { Card, CardContent } from '../ui/card'
-import { ChevronRight, X, Verified  } from 'lucide-react'
+import { ChevronRight, X, Verified } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useUIState } from '@/hooks/useAppState'
 import User from '../header/User'
 import { useRouter } from 'next/navigation'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { closeSidebar, collapseSidebar, showOverlay } from '@/redux/slices/sidebarSlice'
+import { showVerificationModal } from '@/redux/slices/modalSlice'
 
 
 const navigationData: NavigationSection[] = [
@@ -130,16 +132,17 @@ const navigationData: NavigationSection[] = [
 const MenuSidebar = () => {
 
   const pathname = usePathname()
-  const { overlay, setOverlay, closeSidebar, sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed, setVerificationModalOpen } = useUIState()
-const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { sidebarOpen, sidebarCollapsed, overlay } = useAppSelector((state) => state.sidebar)
+  const router = useRouter()
 
   useEffect(() => {
     const handleSidebarResize = () => {
       if (window.innerWidth <= 768) {
-        setSidebarCollapsed(false)
-        setOverlay(true)
+        dispatch(collapseSidebar(false))
+        dispatch(showOverlay(true))
       } else {
-        setOverlay(false)
+        dispatch(showOverlay(false))
       }
 
     }
@@ -155,14 +158,13 @@ const router = useRouter()
     return () => {
       window.removeEventListener('resize', handleSidebarResize)
     }
-  }, [setSidebarCollapsed, setOverlay]) // 
+  }, [dispatch]) // 
 
 
   const handleVerifyId = () => {
-    closeSidebar()
-    setVerificationModalOpen(true)
-    // Navigate to profile completion page or open modal
-    // For example, you can use router.push('/profile/complete') if using Next.js
+    dispatch(closeSidebar())
+    dispatch(showVerificationModal(true))
+    
   }
 
   return (
@@ -172,14 +174,14 @@ const router = useRouter()
           <Link href="/">
             <div className="text-2xl text-center w-full font-bold text-[#0d9488] self-center">GT</div>
           </Link>
-          <Button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} variant="ghost" size="icon" asChild className={`${sidebarCollapsed ? 'invisible opacity-0 absolute transform scale-0' : 'visible'} hover:bg-transparent hidden md:block cursor-pointer w-6 h-6`}>
+          <Button onClick={() => dispatch(collapseSidebar(true))} variant="ghost" size="icon" asChild className={`${sidebarCollapsed ? 'invisible opacity-0 absolute transform scale-0' : 'visible'} hover:bg-transparent hidden md:block cursor-pointer w-6 h-6`}>
             <svg className='shrink-0' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 12C2 8.31087 2 6.4663 2.81382 5.15877C3.1149 4.67502 3.48891 4.25427 3.91891 3.91554C5.08116 3 6.72077 3 10 3H14C17.2792 3 18.9188 3 20.0811 3.91554C20.5111 4.25427 20.8851 4.67502 21.1862 5.15877C22 6.4663 22 8.31087 22 12C22 15.6891 22 17.5337 21.1862 18.8412C20.8851 19.325 20.5111 19.7457 20.0811 20.0845C18.9188 21 17.2792 21 14 21H10C6.72077 21 5.08116 21 3.91891 20.0845C3.48891 19.7457 3.1149 19.325 2.81382 18.8412C2 17.5337 2 15.6891 2 12Z" stroke="#141B34" strokeWidth="1.5" />
               <path d="M9.5 3V21" stroke="#141B34" strokeWidth="1.5" strokeLinejoin="round" />
               <path d="M5 7H6M5 10H6" stroke="#141B34" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Button>
-          <button onClick={() => setSidebarOpen(false)} className='hover:bg-gray-50 rounded-md p-1 cursor-pointer block md:hidden'>
+          <button onClick={() => dispatch(closeSidebar())} className='hover:bg-gray-50 rounded-md p-1 cursor-pointer block md:hidden'>
             <X />
           </button>
         </div>
@@ -210,7 +212,7 @@ const router = useRouter()
               ))}
               <li onClick={() => {
                 router.push('/auth/login')
-                setSidebarOpen(false)
+                dispatch(closeSidebar())
               }} className='list-none w-full  text-red-500 px-3 py-3 cursor-pointer gap-3 flex items-center rounded-lg '>
                 <span>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +252,7 @@ const router = useRouter()
           </div>
         </div>
       </div>
-      <div onClick={() => setSidebarOpen(false)} className={`${overlay && sidebarOpen ? 'block translate-x-0' : 'hidden'} z-30 transform duration-300 -translate-x-[100%] transition-all ease-in-out absolute inset-0  min-h-screen w-full bg-black/40 backdrop-blur-md`} />
+      <div onClick={() => dispatch(closeSidebar())} className={`${overlay && sidebarOpen ? 'block translate-x-0' : 'hidden'} z-30 transform duration-300 -translate-x-[100%] transition-all ease-in-out absolute inset-0  min-h-screen w-full bg-black/40 backdrop-blur-md`} />
     </>
   )
 }

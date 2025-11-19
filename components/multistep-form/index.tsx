@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Trash2, Upload, X } from "lucide-react"
@@ -14,13 +14,15 @@ import { Plus } from 'lucide-react';
 import { DatePicker } from "../DatePicker";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { itemListingSchema, ItemListingSchemaData, ListedItem } from "@/lib/schema";
-import { useAppState, useUIState } from "@/hooks/useAppState";
 import ResponsiveModal from "../modal/ResponsiveModal";
 import { conditionOptions } from "@/lib/data"
 import { Switch } from "../ui/switch"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { toast } from "sonner"
 import { Label } from "../ui/label"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks"
+import { setListedItems } from "@/redux/slices/listingSlice"
+import { showItemListingModal } from "@/redux/slices/modalSlice"
 
 // Type definitions
 type DayFull = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
@@ -114,9 +116,11 @@ const steps: StepsObject[] = [
     { id: 4, title: "Pickup Details", fields: ["province", "postCode", "address"] }
 ]
 
-const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
-    const { listedItems, setListedItems } = useAppState()
-    const { setItemListingModalOpen } = useUIState()
+const MultiStepForm = ({ itemToEdit }: MultiStepFormProps) => {
+    const {listedItems, isEditMode} = useAppSelector((state) => state.listing)
+
+    const dispatch = useAppDispatch()
+
     const [currentStep, setCurrentStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -245,7 +249,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
     }
 
     // Get availability data in required format
-    const getAvailabilityData = (): Availability => {
+    const getAvailabilityData = useCallback((): Availability => {
         const availability: Availability = {
             weeklySchedule: [],
             customDates: []
@@ -274,7 +278,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
         }
 
         return availability
-    }
+    }, [schedule, customDates])
 
 
     const getDefaultValues = () => {
@@ -335,7 +339,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
 
     const handleSuccessClose = () => {
         setShowSuccessModal(false)
-        setItemListingModalOpen(false)
+        dispatch(showItemListingModal(false))
     }
 
 
@@ -363,7 +367,7 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
 
 
 
-        setListedItems([...listedItems, finalData])
+        dispatch(setListedItems([...listedItems, finalData]))
         setShowSuccessModal(true)
         console.log('Form submitted:', finalData);
     }
@@ -381,9 +385,9 @@ const MultiStepForm = ({ isEditMode, itemToEdit }: MultiStepFormProps) => {
             status: "draft" as const,
             availability: currentAvailabilityData
         };
-        setListedItems([...listedItems, finalData])
+        dispatch(setListedItems([...listedItems, finalData]))
         setShowConfirmModal(false)
-        setItemListingModalOpen(false)
+        dispatch(showItemListingModal(false))
         console.log('Form submitted:', finalData);
     }
 

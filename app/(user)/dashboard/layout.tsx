@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../../globals.css";
-import Providers from "@/context/Providers";
 import SettingsNav from "@/components/settings/SettingsNav";
+import ReduxProviders from "@/redux/providers";
 
 
 const inter = Inter({
@@ -25,14 +25,14 @@ export default function SettingsLayout({
     return (
         <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
-                <Providers>
+                <ReduxProviders>
                     <div className='@container flex flex-col lg:flex-row items-start gap-4 md:gap-8'>
                         <SettingsNav />
                         <div className="w-full h-full">
                             {children}
                         </div>
                     </div>
-                </Providers>
+                </ReduxProviders>
             </body>
         </html>
     );

@@ -1,14 +1,15 @@
 "use client"
 
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
+import React, {useRef, useState } from 'react'
 import { toast } from 'sonner'
 import ResponsiveModal from '../modal/ResponsiveModal'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { StarIcon } from 'lucide-react'
-import { useUIState } from '@/hooks/useAppState'
 import FeedbackReceivedAlert from '../pickup/FeedbackReceivedAlert'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { showRatingModal } from '@/redux/slices/modalSlice'
 
 const positiveFeedbackOptions = [
     {
@@ -75,27 +76,27 @@ const negativeFeedbackOptions = [
 
 ]
 
-interface ReviewProps {
-    id: string
-    open: boolean
-    close: Dispatch<SetStateAction<boolean>>
-}
-const Review = ({ id, open, close }: ReviewProps) => {
-    console.log("Review component rendered with id:", id);
- const { setRatingModal } = useUIState()
-    const [rating, setRating] = useState(0)
+
+const Review = () => {
+    const dispatch = useAppDispatch()
+    const {rating} = useAppSelector((state) => state.modal);
+    const {ratingModalOpen, currentRatingItemId} = rating;
+    console.log("Review component rendered with id:", currentRatingItemId);
+
+
+    const [ratingCount, setRatingCount] = useState(0)
     const [feedback, setFeedback] = useState<string[]>([]);
     const commentRef = useRef<string>('');
     const [hoveredRating, setHoveredRating] = useState(0)
     const [feedbackReceivedModal, setFeedbackReceivedModal] = useState(false)
 
     const suitableFeedbackOptions = () => {
-        return rating <= 2 ? negativeFeedbackOptions : positiveFeedbackOptions;
+        return ratingCount <= 2 ? negativeFeedbackOptions : positiveFeedbackOptions;
     }
 
     const handleFeedbackModalClose = () => {
         setFeedbackReceivedModal(false)
-        setRating(0)
+        setRatingCount(0)
         setHoveredRating(0)
     }
 
@@ -104,7 +105,7 @@ const Review = ({ id, open, close }: ReviewProps) => {
             toast.error("Please select at least one feedback option.")
             return
         }
-        if (rating === 0) {
+        if (ratingCount === 0) {
             toast.error("Please select a rating.")
             return
         }
@@ -117,7 +118,7 @@ const Review = ({ id, open, close }: ReviewProps) => {
         }
 
         console.log("Feedback submitted:", { feedback, comment: commentRef.current, rating })
-        setRatingModal(false)
+        dispatch(showRatingModal(false))
         setFeedbackReceivedModal(true)
         // setRating(0)
         setHoveredRating(0)
@@ -127,7 +128,7 @@ const Review = ({ id, open, close }: ReviewProps) => {
 
     return (
         <>
-            <ResponsiveModal open={open} close={close} className='min-h-[90%] md:min-h-auto py-6 w-full md:w-[500px]'>
+            <ResponsiveModal open={ratingModalOpen} close={() => dispatch(showRatingModal(false))} className='min-h-[90%] md:min-h-auto py-6 w-full md:w-[500px]'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-4'>
 
                     <h4 className="text-lg font-normal text-[#222222] mb-2">How was your experience?</h4>
@@ -140,16 +141,16 @@ const Review = ({ id, open, close }: ReviewProps) => {
                                 className="p-1 cursor-pointer "
                                 onMouseEnter={() => setHoveredRating(star)}
                                 onMouseLeave={() => setHoveredRating(0)}
-                                onClick={() => setRating(star)}
+                                onClick={() => setRatingCount(star)}
                             >
                                 <StarIcon
-                                    className={`w-8 h-8 stroke-none ${star <= (hoveredRating || rating) ? "fill-[#FACC15] text-[#e8b931]" : "text-[#ededed] fill-gray-100"
+                                    className={`w-8 h-8 stroke-none ${star <= (hoveredRating || ratingCount) ? "fill-[#FACC15] text-[#e8b931]" : "text-[#ededed] fill-gray-100"
                                         }`}
                                 />
                             </button>
                         ))}
                     </div>
-                    {rating ? <div className='border-0  border-t w-full py-4'>
+                    {ratingCount ? <div className='border-0  border-t w-full py-4'>
                         <h4 className="text-md font-normal text-[#222222] mb-6">Leave feedback</h4>
                         <div className='flex flex-wrap items-center gap-3 mb-4'>
                             {suitableFeedbackOptions().map((option) => (

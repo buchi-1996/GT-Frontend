@@ -4,9 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Plus } from "lucide-react"
-import { useAppState, useUIState } from "@/hooks/useAppState"
 import { ListingCard } from "./ListingCard"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { showItemListingModal } from "@/redux/slices/modalSlice"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks"
 
 const tabs = [
     { id: "all", label: "All" },
@@ -17,8 +18,8 @@ const tabs = [
 ]
 
 export function ItemListingView() {
-    const { setItemListingModalOpen } = useUIState()
-    const { listedItems} = useAppState()
+    const dispatch = useAppDispatch()
+    const { listedItems} = useAppSelector(state => state.listing)
     const [activeTab, setActiveTab] = useState("all")
 
     const filteredItems = listedItems.filter((item) => {
@@ -66,7 +67,7 @@ export function ItemListingView() {
                     </ScrollArea>
                     <Button
                         variant="primary"
-                        onClick={() => setItemListingModalOpen(true)}
+                        onClick={() => dispatch(showItemListingModal(true))}
                         className="py-4"
                     >
                         <Plus className="w-4 h-4 mr-2" />

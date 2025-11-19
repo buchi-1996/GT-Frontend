@@ -3,14 +3,18 @@
 import React, { useMemo } from 'react'
 import { Button } from '../ui/button'
 import { Menu, Verified } from 'lucide-react'
-import { useUIState } from '@/hooks/useAppState'
 import User from './User'
 import { usePathname } from 'next/navigation'
 import { Badge } from '../ui/badge'
 import AllNotifications from '../shared/AllNotifications'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { openSidebar, collapseSidebar } from '@/redux/slices/sidebarSlice'
+import { openSheet, showVerificationModal } from '@/redux/slices/modalSlice'
 
 const DashboardHeader = () => {
-  const { openSheet, openSidebar, setSidebarCollapsed, sidebarCollapsed, setVerificationModalOpen } = useUIState()
+
+   const dispatch = useAppDispatch()
+    const { sidebarCollapsed } = useAppSelector((state) => state.sidebar)
 
   const pathname = usePathname()
 
@@ -36,10 +40,10 @@ const DashboardHeader = () => {
   return (
     <header className="w-full z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">
       <div className='flex items-center gap-4'>
-        <button onClick={openSidebar} className='block md:hidden shrink-0 cursor-pointer'>
+        <button onClick={()=> dispatch(openSidebar())} className='block md:hidden shrink-0 cursor-pointer'>
           <Menu />
         </button>
-        <Button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} variant="ghost" size="icon" asChild className={`${sidebarCollapsed && 'visible opacity-100'} hover:bg-transparent absolute left-3 cursor-pointer opacity-0 invisible ${sidebarCollapsed && 'md:visible opacity-100'}  mr-6 w-6 h-6`}>
+        <Button onClick={() => dispatch(collapseSidebar(!sidebarCollapsed))} variant="ghost" size="icon" asChild className={`${sidebarCollapsed && 'visible opacity-100'} hover:bg-transparent absolute left-3 cursor-pointer opacity-0 invisible ${sidebarCollapsed && 'md:visible opacity-100'}  mr-6 w-6 h-6`}>
           <svg className='shrink-0' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 12C2 8.31087 2 6.4663 2.81382 5.15877C3.1149 4.67502 3.48891 4.25427 3.91891 3.91554C5.08116 3 6.72077 3 10 3H14C17.2792 3 18.9188 3 20.0811 3.91554C20.5111 4.25427 20.8851 4.67502 21.1862 5.15877C22 6.4663 22 8.31087 22 12C22 15.6891 22 17.5337 21.1862 18.8412C20.8851 19.325 20.5111 19.7457 20.0811 20.0845C18.9188 21 17.2792 21 14 21H10C6.72077 21 5.08116 21 3.91891 20.0845C3.48891 19.7457 3.1149 19.325 2.81382 18.8412C2 17.5337 2 15.6891 2 12Z" stroke="#141B34" strokeWidth="1.5" />
             <path d="M9.5 3V21" stroke="#141B34" strokeWidth="1.5" strokeLinejoin="round" />
@@ -50,7 +54,7 @@ const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        <Button onClick={() => setVerificationModalOpen(true)} className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
+        <Button onClick={() => dispatch(showVerificationModal(true))} className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
           <Verified /> Verify ID
         </Button>
 
@@ -64,7 +68,7 @@ const DashboardHeader = () => {
                 </svg>
               </span>
             </button>
-            <button onClick={() => openSheet(<AllNotifications />)} className='cursor-pointer relative'>
+            <button onClick={() => dispatch(openSheet(<AllNotifications />))} className='cursor-pointer relative'>
               <Badge className="absolute -right-2 -top-2 bg-[#B6CC5E] h-5 min-w-5 rounded-full px-1 font-medium tabular-nums">
                 3
               </Badge>

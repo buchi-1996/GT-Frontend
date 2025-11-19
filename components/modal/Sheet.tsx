@@ -17,17 +17,19 @@ import {
 } from "@/components/ui/drawer"
 
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useUIState } from "@/hooks/useAppState";
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+import { closeSheet } from '@/redux/slices/modalSlice';
 
 
 const SheetModal = () => {
-    const { isSheetOpen, sheetContent, closeSheet } = useUIState();
+    const dispatch = useAppDispatch()
+    const {isSheetOpen, sheetContent} = useAppSelector((state) => state.modal);
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
     if (isDesktop) {
         return (
-            <Sheet open={isSheetOpen} onOpenChange={closeSheet}>
+            <Sheet open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>
                 <SheetContent side="right" className='py-4 px-6'>
                     <SheetHeader>
                         <SheetTitle className='sr-only'>title</SheetTitle>
@@ -43,7 +45,7 @@ const SheetModal = () => {
         )
     }
     return (
-        <Drawer repositionInputs={false} open={isSheetOpen} onOpenChange={closeSheet}>
+        <Drawer repositionInputs={false} open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>
             <DrawerContent className='pt-4 px-4 pb-8' >
                 <DrawerHeader className="text-left">
                     <DrawerTitle className="sr-only">Title</DrawerTitle>

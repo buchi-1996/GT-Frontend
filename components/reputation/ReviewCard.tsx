@@ -1,8 +1,8 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { StarIcon } from 'lucide-react';
-import { useUIState } from '@/hooks/useAppState';
-import Review from '../shared/Review';
+import { useAppDispatch } from '@/hooks/redux-hooks';
+import { showRatingModal } from '@/redux/slices/modalSlice';
 
 
 interface ReviewCardProps {
@@ -19,16 +19,15 @@ interface ReviewCardProps {
 
 
 const ReviewCard = ({ itemTitle, giverName, receiverName, reviewText, isGiver, className }: ReviewCardProps) => {
-
+const dispatch = useAppDispatch();
     const avatarFallback = (giverName?.charAt(0)?.toUpperCase() ?? '') + (giverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '') || (receiverName?.charAt(0)?.toUpperCase() ?? '') + (receiverName?.split(' ')[1].charAt(0)?.toUpperCase() ?? '')
 
-    const { ratingModal, setRatingModal } = useUIState()
 
     const handleRating = () => {
         // Open the rating modal
-        setRatingModal(true)
+        // setRatingModal(true)
+        dispatch(showRatingModal(true));
 
-        console.log('Open rating modal', ratingModal)
 
     }
 
@@ -66,8 +65,6 @@ const ReviewCard = ({ itemTitle, giverName, receiverName, reviewText, isGiver, c
             </div>
             <p className="text-[#383838] text-sm">{reviewText}</p>
             {isGiver && <button onClick={handleRating} className="block sm:@md:hidden text-sm mt-4 cursor-pointer text-app-primary">Add Review</button>}
-            <Review id={itemTitle || ''} open={ratingModal} close={setRatingModal} />
-            {/* Feedback Received - Counter Dispute */}
             
         </div>
     )

@@ -12,7 +12,8 @@ import ResponsiveModal from '@/components/modal/ResponsiveModal';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import AllActivities from '@/components/shared/AllActivities';
-import { useUIState } from '@/hooks/useAppState';
+import { useAppDispatch } from '@/hooks/redux-hooks';
+import { openSheet } from '@/redux/slices/modalSlice';
 
 
 
@@ -30,7 +31,7 @@ const AccountSettingsView = () => {
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false)
     const [consentDeactivate, setConsentDeactivate] = useState<string>('')
     const [confirmDeactivate, setConfirmDeactivate] = useState<boolean>(false)
-    const {openSheet} = useUIState()
+    const dispatch = useAppDispatch()
 
 
 
@@ -155,7 +156,7 @@ const AccountSettingsView = () => {
                                     <h4 className="font-semibold text-sm text-[#222222] mb-1">Activity History</h4>
                                     <p className="text-sm text-[#626262]">View your complete giving history, feedback received, and community interactions</p>
                                 </div>
-                                <Button onClick={() => openSheet(<AllActivities />)} className='cursor-pointer w-full lg:w-28 py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>View History</Button>
+                                <Button onClick={() => dispatch(openSheet(<AllActivities />))} className='cursor-pointer w-full lg:w-28 py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>View History</Button>
                             </div>
                         </div>
 

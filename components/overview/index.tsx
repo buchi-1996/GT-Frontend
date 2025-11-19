@@ -5,14 +5,15 @@ import { CommunityStar, FirstGive, GenerousSoul, ReliableGiver } from "@/compone
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import StatsCard from "@/components/usercard/StatsCard"
-import { useUIState } from "@/hooks/useAppState"
 import { Users, Package, Star, X } from "lucide-react"
 import AllActivities from "../shared/AllActivities"
+import { useAppDispatch } from "@/hooks/redux-hooks"
+import { openSheet, showAllBadgeModal } from "@/redux/slices/modalSlice"
 
 
 const OverViewScreen = () => {
 
-    const {openSheet, setViewAllBadgeModal } = useUIState()
+    const dispatch = useAppDispatch()
     
 
     return (
@@ -62,7 +63,7 @@ const OverViewScreen = () => {
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start  justify-between text-md sm:text-[1rem] text-[#222222]">
                             <span>Activity History</span>
-                            <button onClick={() => openSheet(<AllActivities />)} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
+                            <button onClick={() => dispatch(openSheet(<AllActivities />))} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-4 md:px-6 py-2">
@@ -131,7 +132,7 @@ const OverViewScreen = () => {
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start justify-between text-md sm:text-[1rem] text-[#222222]">
                             <span>Your Badges</span>
-                            <button onClick={() => setViewAllBadgeModal(true)} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
+                            <button onClick={() => dispatch(showAllBadgeModal(true))} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-4 md:px-6 pb-2">

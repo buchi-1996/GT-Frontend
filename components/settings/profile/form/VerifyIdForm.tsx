@@ -23,12 +23,10 @@ import { useForm } from "react-hook-form"
 import { Upload, X } from "lucide-react"
 import Image from "next/image"
 import { DatePicker } from "@/components/DatePicker"
-import { Dispatch, SetStateAction, useState } from "react"
+import { useAppDispatch } from "@/hooks/redux-hooks"
+import { showVerificationModal, showVerifyIdInProgressModal } from "@/redux/slices/modalSlice"
+import { useState } from "react"
 
-interface VerificationFormProps {
-    setVerifyInProgressModal: Dispatch<SetStateAction<boolean>>
-    setVerificationModalOpen: Dispatch<SetStateAction<boolean>>
-}
 
 type VerifyIdFormValues = {
     idType: string;
@@ -37,10 +35,11 @@ type VerifyIdFormValues = {
     selfie: File[]; // Array of File objects
 };
 
-export default function VerifyIDForm({ setVerifyInProgressModal, setVerificationModalOpen }: VerificationFormProps) {
+export default function VerifyIDForm() {
 
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
-
+        const dispatch = useAppDispatch()
+    
     const form = useForm<VerifyIdFormValues>({
         defaultValues: {
             idType: "",
@@ -52,8 +51,8 @@ export default function VerifyIDForm({ setVerifyInProgressModal, setVerification
 
     const onSubmit = (values: VerifyIdFormValues) => {
         console.log("Form values:", values)
-        setVerificationModalOpen(false)
-        setVerifyInProgressModal(true)
+        dispatch(showVerificationModal(false))
+        dispatch(showVerifyIdInProgressModal(true))
     }
 
     return (

@@ -14,7 +14,8 @@ import {
 } from "@dnd-kit/core"
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useMediaQuery } from '@/hooks/use-media-query'
-import { useUIState } from '@/hooks/useAppState'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { closeSheet, openSheet, showCriteriaModal } from '@/redux/slices/modalSlice'
 
 
 interface CriteriaItem {
@@ -26,8 +27,10 @@ interface CriteriaItem {
 
 
 const SortableList = () => {
-    const { openSheet, openCriteria, setOpenCriteria, setIsSheetOpen } = useUIState()
 
+    const dispatch = useAppDispatch()
+    const {isCriteriaOpen} = useAppSelector((state) => state.modal);   
+    
     const isMobile = useMediaQuery("(max-width: 1280px)")
 
     const [selectionCriteria, setSelectionCriteria] = useState<CriteriaItem[]>([
@@ -86,10 +89,12 @@ const SortableList = () => {
     const handleCriteriaHide = () => {
 
         if (isMobile) {
-            openSheet(<SortableList />)
-            setIsSheetOpen(false)
+            dispatch(openSheet(<SortableList />))
+            // setIsSheetOpen(false)
+            dispatch(closeSheet())
         }
-        setOpenCriteria(!openCriteria)
+        // setOpenCriteria(!openCriteria)
+        dispatch(showCriteriaModal(!isCriteriaOpen))
     }
 
 

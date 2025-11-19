@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import Providers from "@/context/Providers";
+import ReduxProviders from "@/redux/providers";
+
+
 import DashboardHeader from "@/components/header/DashboardHeader";
 import MenuSidebar from "@/components/sidebar/MenuSidebar";
 
@@ -23,7 +25,7 @@ export default function DashBoardLayout({
     return (
         <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
-                <Providers>
+                <ReduxProviders>
                     <div className="relative flex h-full">
                         <MenuSidebar />
                         <div className="flex-1 flex flex-col min-h-dvh w-full">
@@ -33,7 +35,7 @@ export default function DashBoardLayout({
                             </div>
                         </div>
                     </div>
-                </Providers>
+                </ReduxProviders>
             </body>
         </html>
     );

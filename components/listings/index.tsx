@@ -1,14 +1,15 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { useAppState, useUIState } from '@/hooks/useAppState'
 import React from 'react'
 import { ItemListingView } from './ItemListingView'
+import { showItemListingModal } from '@/redux/slices/modalSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
 
 
 
 const AddListingItem = () => {
-      const { listedItems } = useAppState()
-      const { setItemListingModalOpen } = useUIState()
+      const { listedItems } = useAppSelector((state) => state.listing)
+      const dispatch = useAppDispatch()
 
 
   // Show full listing view if there are items
@@ -24,7 +25,7 @@ const AddListingItem = () => {
             <div className='grid place-items-center gap-2 mt-6'>
                 <h2 className="text-lg text-app-black font-semibold">No Items Listed</h2>
                 <p className='w-full text-sm md:text-md max-w-xs text-center text-app-base mb-4'>Share items you no longer need with people who can use them.</p>
-                <Button variant="primary" className='w-auto md:w-44 py-6' onClick={() => setItemListingModalOpen(true)}>Post Item</Button>
+                <Button variant="primary" className='w-auto md:w-44 py-6' onClick={() => dispatch(showItemListingModal(true))}>Post Item</Button>
             </div>
         </div>
     )

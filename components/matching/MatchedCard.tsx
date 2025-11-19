@@ -5,14 +5,15 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { useUIState } from '@/hooks/useAppState'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
+import { useAppDispatch } from '@/hooks/redux-hooks'
+import { showUnmatchModal } from '@/redux/slices/modalSlice'
 
 
 
 
 const MatchedCard = () => {
-    const { setIsUnmatchedModal } = useUIState()
+    const dispatch = useAppDispatch()
 
 
     return (
@@ -77,7 +78,7 @@ const MatchedCard = () => {
                 </HoverCard>
                 <div className='grid grid-cols-2 gap-4 mt-4'>
                     <Button variant="secondary" className='py-5'>Send Message</Button>
-                    <Button onClick={()=> setIsUnmatchedModal(true)} variant="destructive" className='py-5'>Un-Match</Button>
+                    <Button onClick={()=> dispatch(showUnmatchModal(true))} variant="destructive" className='py-5'>Un-Match</Button>
                 </div>
             </div>
         </div >

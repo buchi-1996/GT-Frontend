@@ -2,33 +2,41 @@
 
 import React, { useState } from 'react'
 import ResponsiveModal from '@/components/modal/ResponsiveModal'
-import { useUIState } from '@/hooks/useAppState'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { GiverNoshowReasons } from '@/lib/data'
 import { Label } from '@/components/ui/label'
 import FeedbackReceivedAlert from '@/components/pickup/FeedbackReceivedAlert'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { showCounterDisputeModal, showDisputeRaisedModal, showDisputeReasonModal } from '@/redux/slices/modalSlice'
 
 const GiverDisputeFlow = () => {
 
-    const { giverDisputeModal, setGiverDisputeModal, setDisputeModalOpen } = useUIState()
-    const { giveReasonModal, setReasonModal } = useUIState()
+    // const { giverDisputeModal, setGiverDisputeModal, setDisputeModalOpen } = useUIState()
+    // const { giveReasonModal, setReasonModal } = useUIState()
     const [selectedValue, setSelectedValue] = useState("")
     const [reasonReceivedModal, setReasonReceivedModal] = useState(false)
     const [disputeFeedbackReceived, setDisputeFeedbackReceived] = useState(false)
     const [doNextValue, setDoNextValue] = useState("")
 
+    const dispatch = useAppDispatch();
+    const {dispute} = useAppSelector((state) => state.modal)
 
+    const {disputeRaisedModalOpen, disputeReasonModalOpen} = dispute
 
     const handleSubmitAndNext = () => {
         setReasonReceivedModal(true)
-        setGiverDisputeModal(false);
-        setReasonModal(false);
+        // setGiverDisputeModal(false);
+        dispatch(showDisputeRaisedModal(false))
+        dispatch(showDisputeReasonModal(false))
+        // setReasonModal(false);
     }
 
     const handleDisputeModal = () => {
-        setDisputeModalOpen(true)
-        setGiverDisputeModal(false)
+        // setDisputeModalOpen(true)
+        dispatch(showCounterDisputeModal(true))
+        // setGiverDisputeModal(false)
+         dispatch(showDisputeRaisedModal(false))
     }
 
     const handleDoNext = () => {
@@ -38,15 +46,17 @@ const GiverDisputeFlow = () => {
     }
 
     const handleGiveReason = () => {
-        setGiverDisputeModal(false)
-        setReasonModal(true)
+        // setGiverDisputeModal(false)
+        // setReasonModal(true)
+        dispatch(showDisputeRaisedModal(false))
+        dispatch(showDisputeReasonModal(true))
 
     }
 
 
     return (
         <>
-            <ResponsiveModal open={giverDisputeModal} close={setGiverDisputeModal} className='px-4 md:px-6 py-6 md:py-20'>
+            <ResponsiveModal open={disputeRaisedModalOpen} close={() => dispatch(showDisputeRaisedModal(false))} className='px-4 md:px-6 py-6 md:py-20'>
                 <div className='grid gap-4 place-items-center'>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none"><rect width="80" height="80" fill="#F1F3DE" rx="40" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M59 41.873v-2.746c0-3.27 0-4.905-.609-6.375-.609-1.47-1.765-2.626-4.077-4.938l-1.628-1.628c-2.312-2.312-3.468-3.468-4.938-4.077-1.47-.609-3.105-.609-6.375-.609h-2.746c-3.27 0-4.905 0-6.375.609-1.47.609-2.626 1.765-4.938 4.077l-1.628 1.628c-2.312 2.312-3.468 3.468-4.077 4.938C21 34.222 21 35.857 21 39.127v2.746c0 3.27 0 4.905.609 6.375.609 1.47 1.765 2.626 4.077 4.938l1.628 1.628c2.312 2.312 3.468 3.468 4.938 4.077 1.47.609 3.105.609 6.375.609h2.746c3.27 0 4.905 0 6.375-.609 1.47-.609 2.626-1.765 4.938-4.077l1.628-1.628c2.312-2.312 3.468-3.468 4.077-4.938.609-1.47.609-3.105.609-6.375ZM40 48.5v-9" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.6" d="M40 32.524v-.02" /></svg>
@@ -59,7 +69,7 @@ const GiverDisputeFlow = () => {
                     </div>
                 </div>
             </ResponsiveModal>
-            <ResponsiveModal open={giveReasonModal} close={setReasonModal} className="pb-10 px-4 md:px-6">
+            <ResponsiveModal open={disputeReasonModalOpen} close={()=> dispatch(showDisputeReasonModal(false))} className="pb-10 px-4 md:px-6">
                 <h4 className='font-bold text-xl pb-6 md:pb-0'>Reason for not showing up</h4>
 
                 <RadioGroup

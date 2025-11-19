@@ -3,14 +3,16 @@ import React from 'react'
 import ResponsiveModal from '../modal/ResponsiveModal'
 import BadgeCard from '../community/BadgeCard'
 import { CommunityStar, EcoChampion, FeedBackFriendly, FirstGive, GenerousSoul, GtAnniversary, KidnessChampion, MilestoneGiver, NeighbourhoodHero, OneForAll, ReliableGiver, SteadyGiver, SwiftResponder, VerifiedGiver, ZeroWasteAdvocate } from '../community/badges'
-import { useUIState } from '@/hooks/useAppState'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { showAllBadgeModal } from '@/redux/slices/modalSlice'
 
 const AllBadges = () => {
 
-    const {viewAllBadgeModal, setViewAllBadgeModal} = useUIState()
+    const {allBadgeModalOpen} = useAppSelector((state) => state.modal)
+    const dispatch = useAppDispatch()
 
     return (
-        <ResponsiveModal open={viewAllBadgeModal} close={() => setViewAllBadgeModal(false)} className='min-w-auto h-auto md:h-[85%] md:min-w-[700px] py-4 md:py-6 px-4'>
+        <ResponsiveModal open={allBadgeModalOpen} close={() => dispatch(showAllBadgeModal(false))} className='min-w-auto h-auto md:h-[85%] md:min-w-[700px] py-4 md:py-6 px-4'>
             <h4 className="px-2 mb-4 md:mb-0 font-semibold">Earned Badges</h4>
             <div className='grid grid-cols-2 lg:grid-cols-3 gap-2 overflow-auto px-2'>
 

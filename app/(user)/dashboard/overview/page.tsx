@@ -1,4 +1,4 @@
-"use client"
+
 
 import OverViewScreen from "@/components/overview"
 

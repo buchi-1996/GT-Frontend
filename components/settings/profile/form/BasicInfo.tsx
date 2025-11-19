@@ -11,16 +11,17 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { CompleteProfileFormData } from "@/lib/schema"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useUIState } from "@/hooks/useAppState"
 import { useState } from "react"
 import { DatePicker } from "@/components/DatePicker"
+import { showVerificationModal } from "@/redux/slices/modalSlice"
+import { useAppDispatch } from "@/hooks/redux-hooks"
 
 interface BasicInfoSectionProps {
   form: UseFormReturn<CompleteProfileFormData>
 }
 
 export function BasicInfoSection({ form }: BasicInfoSectionProps) {
-  const { setVerificationModalOpen } = useUIState()
+  const dispatch = useAppDispatch()
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
 
 
@@ -52,7 +53,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
             </div>
           </div>
         </div>
-        <Button onClick={() => setVerificationModalOpen(true)} className='hidden md:@lg:block' variant="secondary">Verify ID</Button>
+        <Button onClick={() => dispatch(showVerificationModal(true))} className='hidden md:@lg:block' variant="secondary">Verify ID</Button>
       </div>
       <h3 className="font-semibold text-[#222222]">Basic Information</h3>
 
@@ -221,7 +222,7 @@ export function BasicInfoSection({ form }: BasicInfoSectionProps) {
           )}
         />
       </div>
-      <Button onClick={() => setVerificationModalOpen(true)} className='block md:@lg:hidden py-4 h-12' variant="secondary">Verify ID</Button>
+      <Button onClick={() => dispatch(showVerificationModal(true))} className='block md:@lg:hidden py-4 h-12' variant="secondary">Verify ID</Button>
 
     </div>
   )
