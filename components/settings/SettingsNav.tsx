@@ -17,52 +17,52 @@ const settingsMenu = [
     {
         id: "profile",
         title: "Profile",
-        href: "/dashboard/settings/profile",
+        href: "/giver/dashboard/settings/profile",
     },
     {
         id: "listing",
         title: "Listing",
-        href: "/dashboard/settings/listing",
+        href: "/giver/dashboard/settings/listing",
     },
     {
         id: "interest-management",
         title: "Interest Management",
-        href: "/dashboard/settings/interest-management",
+        href: "/giver/dashboard/settings/interest-management",
     },
     {
         id: "cancellation",
         title: "Cancellation",
-        href: "/dashboard/settings/cancellation",
+        href: "/giver/dashboard/settings/cancellation",
     },
     {
         id: "notification",
         title: "Notification",
-        href: "/dashboard/settings/notification",
+        href: "/giver/dashboard/settings/notification",
     },
     {
         id: "privacy-and-visibility",
         title: "Privacy & Visibility",
-        href: "/dashboard/settings/privacy-and-visibility",
+        href: "/giver/dashboard/settings/privacy-and-visibility",
     },
     {
         id: "badges-and-recognition",
         title: "Badges & Recognition",
-        href: "/dashboard/settings/badges-and-recognition",
+        href: "/giver/dashboard/settings/badges-and-recognition",
     },
     {
         id: "account-settings",
         title: "Account Settings",
-        href: "/dashboard/settings/account-settings",
+        href: "/giver/dashboard/settings/account-settings",
     },
     {
         id: "help-and-support",
         title: "Help & Support",
-        href: "/dashboard/settings/help-and-support",
+        href: "/giver/dashboard/settings/help-and-support",
     },
     {
         id: "legal-and-compliance",
         title: "Legal & Compliance",
-        href: "/dashboard/settings/legal-and-compliance",
+        href: "/giver/dashboard/settings/legal-and-compliance",
     }
 ]
 

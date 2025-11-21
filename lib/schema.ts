@@ -27,6 +27,8 @@ export const registerGiverSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .regex(/^(?=.*[a-zA-Z])(?=.*\d)/, "Password must contain at least 8 charaters one letter and one number"),
+
+    role: z.string(),
 })
 
 

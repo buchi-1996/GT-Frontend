@@ -544,7 +544,6 @@ const PickupView = () => {
                             </div>
                         </Label>
                     </RadioGroup>
-
                 </div>
                 <Button
                     onClick={handleReportNoShowSubmit}

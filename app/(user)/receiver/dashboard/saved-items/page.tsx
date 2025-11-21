@@ -1,9 +1,9 @@
-import MultiStepForm from '@/components/multistep-form'
+import SavedItemsView from '@/components/saved-items'
 import React from 'react'
 
 const page = () => {
   return (
-    <MultiStepForm />
+    <SavedItemsView />
   )
 }
 

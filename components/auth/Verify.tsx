@@ -4,19 +4,26 @@ import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const Verify = () => {
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role"); 
+
   const [value, setValue] = useState("")
 
   const router = useRouter()
 
   const handleVerifyCode = () => {
     toast.success("Verification successful", {
-      id: "Verification-sucess"
+      id: "Verification-success"
     })
 
-    router.push('/dashboard/overview')
+    if (role === "giver") {
+      router.push("/giver/dashboard/overview");
+    } else {
+      router.push("/receiver/dashboard/overview");
+    }
   }
 
   return (

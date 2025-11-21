@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react'
 import { Button } from '../ui/button'
-import { Menu, Verified } from 'lucide-react'
+import { ChevronRight, Menu, Verified } from 'lucide-react'
 import User from './User'
 import { usePathname } from 'next/navigation'
 import { Badge } from '../ui/badge'
@@ -13,8 +13,8 @@ import { openSheet, showVerificationModal } from '@/redux/slices/modalSlice'
 
 const DashboardHeader = () => {
 
-   const dispatch = useAppDispatch()
-    const { sidebarCollapsed } = useAppSelector((state) => state.sidebar)
+  const dispatch = useAppDispatch()
+  const { sidebarCollapsed } = useAppSelector((state) => state.sidebar)
 
   const pathname = usePathname()
 
@@ -37,10 +37,13 @@ const DashboardHeader = () => {
       .join(' ');
   }, [pathname]);
 
+
+  const isGiver = pathname.includes("/giver/");
+
   return (
     <header className="w-full z-20 h-18 sticky top-0 mx-auto px-4 md:px-6 lg:px-12 bg-white border-b border-gray-200 py-4 flex items-center justify-between">
       <div className='flex items-center gap-4'>
-        <button onClick={()=> dispatch(openSidebar())} className='block md:hidden shrink-0 cursor-pointer'>
+        <button onClick={() => dispatch(openSidebar())} className='block md:hidden shrink-0 cursor-pointer'>
           <Menu />
         </button>
         <Button onClick={() => dispatch(collapseSidebar(!sidebarCollapsed))} variant="ghost" size="icon" asChild className={`${sidebarCollapsed && 'visible opacity-100'} hover:bg-transparent absolute left-3 cursor-pointer opacity-0 invisible ${sidebarCollapsed && 'md:visible opacity-100'}  mr-6 w-6 h-6`}>
@@ -52,11 +55,13 @@ const DashboardHeader = () => {
         </Button>
         <h1 className={`${sidebarCollapsed && 'ml-auto md:ml-10'} text-[1rem] sm:text-xl font-semibold text-[#222222]`}>{pageTitle}</h1>
       </div>
-
       <div className="flex items-center gap-5">
-        <Button onClick={() => dispatch(showVerificationModal(true))} className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
+        {isGiver ? (<Button onClick={() => dispatch(showVerificationModal(true))} className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
           <Verified /> Verify ID
-        </Button>
+        </Button>) :
+          (<Button className="before:absolute before:content-[''] before:rounded-sm before:ring-2 before:ring-double before:-z-50 before:animate-ping before:inset-0 before:top-1/2 before:right-1/2 before:left-1/2 before:transform before:-translate-y-1/2  before:-translate-x-1/2 before:w-[60%] before:h-[65%] before:bg-app-primary relative  hidden lg:flex bg-[#0d9488] hover:bg-[#0b5f5a]/90 cursor-pointer text-white px-6 py-5 rounded-md items-center gap-2 shadow-none">
+            Subscribe to pro <ChevronRight className='w-4 h-4' />
+          </Button>)}
 
         <div className='flex gap-4 items-center'>
           <div className='flex gap-4'>

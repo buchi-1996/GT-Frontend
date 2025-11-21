@@ -15,7 +15,7 @@ import { registerGiverData, registerGiverSchema } from "@/lib/schema";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { PhoneInput } from "../PhoneInput";
@@ -23,6 +23,11 @@ import { PhoneInput } from "../PhoneInput";
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const pathname = usePathname();
+
+
+    const isGiver = pathname.includes("/giver/")
+
 
     const router = useRouter()
     const isMobile = useMediaQuery("(768px)")
@@ -36,6 +41,7 @@ const Register = () => {
             email: "",
             phoneNumber: "",
             password: "",
+            role: isGiver ? "giver" : "receiver",
         },
     })
 
@@ -50,7 +56,7 @@ const Register = () => {
             toast.success("Account created successfully", {
                 id: "account-creation-success"
             })
-            router.push('/auth/verify')
+            router.push(`/auth/verify?role=${isGiver ? "giver" : "receiver"}`)
             form.reset()
         } catch (error) {
             console.error("Submission error:", error)

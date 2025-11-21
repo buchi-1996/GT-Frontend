@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function DashboardRootPage() {
-  redirect("/dashboard/overview");
+  redirect("/receiver/dashboard/overview");
   return null;
 }

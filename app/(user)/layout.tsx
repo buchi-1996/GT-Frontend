@@ -5,7 +5,8 @@ import ReduxProviders from "@/redux/providers";
 
 
 import DashboardHeader from "@/components/header/DashboardHeader";
-import MenuSidebar from "@/components/sidebar/MenuSidebar";
+import GiverSidebar from "@/components/sidebar/GiverSidebar";
+import ReceiverSidebar from "@/components/sidebar/ReceiverSidebar";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -22,12 +23,14 @@ export default function DashBoardLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>): React.ReactNode {
+    const isGiver = typeof window !== "undefined" && window.location.pathname.includes("/giver/");
+
     return (
         <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <ReduxProviders>
                     <div className="relative flex h-full">
-                        <MenuSidebar />
+                        {isGiver ? <GiverSidebar /> : <ReceiverSidebar />}
                         <div className="flex-1 flex flex-col min-h-dvh w-full">
                             <DashboardHeader />
                             <div className="w-full md:container flex-1 mx-auto px-4 py-6 md:px-6 lg:p-12">
