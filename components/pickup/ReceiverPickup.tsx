@@ -136,7 +136,7 @@ const ReceiverPickupView = () => {
         return pickupItems.filter((item) => item.status === tabId).length
     }
 
-    const getActionButtonsForCard = (status: string, id: string) => {
+    const getActionButtonsForCard = (status: string) => {
         switch (status) {
             case "scheduled":
                 return (
@@ -246,7 +246,7 @@ const ReceiverPickupView = () => {
                             </div>
                             {/* action buttons */}
                             <div className='mt-auto'>
-                                {getActionButtonsForCard(item.status, item.id)}
+                                {getActionButtonsForCard(item.status)}
                             </div>
                         </div>
                     </div>
