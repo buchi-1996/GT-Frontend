@@ -139,8 +139,12 @@ const SavedItemsView = () => {
     const categories = ["Electronics", "Furniture", "Clothing", "Books", "Sports", "Home & Garden"]
     const [selectedCategory, setSelectedCategory] = useState("")
     const [filterModalOpen, setFilterModal] = useState(false)
+    const [filteredQuery, setFilteredQuery] = useState({category: "", sortBy: ""})
 
-
+        const saveFilterAndSortSettings = () => {
+            setSelectedCategory(filteredQuery.category)
+            setFilterModal(false)
+        }
 
     // const filteredItems = savedItems.filter((item) => {
     //     // if (activeTab === "available") return true
@@ -328,8 +332,9 @@ const SavedItemsView = () => {
             <ResponsiveModal open={filterModalOpen} close={() => setFilterModal(false)} className="max-w-full md:max-w-[500px] md:min-h-auto pb-10 px-6">
                 <h4 className='text-xl mb-4 md:text-2xl font-semibold'>Filter By</h4>
                 <RadioGroup
-                    value={selectedCategory}
-                    onValueChange={setSelectedCategory}
+                    value={filteredQuery.category}
+                    // onValueChange={setFilteredQuery.bind(null, { ...filteredQuery, category: "" })}
+                    onValueChange={(value: string)=> setFilteredQuery({ ...filteredQuery, category: value })}
                     className='py-1 grid gap-4 overflow-y-auto mb-4 scrollbar-hide'
                 >
                     <div className="flex items-center justify-between w-full gap-3 mb-4">
@@ -339,7 +344,7 @@ const SavedItemsView = () => {
                                 <RadioGroupItem
                                     value="all"
                                     className="ring ring-app-primary mr-1 text-app-primary"
-                                    id={selectedCategory}
+                                    id={filteredQuery.category}
                                 />
                             </div>
                     {categories.map((cat) => (
@@ -355,6 +360,7 @@ const SavedItemsView = () => {
                             </div>
                     ))}
                 </RadioGroup>
+                <Button variant="primary" className="w-full" onClick={saveFilterAndSortSettings}>Save</Button>
             </ResponsiveModal>
         </div>
     )
