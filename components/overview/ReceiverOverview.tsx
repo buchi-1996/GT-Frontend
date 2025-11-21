@@ -112,7 +112,7 @@ const ReceiverOverview = () => {
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start justify-between text-md sm:text-[1rem] text-[#222222]">
                             <span>Upcoming pickups</span>
-                            <Link href="/receiver/dashboard/pickups" className="cursor-pointer text-sm font-medium text-app-primary">View All</Link>
+                            <Link href="/receiver/dashboard/pickup" className="cursor-pointer text-sm font-medium text-app-primary">View All</Link>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-4 md:px-6 pb-2">

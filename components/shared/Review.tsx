@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import ResponsiveModal from '../modal/ResponsiveModal'
 import Image from 'next/image'
@@ -79,8 +79,8 @@ const negativeFeedbackOptions = [
 
 const Review = () => {
     const dispatch = useAppDispatch()
-    const {rating} = useAppSelector((state) => state.modal);
-    const {ratingModalOpen, currentRatingItemId} = rating;
+    const { rating } = useAppSelector((state) => state.modal);
+    const { ratingModalOpen, currentRatingItemId } = rating;
     console.log("Review component rendered with id:", currentRatingItemId);
 
 

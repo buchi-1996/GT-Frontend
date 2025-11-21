@@ -20,9 +20,9 @@ const GiverDisputeFlow = () => {
     const [doNextValue, setDoNextValue] = useState("")
 
     const dispatch = useAppDispatch();
-    const {dispute} = useAppSelector((state) => state.modal)
+    const { dispute } = useAppSelector((state) => state.modal)
 
-    const {disputeRaisedModalOpen, disputeReasonModalOpen} = dispute
+    const { disputeRaisedModalOpen, disputeReasonModalOpen } = dispute
 
     const handleSubmitAndNext = () => {
         setReasonReceivedModal(true)
@@ -36,7 +36,7 @@ const GiverDisputeFlow = () => {
         // setDisputeModalOpen(true)
         dispatch(showCounterDisputeModal(true))
         // setGiverDisputeModal(false)
-         dispatch(showDisputeRaisedModal(false))
+        dispatch(showDisputeRaisedModal(false))
     }
 
     const handleDoNext = () => {
@@ -69,7 +69,7 @@ const GiverDisputeFlow = () => {
                     </div>
                 </div>
             </ResponsiveModal>
-            <ResponsiveModal open={disputeReasonModalOpen} close={()=> dispatch(showDisputeReasonModal(false))} className="pb-10 px-4 md:px-6">
+            <ResponsiveModal open={disputeReasonModalOpen} close={() => dispatch(showDisputeReasonModal(false))} className="pb-10 px-4 md:px-6">
                 <h4 className='font-bold text-xl pb-6 md:pb-0'>Reason for not showing up</h4>
 
                 <RadioGroup
