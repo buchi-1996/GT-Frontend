@@ -1,8 +1,9 @@
+import ReceiverPickupView from '@/components/pickup/ReceiverPickup'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <ReceiverPickupView />
   )
 }
 
