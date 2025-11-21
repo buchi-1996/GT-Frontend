@@ -360,7 +360,7 @@ const SavedItemsView = () => {
                             </div>
                     ))}
                 </RadioGroup>
-                <Button variant="primary" className="w-full" onClick={saveFilterAndSortSettings}>Save</Button>
+                <Button variant="primary" className="w-full py-3" onClick={saveFilterAndSortSettings}>Save</Button>
             </ResponsiveModal>
         </div>
     )
