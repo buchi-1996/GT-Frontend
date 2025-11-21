@@ -1,6 +1,6 @@
-
 import Verify from "@/components/auth/Verify"
 import OnboardingHeader from "@/components/header/OnboardingHeader"
+import { Suspense } from "react"
 
 
 const VerifyAccount = () => {
@@ -19,7 +19,9 @@ const VerifyAccount = () => {
                                     </p>
                                 </div>
                             </div>
-                            <Verify />
+                            <Suspense fallback={null}>
+                                <Verify />
+                            </Suspense>
                         </div>
                     </div>
                 </div>
