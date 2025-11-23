@@ -1,14 +1,21 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
-
-import { useAppDispatch } from '@/hooks/redux-hooks';
-import { showRatingModal } from '@/redux/slices/modalSlice';
+import ResponsiveAlert from '../modal/ResponsiveAlert';
+import { Textarea } from '../ui/textarea';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+import { showGiverCounterDisputeModal, showGiverDisputeRaisedModal, showGiverDisputeReasonModal, showRatingModal } from '@/redux/slices/modalSlice';
+import ResponsiveModal from '../modal/ResponsiveModal';
+import { ReceiverNoshowReasons } from '@/lib/data';
+import FeedbackReceivedAlert from './FeedbackReceivedAlert';
 
 
 interface PickupItemprops {
@@ -123,7 +130,9 @@ const ReceiverPickupView = () => {
     ])
 
     const [activeTab, setActiveTab] = useState("all")
-    // const { setIsUnmatchedModal, setGiverDisputeModal, setReasonModal, disputeModalOpen, setDisputeModalOpen } = useUIState()
+    const { dispute } = useAppSelector((state) => state.modal);
+
+    const { giverCounterDisputeModalOpen } = dispute;
     const dispatch = useAppDispatch();
 
     const filteredItems = pickupItems.filter((item) => {
@@ -136,12 +145,85 @@ const ReceiverPickupView = () => {
         return pickupItems.filter((item) => item.status === tabId).length
     }
 
-    const getActionButtonsForCard = (status: string) => {
+
+    const [confirmPickModal, setConfirmPickupModal] = useState(false)
+    const [isConfirmed, setIsConfirmed] = useState(false)
+    const [instructionModalOpen, setInstructionModalOpen] = useState(false)
+    const [markNoShowModal, setIsMarkNoShowModal] = useState(false)
+    const [reportNoShowModal, setReportNoShowModal] = useState(false)
+    const [selectedValue, setSelectedValue] = useState('')
+    const [selectedDisputeValue, setSelectedDisputeValue] = useState('')
+    const [disputeFeedbackReceived, setDisputeFeedbackReceived] = useState(false)
+    const [noShowUploadedFileName, setNoShowUploadedFileName] = useState('');
+    const [disputeUploadedFileName, setDisputeUploadedFileName] = useState('');
+
+    // action buttons for each card based on status
+    const handleNoShowFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setNoShowUploadedFileName(file.name);
+        } else {
+            setNoShowUploadedFileName('');
+        }
+    };
+
+    const handleDisputeFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setDisputeUploadedFileName(file.name);
+        } else {
+            setDisputeUploadedFileName('');
+        }
+    };
+
+
+
+    const handleProceedMarkNoShow = () => {
+        setIsMarkNoShowModal(false)
+        setReportNoShowModal(true)
+    }
+
+    const handleReportNoShowSubmit = () => {
+        setReportNoShowModal(false)
+        setDisputeFeedbackReceived(true)
+        // Submit form here
+    }
+
+    const handlePickupConfirmation = (id: string) => {
+        console.log(`Pickup confirmed for item with id: ${id}`)
+        setConfirmPickupModal(true)
+        // Here you can add logic to update the item status to "picked-up"
+    }
+
+    const handleConfirmPickup = () => {
+        setConfirmPickupModal(false)
+        setIsConfirmed(true)
+    }
+
+
+
+    const leaveFeedback = () => {
+        setIsConfirmed(false)
+        dispatch(showRatingModal(true))
+    }
+
+    //    Open Giver dispute Modal on Load
+    useEffect(() => {
+        dispatch(showGiverDisputeRaisedModal(true))
+    }, [dispatch])
+
+
+    const handleSubmitDispute = () => {
+        dispatch(showGiverCounterDisputeModal(false))
+        setDisputeFeedbackReceived(true)
+    }
+
+    const getActionButtonsForCard = (status: string, id: string) => {
         switch (status) {
             case "scheduled":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button variant="primary" className='py-5 w-full'>View Instructions</Button>
+                        <Button onClick={() => setInstructionModalOpen(true)} variant="primary" className='py-5 w-full'>View Instructions</Button>
                         <Button variant="secondary" className='py-5 w-full'>Message Giver</Button>
                     </div>
                 )
@@ -149,28 +231,28 @@ const ReceiverPickupView = () => {
                 return (
                     <div className='flex items-center justify-between rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>
                         <span>Item successfully received.</span>
-                        <button className='text-app-primary p-0' onClick={() => dispatch(showRatingModal(true))}>Rate Giver</button> 
+                        <button className='text-app-primary p-0' onClick={() => dispatch(showRatingModal(true))}>Rate Giver</button>
                     </div>
                 )
             case "no-show":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button variant="secondary" className='py-5 w-full'>Archive</Button>
-                        <Button variant="primary" className='py-5 w-full'>Relist</Button>
+                        <Button onClick={() => dispatch(showGiverCounterDisputeModal(true))} variant="primary" className='py-5 w-full'>Counter Dispute</Button>
+                        <Button onClick={() => dispatch(showGiverDisputeReasonModal(true))} variant="secondary" className='py-5 w-full'>Give Reason</Button>
                     </div>
                 )
             case "pending":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button  variant="destructive" className='py-5 w-full'>Mark as No-show</Button>
-                        <Button  variant="primary" className='py-5 w-full'>Mark as Picked up</Button>
+                        <Button onClick={() => setIsMarkNoShowModal(true)} variant="destructive" className='py-5 w-full'>Mark as No-show</Button>
+                        <Button onClick={() => handlePickupConfirmation(id)} variant="primary" className='py-5 w-full'>Mark as Picked up</Button>
                     </div>
                 )
-                case "resolved":
+            case "resolved":
                 return (
                     <div className='flex items-center justify-between rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>
                         <span>Emergency came up, could not... </span>
-                        <button className='text-app-primary p-0'>Read More</button> 
+                        <button className='text-app-primary p-0'>Read More</button>
                     </div>
                 )
             default:
@@ -230,7 +312,7 @@ const ReceiverPickupView = () => {
                                         <h3 className="font-normal text-xs capitalize text-nowrap text-gray-600 flex gap-2 ">From Sarah Johnson</h3>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-2">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" d="M10.667 1.334v2.667M5.334 1.334v2.667M8.667 2.666H7.333c-2.514 0-3.77 0-4.552.781C2 4.228 2 5.485 2 8v1.334c0 2.514 0 3.77.781 4.552.781.781 2.038.781 4.552.781h1.334c2.514 0 3.77 0 4.552-.781.781-.781.781-2.038.781-4.552V7.999c0-2.514 0-3.77-.781-4.552-.781-.781-2.038-.781-4.552-.781ZM2 6.666h12" /></svg>
@@ -246,12 +328,226 @@ const ReceiverPickupView = () => {
                             </div>
                             {/* action buttons */}
                             <div className='mt-auto'>
-                                {getActionButtonsForCard(item.status)}
+                                {getActionButtonsForCard(item.status, item.id)}
                             </div>
                         </div>
                     </div>
                 ))}
-            </div>            
+            </div>
+            <ResponsiveModal open={markNoShowModal} close={() => setIsMarkNoShowModal(false)} className='py-4 md:py-14'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="89" height="85" fill="none"><rect width="80.497" height="80.496" x=".876" y=".75" fill="#F1F3DE" rx="40.248" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M41.138 60.75c-1.637 0-3.2-.66-6.326-1.981-7.783-3.288-11.674-4.931-11.674-7.696V30.75m18 30c1.636 0 3.2-.66 6.326-1.981 7.782-3.288 11.674-4.931 11.674-7.696V30.75m-18 30V39.46M33.79 36.133l-5.843-2.827c-3.206-1.552-4.81-2.327-4.81-3.556s1.604-2.004 4.81-3.556l5.842-2.827c3.606-1.745 5.41-2.617 7.349-2.617 1.94 0 3.742.872 7.348 2.617l5.842 2.827c3.206 1.552 4.81 2.328 4.81 3.556 0 1.229-1.603 2.004-4.81 3.556l-5.842 2.827c-3.606 1.745-5.409 2.617-7.348 2.617-1.94 0-3.743-.872-7.349-2.617Z" /><path stroke="#989F42" stroke-linecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m29.138 40.75 4 2" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m51.138 24.75-20 10" /><circle cx="65.124" cy="61.248" r="21.5" fill="#D33737" stroke="#fff" strokeWidth="3" /><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.143" d="M62.933 54.923c1.033 1.033 1.55 1.55 2.191 1.55.642 0 1.158-.517 2.191-1.55l2.192-2.191c.51-.51.765-.765 1.03-.918 1.333-.77 2.43-.005 3.353.918.924.923 1.687 2.02.918 3.354-.153.264-.408.52-.917 1.029l-2.192 2.191c-1.033 1.033-1.55 1.55-1.55 2.192 0 .642.517 1.158 1.55 2.191l2.192 2.192c.509.51.764.765.917 1.03.77 1.333.006 2.43-.918 3.353-.922.924-2.02 1.687-3.353.918-.265-.153-.52-.408-1.03-.918l-2.191-2.191c-1.033-1.033-1.55-1.55-2.192-1.55-.642 0-1.159.517-2.191 1.55l-2.192 2.191c-.51.51-.764.765-1.03.918-1.332.77-2.43.006-3.353-.918-.924-.923-1.687-2.02-.918-3.353.153-.265.408-.52.918-1.03l2.191-2.192c1.033-1.033 1.55-1.55 1.55-2.19 0-.643-.517-1.16-1.55-2.193l-2.192-2.191c-.509-.51-.764-.765-.917-1.03-.77-1.333-.006-2.43.918-3.353.923-.923 2.02-1.687 3.353-.918.266.153.52.408 1.03.917l2.192 2.192Z" /></svg>
+                    </span>
+                    <h4 className='text-xl md:text-2xl font-semibold'>Mark as No-show?</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>You&apos;re reporting that the giver did not show up for pickup as agreed.</p>
+                    <div className="bg-[#FFFBD4] border-[#FDE68A] border-1 rounded-lg p-4 mt-4 max-w-md">
+                        <p className="text-[#E5A000] text-sm text-left leading-5">Before reporting: Consider messaging the giver first. They might have had an emergency or misunderstood the pickup details.</p>
+                    </div>
+                    <div className='flex items-center justify-center gap-4 mt-6'>
+                        <Button onClick={() => setIsMarkNoShowModal(false)} variant="secondary" className='w-auto md:w-44 py-6 px-6 cursor-pointer'>No, cancel</Button>
+
+                        <Button onClick={handleProceedMarkNoShow} variant="primary" className='w-auto md:w-44 py-6 px-6'>Yes, proceed</Button>
+                    </div>
+                </div>
+            </ResponsiveModal>
+            <ResponsiveModal open={reportNoShowModal} close={() => setReportNoShowModal(false)} className="max-w-full md:max-w-[500px] min-h-[90%] md:min-h-auto pb-10 px-6">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="89" height="85" fill="none"><rect width="80.497" height="80.496" x=".876" y=".75" fill="#F1F3DE" rx="40.248" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M41.138 60.75c-1.637 0-3.2-.66-6.326-1.981-7.783-3.288-11.674-4.931-11.674-7.696V30.75m18 30c1.636 0 3.2-.66 6.326-1.981 7.782-3.288 11.674-4.931 11.674-7.696V30.75m-18 30V39.46M33.79 36.133l-5.843-2.827c-3.206-1.552-4.81-2.327-4.81-3.556s1.604-2.004 4.81-3.556l5.842-2.827c3.606-1.745 5.41-2.617 7.349-2.617 1.94 0 3.742.872 7.348 2.617l5.842 2.827c3.206 1.552 4.81 2.328 4.81 3.556 0 1.229-1.603 2.004-4.81 3.556l-5.842 2.827c-3.606 1.745-5.409 2.617-7.348 2.617-1.94 0-3.743-.872-7.349-2.617Z" /><path stroke="#989F42" stroke-linecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m29.138 40.75 4 2" /><path stroke="#989F42" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m51.138 24.75-20 10" /><circle cx="65.124" cy="61.248" r="21.5" fill="#D33737" stroke="#fff" strokeWidth="3" /><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.143" d="M62.933 54.923c1.033 1.033 1.55 1.55 2.191 1.55.642 0 1.158-.517 2.191-1.55l2.192-2.191c.51-.51.765-.765 1.03-.918 1.333-.77 2.43-.005 3.353.918.924.923 1.687 2.02.918 3.354-.153.264-.408.52-.917 1.029l-2.192 2.191c-1.033 1.033-1.55 1.55-1.55 2.192 0 .642.517 1.158 1.55 2.191l2.192 2.192c.509.51.764.765.917 1.03.77 1.333.006 2.43-.918 3.353-.922.924-2.02 1.687-3.353.918-.265-.153-.52-.408-1.03-.918l-2.191-2.191c-1.033-1.033-1.55-1.55-2.192-1.55-.642 0-1.159.517-2.191 1.55l-2.192 2.191c-.51.51-.764.765-1.03.918-1.332.77-2.43.006-3.353-.918-.924-.923-1.687-2.02-.918-3.353.153-.265.408-.52.918-1.03l2.191-2.192c1.033-1.033 1.55-1.55 1.55-2.19 0-.643-.517-1.16-1.55-2.193l-2.192-2.191c-.509-.51-.764-.765-.917-1.03-.77-1.333-.006-2.43.918-3.353.923-.923 2.02-1.687 3.353-.918.266.153.52.408 1.03.917l2.192 2.192Z" /></svg>
+                </span>
+                <div className='grid gap-2 my-6 md:my-auto'>
+                    <h4 className='font-bold text-xl'>Report No-show</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Help us decide what happened and decide next steps.</p>
+                </div>
+                {/* Product Info */}
+                <div className="w-full mb-4 md:mb-auto flex items-center gap-3 p-3 bg-[#f9fafb] rounded-lg mt-2">
+                    <Image
+                        src="/assets/giver-items/Frame 2087328010-2.png"
+                        width={400}
+                        height={400}
+                        alt="Vintage Desk Lamp"
+                        className="w-18 h-14 rounded-lg object-cover"
+                    />
+                    <div className="text-left grid gap-1">
+                        <div className="font-medium text-[#222222]">Vintage Desk Lamp</div>
+                        <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
+                    </div>
+                </div>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                    <RadioGroup
+                        value={selectedValue}
+                        onValueChange={setSelectedValue}
+                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4 scrollbar-hide'
+                    >
+                        {ReceiverNoshowReasons.map((option) => (
+                            <div key={option.value} className={option.hasTextarea ? "w-full grid gap-2 items-start" : "flex items-center gap-3"}>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <RadioGroupItem
+                                        value={option.value}
+                                        className="ring ring-app-primary text-app-primary"
+                                        id={option.value}
+                                    />
+                                    <Label htmlFor={option.value} className="leading-5 text-gray-500">
+                                        {option.label}
+                                    </Label>
+                                </div>
+
+                                {option.hasTextarea && (
+                                    <Textarea
+                                        rows={7}
+                                        className='placeholder:text-gray-400 p-2 mt-1 min-w-full bg-white shadow-none border-none'
+                                        placeholder='Please describe what happened'
+                                    />
+                                )}
+                            </div>
+                        ))}
+
+                        <Label htmlFor="report-no-show-file" className="mb-6 gap-2 overflow-hidden flex items-center cursor-pointer">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                                    <path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" />
+                                    <path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" />
+                                </svg>
+                            </span>
+                            <div className="flex items-center gap-3">
+                                <span className='text-sm text-app-primary'>Upload evidence</span>
+                                {noShowUploadedFileName && (
+                                    <span className="text-sm underline text-gray-500">{noShowUploadedFileName}</span>
+                                )}
+                                <Input
+                                    type="file"
+                                    className='sr-only w-1/2'
+                                    id='report-no-show-file'
+                                    onChange={handleNoShowFileUpload}
+                                />
+                            </div>
+                        </Label>
+                    </RadioGroup>
+                </div>
+                <Button
+                    onClick={handleReportNoShowSubmit}
+                    disabled={!selectedValue}
+                    variant="primary"
+                    className='py-6 w-full'>Done</Button>
+            </ResponsiveModal>
+            <ResponsiveAlert open={confirmPickModal} close={() => { }} className='py-4 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-2 md:p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="81" fill="none">
+                            <rect width="80" height="80" y="0.5" fill="#F1F3DE" rx="40"></rect>
+                            <path
+                                stroke="#989F42"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M42 61c-1.636 0-3.2-.682-6.326-2.047-3.65-1.593-6.443-2.812-8.381-3.953H20m22 6c1.636 0 3.2-.682 6.326-2.047C56.11 55.556 60 53.857 60 51V30M42 61V39m-18-9v6"
+                            ></path>
+                            <path
+                                stroke="#989F42"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="m34.652 36.383-5.843-2.827C25.603 32.004 24 31.229 24 30s1.603-2.004 4.81-3.556l5.842-2.827C38.258 21.872 40.06 21 42 21s3.742.872 7.348 2.617l5.843 2.827C58.397 27.996 60 28.772 60 30s-1.603 2.004-4.81 3.556l-5.842 2.827C45.742 38.128 43.94 39 42 39s-3.742-.872-7.348-2.617m17.621-11.352L31.734 34.97M20 43h6m-6 6h6"
+                            ></path>
+                        </svg>
+                    </span>
+                    <h4 className='text-xl md:text-2xl font-semibold'>Waiting for giver confirmation</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>You marked the item as picked up. The giver has been asked to confirm. We&apos;ll auto-marked the item as picked up after 48 hours. </p>
+                    <div className='flex items-center justify-center gap-4 mt-2 mb-2 md:mb-0 md:mt-6'>
+                        <Button onClick={handleConfirmPickup} variant="primary" className=' w-auto w-24 py-6 px-6'>Ok</Button>
+                    </div>
+                </div>
+            </ResponsiveAlert>
+            <ResponsiveAlert open={isConfirmed} close={() => { }} className='py-4 md:py-20'>
+                <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="100" fill="none"><path fill="#FF6D83" d="M3.281 38.73a4.155 4.155 0 1 1 1.75 8.124 4.155 4.155 0 0 1-1.75-8.123Z" /><path fill="#4671FF" d="M91.044 25.745a4.093 4.093 0 1 1 1.725 8.003 4.093 4.093 0 0 1-1.725-8.003Z" /><path fill="#FFB636" d="M51.314.614a4.276 4.276 0 1 1 1.8 8.362 4.276 4.276 0 0 1-1.8-8.362Z" /><path fill="#4671FF" d="M30.439 91.025a4.276 4.276 0 1 1 1.801 8.361 4.277 4.277 0 0 1-1.801-8.361Z" /><path fill="#AD8FE6" stroke="#AD8FE6" stroke-width=".377" d="M88.905 71.18a4.149 4.149 0 1 1 1.746 8.113 4.149 4.149 0 0 1-1.746-8.112Z" /><path fill="#14AE7D" d="M58.222 16.82c19.245 5.157 30.665 24.937 25.509 44.181-5.157 19.245-24.938 30.665-44.182 25.508C20.305 81.352 8.884 61.572 14.04 42.33c5.156-19.245 24.937-30.665 44.181-25.509Z" /><path fill="#fff" d="M42.907 65.372a1.017 1.017 0 0 1-1.424-.06L28.388 51.328a2.793 2.793 0 0 1-.608-1.973 2.8 2.8 0 0 1 .919-1.852 2.903 2.903 0 0 1 1.956-.743 2.907 2.907 0 0 1 1.952.76l9.437 10.077c.252.27.675.287.949.04l19.792-17.872a2.907 2.907 0 0 1 2.008-.593c.723.057 1.396.38 1.887.905a2.8 2.8 0 0 1 .76 1.922 2.793 2.793 0 0 1-.77 1.915L42.906 65.372Z" /><path stroke="#FF6E83" stroke-linecap="round" stroke-width="2.143" d="M20.834 15.332c-.66-2.45-2.229-5.7-5.95-7.768" /><path fill="#AD8FE6" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#AD8FE6" strokeLinecap="round" strokeWidth="2.027" d="M16.643 86.989c-.718.119-1.758.058-3.223-.263-8.31-1.824-.912 5.37-.912 5.37s1.894 3.718-1.73 2.808" /><path stroke="#FFB636" stroke-linecap="round" stroke-width="1.832" d="M83.127 11.48c2.277-.83 4.95-.007 7.54 5.027 4.883 9.487-6.64 7.553-5.97 1.64" /><path fill="#4671FF" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /><path stroke="#6EB9FF" stroke-linecap="round" stroke-width="2.027" d="M74.115 87.426c.649 1.803 2.41 3.918 6.791 5.378a32.5 32.5 0 0 1 1.412.505" /></svg>
+                    </span>
+                    <h4 className='text-xl md:text-2xl font-semibold'>Pickup Confirmed</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Thanks! We’ve marked the item as picked up.</p>
+                    <div className='flex items-center justify-center gap-4 mt-6'>
+                        <Button onClick={() => setIsConfirmed(false)} variant="secondary" className='w-auto md:w-44 py-6 px-6 cursor-pointer'>Done</Button>
+
+                        <Button onClick={leaveFeedback} variant="primary" className='w-auto md:w-44 py-6 px-6'>Leave Feedback</Button>
+                    </div>
+                </div>
+            </ResponsiveAlert>
+            <FeedbackReceivedAlert
+                subtext='we&apos;ve recorded your dispute and will follow up if needed.'
+                open={disputeFeedbackReceived}
+                onClose={() => setDisputeFeedbackReceived(false)}
+                buttonText='Ok'
+            />
+
+            <ResponsiveModal open={giverCounterDisputeModalOpen} close={() => dispatch(showGiverCounterDisputeModal(false))} className="max-w-full md:max-w-[500px] min-h-[90%] md:min-h-auto pb-10 px-6">
+                <div className='grid gap-2 my-6 md:my-auto'>
+                    <h4 className='font-bold text-xl'>Counter Dispute</h4>
+                    <p className='text-sm text-gray-500 sm:max-w-sm'>Help us understand what happened</p>
+                </div>
+                {/* Product Info */}
+                <div className="w-full mb-4 md:mb-auto flex items-center gap-3 p-3 bg-[#f9fafb] rounded-lg mt-2">
+                    <Image
+                        src="/assets/giver-items/Frame 2087328010-2.png"
+                        width={400}
+                        height={400}
+                        alt="Vintage Desk Lamp"
+                        className="w-18 h-14 rounded-lg object-cover"
+                    />
+                    <div className="text-left grid gap-1">
+                        <div className="font-medium text-[#222222]">Vintage Desk Lamp</div>
+                        <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
+                    </div>
+                </div>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                        <div className="flex items-center gap-3">
+                            {/* Change the value for radio buttons to suit -- it was a duplicate */}
+                            <RadioGroupItem value="receiver_pickup_in_person" className="ring ring-app-primary  text-app-primary" id="receiver_pickup_in_person" />
+                            <Label htmlFor="receiver_pickup_in_person" className="text-gray-500 ">The giver never showed up</Label>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <RadioGroupItem value="left_item_at_agreed_location" className="ring ring-app-primary  text-app-primary" id="left_item_at_agreed_location" />
+                            <Label htmlFor="left_item_at_agreed_location" className="text-gray-500 ">I checked the spot, but the item wasn&apos;t there</Label>
+                        </div>
+                        <div className="w-full grid gap-2 items-start">
+                            <div className="flex items-center gap-3 mb-4">
+                                <RadioGroupItem value="other" className="ring ring-app-primary text-app-primary" id="other" />
+                                <Label htmlFor="other" className="text-gray-500 ">Other reasons</Label>
+                            </div>
+                            <Textarea rows={7} className='placeholder:text-gray-400  p-2 mt-1 min-w-full bg-white shadow-none border-none' placeholder='Please described what happened' />
+                        </div>
+                        <Label htmlFor="report-no-show-file" className="mb-6 gap-2 overflow-hidden flex items-center cursor-pointer">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none"><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m2.5 13.58 3.725-3.724a1.51 1.51 0 0 1 2.134 0l3.308 3.308m0 0 1.25 1.25m-1.25-1.25 1.641-1.641a1.509 1.509 0 0 1 2.134 0L17.5 13.58" /><path stroke="#0D9488" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 2.332c-3.525 0-5.287 0-6.456.998-.166.142-.32.297-.462.463-.998 1.169-.998 2.93-.998 6.456 0 3.524 0 5.287.998 6.456.142.166.296.32.462.462 1.169.998 2.931.998 6.456.998 3.525 0 5.287 0 6.456-.998.166-.142.32-.296.463-.462.998-1.17.998-2.932.998-6.456M17.917 5.249H15m0 0h-2.916m2.916 0V2.332m0 2.917v2.916" /></svg>
+                            </span>
+                            <div className="grid">
+                                <div className="flex items-center gap-3">
+                                    <span className='text-sm text-app-primary'>Upload evidence</span>
+                                    {disputeUploadedFileName && (
+                                        <span className="text-sm underline text-gray-500">{disputeUploadedFileName}</span>
+                                    )}
+                                    <Input
+                                        type="file"
+                                        className='sr-only w-1/2'
+                                        id='report-no-show-file'
+                                        onChange={handleDisputeFileUpload}
+                                    />
+                                </div>
+                            </div>
+                        </Label>
+                    </RadioGroup>
+                </div>
+                <Button
+                    onClick={handleSubmitDispute}
+                    disabled={!selectedDisputeValue}
+                    variant="primary"
+                    className='py-6 w-full'>Submit Dispute</Button>
+            </ResponsiveModal>
+            <ResponsiveModal open={instructionModalOpen} close={() => setInstructionModalOpen(false)} className="min-h-auto pb-10 px-6">
+                <h4 className='font-bold text-xl mb-4'>Pickup Instruction</h4>
+                <p className="text-gray-500 sm:max-w-sm">Ring doorbell, I&apos;ll bring items to the front door. Please bring someone to help carry.</p>
+            </ResponsiveModal>
         </div>
     )
 }

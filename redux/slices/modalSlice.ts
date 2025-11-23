@@ -22,7 +22,10 @@ interface ModalSliceState {
     dispute: {
         disputeRaisedModalOpen: boolean,
         disputeReasonModalOpen: boolean,
-        counterDisputeModalOpen: boolean
+        counterDisputeModalOpen: boolean,
+        giverDisputeRaisedModalOpen?: boolean,
+        giverDisputeReasonModalOpen?: boolean,
+        giverCounterDisputeModalOpen?: boolean,
     }
 
 
@@ -50,7 +53,10 @@ const initialState: ModalSliceState =  {
     dispute: {
         disputeRaisedModalOpen: false,
         disputeReasonModalOpen: false,
-        counterDisputeModalOpen: false
+        counterDisputeModalOpen: false,
+        giverDisputeRaisedModalOpen: false,
+        giverDisputeReasonModalOpen: false,
+        giverCounterDisputeModalOpen: false,
     }
 
 
@@ -108,13 +114,23 @@ const modalSlice = createSlice({
         showDisputeRaisedModal: (state, action: PayloadAction<boolean>) => {
             state.dispute.disputeRaisedModalOpen = action.payload;
         },
-
+        
         showDisputeReasonModal: (state, action: PayloadAction<boolean>) => {
             state.dispute.disputeReasonModalOpen = action.payload;
         },
-
+        
         showCounterDisputeModal: (state, action: PayloadAction<boolean>) => {
             state.dispute.counterDisputeModalOpen = action.payload;
+        },
+        
+        showGiverDisputeRaisedModal: (state, action: PayloadAction<boolean>) => {
+            state.dispute.giverDisputeRaisedModalOpen = action.payload;
+        },
+        showGiverDisputeReasonModal: (state, action: PayloadAction<boolean>) => {
+            state.dispute.giverDisputeReasonModalOpen = action.payload;
+        },
+        showGiverCounterDisputeModal: (state, action: PayloadAction<boolean>) => {
+            state.dispute.giverCounterDisputeModalOpen = action.payload;
         }
 
 
@@ -137,7 +153,10 @@ export const
     showItemListingModal,
     showDisputeRaisedModal,
     showDisputeReasonModal,
-    showCounterDisputeModal
+    showCounterDisputeModal,
+    showGiverCounterDisputeModal,
+    showGiverDisputeRaisedModal,
+    showGiverDisputeReasonModal,
 
 } = modalSlice.actions
 

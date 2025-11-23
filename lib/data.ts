@@ -106,3 +106,25 @@ export const GiverNoshowReasons = [
     { value: "double-booking", label: "Double Booking or Scheduling Conflict" },
     { value: "other", label: "Other reasons", hasTextarea: true }
 ];
+
+
+export const ReceiverNoshowReasons = [
+    { value: "emergency-situation", label: "Emergency Situation (e.g., medical, family emergency)" },
+    { value: "unexpected-work-commitment", label: "Unexpected Work Commitment" },
+    { value: "transportation-issues", label: "Transportation Issues" },
+    { value: "misunderstood-time", label: "Misunderstood Collection Time or Date" },
+    { value: "item-no-longer-needed", label: "Item Was No Longer Needed" },
+    { value: "weather-conditions", label: "Weather Conditions Prevented Travel" },
+    { value: "personal-health-issues", label: "Personal Health Issues (e.g., illness on the day)" },
+    { value: "could-not-locate", label: "Could Not Locate the Pickup Address" },
+    { value: "last-minute-obligation", label: "Last-Minute Family or Personal Obligation" },
+    { value: "forgot-appointment", label: "Forgot the Appointment" },
+    { value: "schedule-conflict", label: "Schedule Conflict with Another Commitment" },
+    { value: "dependent-care", label: "Dependent Care Issues (e.g., childcare not available)" },
+    { value: "waiting-for-accompany", label: "Waiting for Someone to Accompany Me" },
+    { value: "decided-not-to-proceed", label: "Decided Not to Proceed but Failed to Cancel in Time" },
+    { value: "offered-elsewhere", label: "Item Was Offered to Another Receiver Before Pickup" },
+    { value: "platform-error", label: "Platform/App Error or Notification Failure" },
+    { value: "did-not-receive-confirmation", label: "Didn't Receive Final Confirmation from Giver" },
+    { value: "other", label: "Other (please explain)", hasTextarea: true }
+];

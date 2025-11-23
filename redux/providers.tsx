@@ -11,6 +11,7 @@ import UnmatchModalSequence from "@/components/shared/UnmatchModalSequence";
 import Review from "@/components/shared/Review";
 import AddItemModal from "@/components/multistep-form/AddItemModal";
 import GiverDisputeFlow from "@/components/shared/dispute/GiverDisputeFlow";
+import DisputeFlowModal from "@/components/shared/dispute";
 
 const AppModals = () => {
 
@@ -22,7 +23,8 @@ const AppModals = () => {
             <UnmatchModalSequence />
             <Review />
             <AddItemModal />
-            <GiverDisputeFlow />
+            {/* <GiverDisputeFlow /> */}
+            <DisputeFlowModal />
         </>
     )
 }

@@ -140,11 +140,11 @@ const PickupView = () => {
             rating: 4.5,
         },
     ])
-    
+
     const [activeTab, setActiveTab] = useState("all")
     // const { setIsUnmatchedModal, setGiverDisputeModal, setReasonModal, disputeModalOpen, setDisputeModalOpen } = useUIState()
     const dispatch = useAppDispatch();
-    const {counterDisputeModalOpen} = useAppSelector((state) => state.modal.dispute);
+    const { counterDisputeModalOpen } = useAppSelector((state) => state.modal.dispute);
 
     const filteredItems = pickupItems.filter((item) => {
         if (activeTab === "all") return true
@@ -172,8 +172,8 @@ const PickupView = () => {
             case "no-show":
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
-                        <Button  variant="secondary" className='py-5 w-full'>Archive</Button>
-                        <Button  variant="primary" className='py-5 w-full'>Relist</Button>
+                        <Button variant="secondary" className='py-5 w-full'>Archive</Button>
+                        <Button variant="primary" className='py-5 w-full'>Relist</Button>
                     </div>
                     // <div className='rounded-lg bg-gray-50 text-xs md:text-[0.8rem] p-3 text-gray-500'>Item moved to draft</div>
                 )
@@ -195,7 +195,7 @@ const PickupView = () => {
                 return null
         }
     }
-    
+
 
     const [confirmPickModal, setConfirmPickupModal] = useState(false)
     const [isConfirmed, setIsConfirmed] = useState(false)
@@ -204,7 +204,7 @@ const PickupView = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [selectedDisputeValue, setSelectedDisputeValue] = useState('')
     const [disputeFeedbackReceived, setDisputeFeedbackReceived] = useState(false)
-    
+
     const [doNextValue, setDoNextValue] = useState('')
     const [doNextModal, setDoNextModal] = useState(false)
     const [noShowUploadedFileName, setNoShowUploadedFileName] = useState('');
@@ -230,8 +230,8 @@ const PickupView = () => {
 
 
 
- 
-    
+
+
 
     const handlePickupConfirmation = (id: string) => {
         console.log(`Pickup confirmed for item with id: ${id}`)
@@ -268,16 +268,20 @@ const PickupView = () => {
         console.log("Do next action submitted with value:", doNextValue);
     }
 
-    //    Open Giver dispute Modal on Load
-        useEffect(() => {
-            dispatch(showDisputeRaisedModal(true))
-            // setGiverDisputeModal(true)
-        }, [dispatch])
+    //    Open Receiver dispute Modal on Load
+    useEffect(() => {
+        dispatch(showDisputeRaisedModal(true))
+        // setGiverDisputeModal(true)
+    }, [dispatch])
 
     const handleSubmitDispute = () => {
         // setDisputeModalOpen(false)
         dispatch(showCounterDisputeModal(false))
         setDisputeFeedbackReceived(true)
+    }
+    const leaveFeedback = () => {
+        setIsConfirmed(false)
+        dispatch(showRatingModal(true))
     }
 
 
@@ -356,9 +360,9 @@ const PickupView = () => {
                                     <p className="text-xs">Item marked as no show</p>
                                 </div>)
                                     : item.status === "no-show" ? (<div className="flex items-center gap-2">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M8 15.505A6.667 6.667 0 1 0 8 2.172a6.667 6.667 0 0 0 0 13.333ZM8 11.504v-3" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M8 6.179v-.007" /></svg>
-                                    </span><p className="text-xs">Receiver never showed up</p>
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M8 15.505A6.667 6.667 0 1 0 8 2.172a6.667 6.667 0 0 0 0 13.333ZM8 11.504v-3" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M8 6.179v-.007" /></svg>
+                                        </span><p className="text-xs">Receiver never showed up</p>
                                     </div>) :
                                         <div className="flex items-center gap-2">
                                             <span>
@@ -426,12 +430,12 @@ const PickupView = () => {
                     <div className='flex items-center justify-center gap-4 mt-6'>
                         <Button onClick={() => setIsConfirmed(false)} variant="secondary" className='w-auto md:w-44 py-6 px-6 cursor-pointer'>Done</Button>
 
-                        <Button onClick={() => setIsConfirmed(false)} variant="primary" className='w-auto md:w-44 py-6 px-6'>Leave Feedback</Button>
+                        <Button onClick={leaveFeedback} variant="primary" className='w-auto md:w-44 py-6 px-6'>Leave Feedback</Button>
                     </div>
                 </div>
             </ResponsiveAlert>
 
-            
+
 
             {/* <ResponsiveAlert open={feedbackReceivedModal} close={() => { }} className='py-4 md:py-20'>
                 <div className='flex flex-col items-center gap-3 justify-center text-center p-4 md:p-6'>
