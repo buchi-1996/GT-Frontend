@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ResponsiveModal from '@/components/modal/ResponsiveModal'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -36,6 +36,11 @@ const ReceiverDisputeFlow = () => {
         dispatch(showGiverDisputeReasonModal(true))
 
     }
+
+    useEffect(() => {
+  console.log("ReceiverDisputeFlow mounted")
+}, [])
+
 
 
     return (

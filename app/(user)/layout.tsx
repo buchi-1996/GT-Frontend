@@ -7,6 +7,13 @@ import ReduxProviders from "@/redux/providers";
 
 import DashboardHeader from "@/components/header/DashboardHeader";
 import SidebarSwitcher from "@/components/sidebar/SidebarSwitcher";
+import SheetModal from "@/components/modal/Sheet";
+import VerifyIdModal from "@/components/shared/VerifyId";
+import AllBadges from "@/components/shared/AllBadges";
+import UnmatchModalSequence from "@/components/shared/UnmatchModalSequence";
+import Review from "@/components/shared/Review";
+import AddItemModal from "@/components/multistep-form/AddItemModal";
+import DisputeFlowModal from "@/components/shared/dispute";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -23,8 +30,7 @@ export default function DashBoardLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>): React.ReactNode {
-    // const isGiver = typeof window !== "undefined" && window.location.pathname.includes("/giver/");
-    // console.log("isGiver:", isGiver);
+    
     return (
         <html lang="en">
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
@@ -35,9 +41,17 @@ export default function DashBoardLayout({
                             <DashboardHeader />
                             <div className="w-full md:container flex-1 mx-auto px-4 py-6 md:px-6 lg:p-12">
                                 {children}
+
                             </div>
                         </div>
                     </div>
+                    <SheetModal />
+                    <VerifyIdModal />
+                    <AllBadges />
+                    <UnmatchModalSequence />
+                    <Review />
+                    <AddItemModal />
+                    <DisputeFlowModal />
                 </ReduxProviders>
             </body>
         </html>

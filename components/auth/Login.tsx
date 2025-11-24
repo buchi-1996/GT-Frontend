@@ -46,7 +46,7 @@ const Login = () => {
             toast.success("Login Successful", {
                 id: "account-creation-success"
             })
-            router.push('/dashboard/overview')
+            router.push('/receiver/dashboard/overview')
             form.reset()
         } catch (error) {
             console.error("Submission error:", error)

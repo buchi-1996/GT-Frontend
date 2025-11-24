@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Sheet,
     SheetContent,
@@ -26,7 +26,13 @@ const SheetModal = () => {
     const dispatch = useAppDispatch()
     const {isSheetOpen, sheetContent} = useAppSelector((state) => state.modal);
     const isDesktop = useMediaQuery("(min-width: 768px)")
+ const [mounted, setMounted] = useState(false)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null  // prevents double mounting in dev
     if (isDesktop) {
         return (
             <Sheet open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>

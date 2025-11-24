@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   
   // Optimize for production
   compress: true,
-  
+ 
   // Disable x-powered-by header
   poweredByHeader: false,
 

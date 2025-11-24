@@ -4,7 +4,6 @@ import "../globals.css";
 // import Providers from "@/context/Providers";
 
 import AuthScreenBanner from "@/components/auth/AuthScreenBanner";
-import ReduxProviders from "@/redux/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,14 +27,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable}  antialiased`}
       >
-        <ReduxProviders>
-          <div className="min-h-screen lg:grid grid-cols-5 items-stretch">
-            <AuthScreenBanner />
-            <main className="grid col-span-3 bg-whiteP">
-              {children}
-            </main>
-          </div>
-        </ReduxProviders>
+        <div className="min-h-screen lg:grid grid-cols-5 items-stretch">
+          <AuthScreenBanner />
+          <main className="grid col-span-3 bg-whiteP">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
