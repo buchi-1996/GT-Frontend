@@ -29,7 +29,7 @@ export default function RootLayout({
       >
         <div className="min-h-screen lg:grid grid-cols-5 items-stretch">
           <AuthScreenBanner />
-          <main className="grid col-span-3 bg-whiteP">
+          <main className="grid col-span-3 bg-white">
             {children}
           </main>
         </div>

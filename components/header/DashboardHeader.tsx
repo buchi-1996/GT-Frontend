@@ -73,7 +73,7 @@ const DashboardHeader = () => {
                 </svg>
               </span>
             </button>
-            <button onClick={() => dispatch(openSheet(<AllNotifications />))} className='cursor-pointer relative'>
+            <button onClick={() => dispatch(openSheet({content: <AllNotifications />}))} className='cursor-pointer relative'>
               <Badge className="absolute -right-2 -top-2 bg-[#B6CC5E] h-5 min-w-5 rounded-full px-1 font-medium tabular-nums">
                 3
               </Badge>

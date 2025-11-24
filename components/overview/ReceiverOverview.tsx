@@ -60,7 +60,7 @@ const ReceiverOverview = () => {
                     <CardHeader className="px-4 md:px-6 py-2">
                         <CardTitle className="flex items-center md:items-start  justify-between text-md sm:text-[1rem] text-[#222222]">
                             <span>Activity History</span>
-                            <button onClick={() => dispatch(openSheet(<AllActivities />))} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
+                            <button onClick={() => dispatch(openSheet({content: <AllActivities />}))} className="cursor-pointer text-sm font-medium text-app-primary">View All</button>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-4 md:px-6 py-2">

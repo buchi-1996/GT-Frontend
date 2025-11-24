@@ -89,11 +89,9 @@ const SortableList = () => {
     const handleCriteriaHide = () => {
 
         if (isMobile) {
-            dispatch(openSheet(<SortableList />))
-            // setIsSheetOpen(false)
+            dispatch(openSheet({content: <SortableList />}))
             dispatch(closeSheet())
         }
-        // setOpenCriteria(!openCriteria)
         dispatch(showCriteriaModal(!isCriteriaOpen))
     }
 

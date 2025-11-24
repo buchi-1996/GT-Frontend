@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import { ReactNode } from 'react';
 
 interface ModalSliceState {
+    isSheetDismissible: boolean,
     isSheetOpen: boolean,
     sheetContent: ReactNode,
     isCriteriaOpen: boolean,
@@ -32,6 +33,7 @@ interface ModalSliceState {
 }
 
 const initialState: ModalSliceState =  {
+    isSheetDismissible: true,
     isSheetOpen: false,
     sheetContent: null,
     isCriteriaOpen: true,
@@ -66,13 +68,15 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openSheet: (state, action: PayloadAction<ReactNode>) => {
+        openSheet: (state, action: PayloadAction<{content: ReactNode, dismissible?: boolean}>) => {
             state.isSheetOpen = true;
-            state.sheetContent = action.payload;
+            state.sheetContent = action.payload.content;
+            state.isSheetDismissible = action.payload.dismissible ?? true;
         },
         closeSheet: (state) => {
             state.isSheetOpen = false;
             state.sheetContent = null;
+            state.isSheetDismissible = true;
         },
         showVerificationModal: (state, action: PayloadAction<boolean>) => {
             state.verificationModalOpen = action.payload;

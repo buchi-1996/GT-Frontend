@@ -135,7 +135,7 @@ const MactchingView = () => {
 
     const handleCriteriaShow = () => {
         if (isMobile) {
-            dispatch(openSheet(<SortableList />))
+            dispatch(openSheet({content: <SortableList />, dismissible: false}))
         }
         // setOpenCriteria(true)
         dispatch(showCriteriaModal(true))
@@ -200,7 +200,7 @@ const MactchingView = () => {
                                     >
                                         <Card className="relative overflow-hidden w-full xl:min-w-[550px] p-0 bg-transparent border-b shadow-none">
                                             <CardContent className="p-0">
-                                                <CollapsibleTrigger className="pt-0 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 w-full cursor-pointer">
+                                                <CollapsibleTrigger className="pt-2 pb-2 md:pt-6 md:pb-4 px-3 md:px-6 w-full cursor-pointer">
                                                     <div className="flex items-center lg:items-center justify-between gap-4">
                                                         <div className='flex flex-row items-center lg:items-start gap-4 md:gap-6'>
                                                             <Image
@@ -297,8 +297,6 @@ const MactchingView = () => {
 
 
                     </div>
-                </TabsContent>
-
                 {(!isCriteriaOpen || isMobile) && (
                     <Button onClick={handleCriteriaShow} variant="secondary" size="lg" className="border-none rounded-full cursor-pointer bg-white py-6 hover:bg-white hover:scale-105 transform transition-all ease-in-out duration-300ms shadow-2xl fixed bottom-10 right-5">
                         <span>
@@ -311,6 +309,8 @@ const MactchingView = () => {
                         Selection Criteria
                     </Button>
                 )}
+                </TabsContent>
+
 
                 <TabsContent value="matched">
                     <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Sheet,
     SheetContent,
@@ -24,15 +24,9 @@ import { closeSheet } from '@/redux/slices/modalSlice';
 
 const SheetModal = () => {
     const dispatch = useAppDispatch()
-    const {isSheetOpen, sheetContent} = useAppSelector((state) => state.modal);
+    const {isSheetDismissible, isSheetOpen, sheetContent} = useAppSelector((state) => state.modal);
     const isDesktop = useMediaQuery("(min-width: 768px)")
- const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null  // prevents double mounting in dev
     if (isDesktop) {
         return (
             <Sheet open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>
@@ -51,7 +45,7 @@ const SheetModal = () => {
         )
     }
     return (
-        <Drawer repositionInputs={false} open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>
+        <Drawer dismissible={isSheetDismissible} repositionInputs={false} open={isSheetOpen} onOpenChange={()=> dispatch(closeSheet())}>
             <DrawerContent className='pt-4 px-4 pb-8' >
                 <DrawerHeader className="text-left">
                     <DrawerTitle className="sr-only">Title</DrawerTitle>

@@ -1,9 +1,10 @@
+import ReputationView from '@/components/reputation'
 import React from 'react'
 
-const page = () => {
+const Reputation = () => {
   return (
-    <div>page</div>
+    <ReputationView />
   )
 }
 
-export default page
+export default Reputation
