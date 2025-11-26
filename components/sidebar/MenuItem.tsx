@@ -3,7 +3,6 @@ import Link from 'next/link'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
 import { closeSidebar } from '@/redux/slices/sidebarSlice'
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 
 
