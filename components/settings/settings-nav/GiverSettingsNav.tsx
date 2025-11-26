@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import {
@@ -9,9 +8,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'
-import SettingsMenuItem from '../sidebar/SettingsMenuItem'
-
-
+import SettingsMenuItem from '@/components/sidebar/SettingsMenuItem'
 
 const settingsMenu = [
     {
@@ -66,8 +63,9 @@ const settingsMenu = [
     }
 ]
 
-const SettingsNav = () => {
+const GiverSettingsNav = () => {
     const pathname = usePathname()
+
     const pageTitle = useMemo(() => {
         if (!pathname) return '';
 
@@ -120,7 +118,7 @@ const SettingsNav = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <ul className='sticky top-[7rem] hidden lg:block w-full min-w-[200px] lg:@xl:w-[28%] grid gap-2 border rounded-lg p-2 self-start'>
+            <div className='sticky top-[7rem] hidden lg:block w-full min-w-[200px] lg:@xl:w-[28%] grid gap-2 border rounded-lg p-2 self-start'>
 
                 {settingsMenu.map(menuItem => (
                     <SettingsMenuItem
@@ -131,9 +129,9 @@ const SettingsNav = () => {
                         size="sm"
                     />
                 ))}
-            </ul>
+            </div>
         </>
     )
 }
 
-export default SettingsNav
+export default GiverSettingsNav

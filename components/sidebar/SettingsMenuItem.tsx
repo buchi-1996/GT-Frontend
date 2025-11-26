@@ -1,16 +1,14 @@
 import { NavigationItem } from '@/types'
 import Link from 'next/link'
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { useAppDispatch } from '@/hooks/redux-hooks'
 import { closeSidebar } from '@/redux/slices/sidebarSlice'
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 
 
-const MenuItem = ({ title, icon, href, isActive, size}: NavigationItem) => {
+const SettingsMenuItem = ({ title, icon, href, isActive, size}: NavigationItem) => {
 
   const dispatch = useAppDispatch()
-  const { sidebarCollapsed } = useAppSelector((state) => state.sidebar)
   
     
 
@@ -20,10 +18,10 @@ const MenuItem = ({ title, icon, href, isActive, size}: NavigationItem) => {
                 <span className={`${isActive ? 'text-[#0D9488]  ' : 'text-[#383838] '}`}>
                     {icon}
                 </span>
-                <p className={`${isActive && 'text-[#0D9488]'} ${sidebarCollapsed ? 'hidden' : 'block'} ${size === "sm" && "text-sm"}`}>{title}</p>
+                <p className={`${isActive && 'text-[#0D9488]'} ${size === "sm" && "text-sm"}`}>{title}</p>
             </Link>
         </li>
     )
 }
 
-export default MenuItem
+export default SettingsMenuItem

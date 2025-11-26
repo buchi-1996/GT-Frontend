@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import useRouteRole from '@/hooks/useRouteRole';
 
 
 const notificationsViewSchema = z.object({
@@ -26,7 +27,11 @@ const notificationsViewSchema = z.object({
     weeklyDigestSettings: z.object({
         dayOfWeek: z.string(),
         time: z.string()
-    }).optional()
+    }).optional(),
+    newListingsAlert: z.boolean().optional(),
+    collectionRemindersAlert: z.boolean().optional(),
+    platformUpdatesAlert: z.boolean().optional(),
+    marketingCommunicationsAlert: z.boolean().optional(),
 
 })
 
@@ -34,6 +39,7 @@ type NotificationsViewSchemaData = z.infer<typeof notificationsViewSchema>;
 
 const NotificationsView = () => {
 
+    const { isGiver, isReceiver } = useRouteRole();
 
 
     const form = useForm<NotificationsViewSchemaData>({
@@ -50,7 +56,11 @@ const NotificationsView = () => {
             weeklyDigestSettings: {
                 dayOfWeek: "",
                 time: ""
-            }
+            },
+            newListingsAlert: true,
+            collectionRemindersAlert: true,
+            platformUpdatesAlert: true,
+            marketingCommunicationsAlert: false,
 
         }
     })
@@ -229,96 +239,184 @@ const NotificationsView = () => {
                                 </FormItem>
                             )}
                         />
-
-
                     </div>
                     <div className='py-6  border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Alert Types</h3>
                         <div className="grid gap-6">
-                            <FormField
-                                control={form.control}
-                                name="newInterestReceivedAlert"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
-                                            <div>
-                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">New Interests Received</h4>
-                                                <p className="text-sm text-[#626262]">When someone shows interest in your items</p>
-                                            </div>
-                                            <FormControl>
-                                                <Switch
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className="data-[state=checked]:bg-[#14ae7d]"
-                                                />
-                                            </FormControl>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="pickupRemindersAlert"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
-                                            <div>
-                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Scheduled Pick-up Reminders</h4>
-                                                <p className="text-sm text-[#626262]">Reminders about upcoming pickups</p>
-                                            </div>
-                                            <FormControl>
-                                                <Switch
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className="data-[state=checked]:bg-[#14ae7d]"
-                                                />
-                                            </FormControl>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="feedbackAndThankyouNotesAlert"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
-                                            <div>
-                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Feedback & Thank-you Notes</h4>
-                                                <p className="text-sm text-[#626262]">When receivers leave feedback or thank you</p>
-                                            </div>
-                                            <FormControl>
-                                                <Switch
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className="data-[state=checked]:bg-[#14ae7d]"
-                                                />
-                                            </FormControl>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="platformCampaignsAlert"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
-                                            <div>
-                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Platform Campaigns & Community Events</h4>
-                                                <p className="text-sm text-[#626262]">Updates about special events and campaigns</p>
-                                            </div>
-                                            <FormControl>
-                                                <Switch
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className="data-[state=checked]:bg-[#14ae7d]"
-                                                />
-                                            </FormControl>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
+                            {isGiver && (
+                                <>
+                                    <FormField
+                                        control={form.control}
+                                        name="newInterestReceivedAlert"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm text-[#222222] mb-1">New Interests Received</h4>
+                                                        <p className="text-sm text-[#626262]">When someone shows interest in your items</p>
+                                                    </div>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="data-[state=checked]:bg-[#14ae7d]"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="pickupRemindersAlert"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm text-[#222222] mb-1">Scheduled Pick-up Reminders</h4>
+                                                        <p className="text-sm text-[#626262]">Reminders about upcoming pickups</p>
+                                                    </div>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="data-[state=checked]:bg-[#14ae7d]"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="feedbackAndThankyouNotesAlert"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm text-[#222222] mb-1">Feedback & Thank-you Notes</h4>
+                                                        <p className="text-sm text-[#626262]">When receivers leave feedback or thank you</p>
+                                                    </div>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="data-[state=checked]:bg-[#14ae7d]"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="platformCampaignsAlert"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm text-[#222222] mb-1">Platform Campaigns & Community Events</h4>
+                                                        <p className="text-sm text-[#626262]">Updates about special events and campaigns</p>
+                                                    </div>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="data-[state=checked]:bg-[#14ae7d]"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </>)}
+                            {
+                                isReceiver && (
+                                    <> <FormField
+                                        control={form.control}
+                                        name="collectionRemindersAlert"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm text-[#222222] mb-1">Collection Reminders</h4>
+                                                        <p className="text-sm text-[#626262]">Remiders about scheduled pickups and collections</p>
+                                                    </div>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="data-[state=checked]:bg-[#14ae7d]"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                        <FormField
+                                            control={form.control}
+                                            name="newListingsAlert"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                        <div>
+                                                            <h4 className="font-semibold text-sm text-[#222222] mb-1">New Listings</h4>
+                                                            <p className="text-sm text-[#626262]">Notifications about new items matching your interest</p>
+                                                        </div>
+                                                        <FormControl>
+                                                            <Switch
+                                                                checked={field.value}
+                                                                onCheckedChange={field.onChange}
+                                                                className="data-[state=checked]:bg-[#14ae7d]"
+                                                            />
+                                                        </FormControl>
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="platformUpdatesAlert"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                        <div>
+                                                            <h4 className="font-semibold text-sm text-[#222222] mb-1">Platform Updates</h4>
+                                                            <p className="text-sm text-[#626262]">Important updates about the GT Platform</p>
+                                                        </div>
+                                                        <FormControl>
+                                                            <Switch
+                                                                checked={field.value}
+                                                                onCheckedChange={field.onChange}
+                                                                className="data-[state=checked]:bg-[#14ae7d]"
+                                                            />
+                                                        </FormControl>
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="marketingCommunicationsAlert"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                        <div>
+                                                            <h4 className="font-semibold text-sm text-[#222222] mb-1">Marketing Communications</h4>
+                                                            <p className="text-sm text-[#626262]">Tips, success stories, and community highlights</p>
+                                                        </div>
+                                                        <FormControl>
+                                                            <Switch
+                                                                checked={field.value}
+                                                                onCheckedChange={field.onChange}
+                                                                className="data-[state=checked]:bg-[#14ae7d]"
+                                                            />
+                                                        </FormControl>
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </>)}
                         </div>
                     </div>
                     <div className="flex justify-end">

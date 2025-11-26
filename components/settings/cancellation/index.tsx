@@ -121,10 +121,10 @@ const CancellationView = () => {
                                 name="cancelBeforePickupReminder"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-6 bg-[#f9fafb] p-4 rounded-lg">
-                                        <FormLabel className="font-semibold text-sm text-[#222222] mb-1">Maximum requests per listing</FormLabel>
+                                        <FormLabel className="font-semibold text-sm text-[#222222] mb-1">Reminder Timing (hours before pickup)</FormLabel>
                                         <div className='flex items-center justify-between gap-6'>
                                             <Slider onValueChange={(value) => field.onChange(value[0])} defaultValue={[field.value ?? 0]} max={100} step={24} />
-                                            <h4 className="font-semibold">{field.value}h</h4>
+                                            <h4 className="font-semibold whitespace-nowrap">{field.value}h</h4>
                                         </div>
                                         <p className='text-sm text-gray-500'>You&apos;ll receive a reminder {field.value} hours before scheduled pickups</p>
                                         <FormMessage />

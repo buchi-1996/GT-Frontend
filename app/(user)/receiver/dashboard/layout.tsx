@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../../../globals.css";
-import SettingsNav from "@/components/settings/SettingsNav";
 import ReduxProviders from "@/redux/providers";
+import ReceiverSettingsNav from "@/components/settings/settings-nav/ReceiverSettingsNav";
 
 
 const inter = Inter({
@@ -27,7 +27,7 @@ export default function ReceiverDashboardLayout({
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <ReduxProviders>
                     <div className='@container flex flex-col lg:flex-row items-start gap-4 md:gap-8'>
-                        <SettingsNav />
+                        <ReceiverSettingsNav />
                         <div className="w-full h-full">
                             {children}
                         </div>

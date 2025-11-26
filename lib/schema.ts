@@ -252,6 +252,7 @@ export const passwordSchema = z.object({
 export const otherSettingsSchema = z.object({
   profileVisibility: z.boolean().optional(),
   twoFactorAuth: z.boolean().optional(),
+  preferredPickupRadius: z.number().optional(),
 })
 
 // Combined schema for the entire form

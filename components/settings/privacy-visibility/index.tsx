@@ -5,11 +5,13 @@ import { Form } from '@/components/ui/form'
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
-import { FormField, FormItem, FormControl} from "@/components/ui/form"
+import { FormField, FormItem, FormControl } from "@/components/ui/form"
 import { z } from 'zod';
 import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import useRouteRole from '@/hooks/useRouteRole';
+import Notification from '@/components/shared/Notification';
 
 const privacyVisibilitySchema = z.object({
     profileVisibility: z.string().optional(),
@@ -18,6 +20,8 @@ const privacyVisibilitySchema = z.object({
     allowPublicAcknowledgments: z.boolean().optional(),
     allowAnalytics: z.boolean().optional(),
     personalizedContents: z.boolean().optional(),
+    showPastReceivingHistory: z.boolean().optional(),
+    reviewsAndFeedbackVisibility: z.boolean().optional(),
 
 
 })
@@ -27,7 +31,7 @@ type PrivacyVisibilitySchemaData = z.infer<typeof privacyVisibilitySchema>;
 
 
 const PrivacyAndVisibilityView = () => {
-
+    const { isGiver, isReceiver } = useRouteRole()
 
     const form = useForm<PrivacyVisibilitySchemaData>({
         resolver: zodResolver(privacyVisibilitySchema),
@@ -37,7 +41,9 @@ const PrivacyAndVisibilityView = () => {
             showAchievements: true,
             allowPublicAcknowledgments: false,
             allowAnalytics: true,
-            personalizedContents: true
+            personalizedContents: true,
+            showPastReceivingHistory: true,
+            reviewsAndFeedbackVisibility: true
         }
     })
 
@@ -97,7 +103,7 @@ const PrivacyAndVisibilityView = () => {
                     <div className='py-6 border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Information Display</h3>
                         <div className="grid gap-6">
-                            <FormField
+                            {isGiver && <FormField
                                 control={form.control}
                                 name="showPastGivingHistory"
                                 render={({ field }) => (
@@ -117,8 +123,52 @@ const PrivacyAndVisibilityView = () => {
                                         </div>
                                     </FormItem>
                                 )}
+                            />}
+                            {isReceiver && <><FormField
+                                control={form.control}
+                                name="showPastReceivingHistory"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                            <div>
+                                                <h4 className="font-semibold text-sm text-[#222222] mb-1">Show Past Receiving History</h4>
+                                                <p className="text-sm text-[#626262]">Display your previous donations and items shared</p>
+                                            </div>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-[#14ae7d]"
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    </FormItem>
+                                )}
                             />
-                            <FormField
+                                <FormField
+                                    control={form.control}
+                                    name="reviewsAndFeedbackVisibility"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
+                                                <div>
+                                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Reviews and Fedback Visibility</h4>
+                                                    <p className="text-sm text-[#626262]">Show reviews and feedback from other users</p>
+                                                </div>
+                                                <FormControl>
+                                                    <Switch
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                        className="data-[state=checked]:bg-[#14ae7d]"
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                                <Notification type="info" label="Note:" notice="Hiding any of your information may reduce your chances of receiving an item." />
+                            </>}
+                            {isGiver && <FormField
                                 control={form.control}
                                 name="showAchievements"
                                 render={({ field }) => (
@@ -138,12 +188,11 @@ const PrivacyAndVisibilityView = () => {
                                         </div>
                                     </FormItem>
                                 )}
-                            />
-
+                            />}
                         </div>
 
                     </div>
-                    <div className='py-6  border-b '>
+                    {isGiver && <div className='py-6  border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Public Recognition</h3>
                         <div className="grid gap-6">
                             <FormField
@@ -172,8 +221,9 @@ const PrivacyAndVisibilityView = () => {
                             </div>
                         </div>
                     </div>
+                    }
 
-                      <div className='py-6 border-b '>
+                    <div className='py-6 border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Data Usage Preferences</h3>
                         <div className="grid gap-6">
                             <FormField

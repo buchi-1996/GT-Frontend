@@ -10,9 +10,12 @@ import { BasicInfoSection } from "./BasicInfo"
 import { AddressSection } from "./AddressForm"
 import { PasswordSection } from "./PasswordForm"
 import { SettingsSection } from "./OtherSettings"
+import useRouteRole from "@/hooks/useRouteRole"
 
 
 export function ProfileForm() {
+
+  const {isGiver} = useRouteRole();
   const form = useForm({
     resolver: zodResolver(completeProfileSchema),
     defaultValues: {
@@ -37,6 +40,7 @@ export function ProfileForm() {
       otherSettings: {
         profileVisibility: true,
         twoFactorAuth: false,
+        preferredPickupRadius: 4,
       }
     }
   })
@@ -49,7 +53,7 @@ export function ProfileForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <BasicInfoSection form={form} />
-        <AddressSection form={form} />
+        {isGiver && <AddressSection form={form} />}
         <PasswordSection form={form} />
         <SettingsSection form={form} />
 

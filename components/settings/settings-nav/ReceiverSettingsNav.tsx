@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import {
@@ -9,65 +8,54 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'
-import SettingsMenuItem from '../sidebar/SettingsMenuItem'
-
-
+import SettingsMenuItem from '@/components/sidebar/SettingsMenuItem'
 
 const settingsMenu = [
     {
         id: "profile",
         title: "Profile",
-        href: "/giver/dashboard/settings/profile",
-    },
-    {
-        id: "listing",
-        title: "Listing",
-        href: "/giver/dashboard/settings/listing",
-    },
-    {
-        id: "interest-management",
-        title: "Interest Management",
-        href: "/giver/dashboard/settings/interest-management",
-    },
-    {
-        id: "cancellation",
-        title: "Cancellation",
-        href: "/giver/dashboard/settings/cancellation",
+        href: "/receiver/dashboard/settings/profile",
     },
     {
         id: "notification",
         title: "Notification",
-        href: "/giver/dashboard/settings/notification",
+        href: "/receiver/dashboard/settings/notification",
+    },
+    {
+        id: "interest-categories",
+        title: "Interest Categories",
+        href: "/receiver/dashboard/settings/interest-categories",
     },
     {
         id: "privacy-and-visibility",
         title: "Privacy & Visibility",
-        href: "/giver/dashboard/settings/privacy-and-visibility",
+        href: "/receiver/dashboard/settings/privacy-and-visibility",
     },
     {
-        id: "badges-and-recognition",
-        title: "Badges & Recognition",
-        href: "/giver/dashboard/settings/badges-and-recognition",
+        id: "security",
+        title: "Security",
+        href: "/receiver/dashboard/settings/security",
     },
     {
         id: "account-settings",
         title: "Account Settings",
-        href: "/giver/dashboard/settings/account-settings",
+        href: "/receiver/dashboard/settings/account-settings",
     },
     {
         id: "help-and-support",
         title: "Help & Support",
-        href: "/giver/dashboard/settings/help-and-support",
+        href: "/receiver/dashboard/settings/help-and-support",
     },
     {
         id: "legal-and-compliance",
         title: "Legal & Compliance",
-        href: "/giver/dashboard/settings/legal-and-compliance",
+        href: "/receiver/dashboard/settings/legal-and-compliance",
     }
 ]
 
-const SettingsNav = () => {
+const ReceiverSettingsNav = () => {
     const pathname = usePathname()
+
     const pageTitle = useMemo(() => {
         if (!pathname) return '';
 
@@ -120,7 +108,7 @@ const SettingsNav = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <ul className='sticky top-[7rem] hidden lg:block w-full min-w-[200px] lg:@xl:w-[28%] grid gap-2 border rounded-lg p-2 self-start'>
+            <div className='sticky top-[7rem] hidden lg:block w-full min-w-[200px] lg:@xl:w-[28%] grid gap-2 border rounded-lg p-2 self-start'>
 
                 {settingsMenu.map(menuItem => (
                     <SettingsMenuItem
@@ -131,9 +119,9 @@ const SettingsNav = () => {
                         size="sm"
                     />
                 ))}
-            </ul>
+            </div>
         </>
     )
 }
 
-export default SettingsNav
+export default ReceiverSettingsNav

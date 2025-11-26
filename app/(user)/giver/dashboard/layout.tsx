@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../../../globals.css";
-import SettingsNav from "@/components/settings/SettingsNav";
 import ReduxProviders from "@/redux/providers";
+import GiverSettingsNav from "@/components/settings/settings-nav/GiverSettingsNav";
 
 
 const inter = Inter({
@@ -27,7 +27,7 @@ export default function GiverDashboardLayout({
             <body className={`${inter.variable} relative flex flex-col min-h-screen antialiased`}>
                 <ReduxProviders>
                     <div className='@container flex flex-col lg:flex-row items-start gap-4 md:gap-8'>
-                        <SettingsNav />
+                        <GiverSettingsNav />
                         <div className="w-full h-full">
                             {children}
                         </div>
