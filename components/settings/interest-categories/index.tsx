@@ -88,7 +88,7 @@ const InterestCategoriesView = () => {
             <div className='@container'>
                 <div className='grid grid-cols-1 gap-4 @md:grid-cols-2 @2xl:grid-cols-3 py-6 border-t-0 lg:border-t'>
                     {interestCategories.map((category) => (
-                        <Card onClick={() => handleToggleCategory(category.id)} key={category.id} className={`hover:scale-[0.95] cursor-pointer transition-all duration-200 ease-in-out shadow-none ${selectedInterstCategories.includes(category.id) ? 'bg-green-bg text-green-text border-transparent' : 'border bg-none'}`}>
+                        <Card onClick={() => handleToggleCategory(category.id)} key={category.id} className={`hover:scale-[0.95] cursor-pointer transition-all duration-200 ease-in-out shadow-none ${selectedInterstCategories.includes(category.id) ? 'bg-green-bg text-green-text border-green-text' : 'border bg-none'}`}>
                             <CardContent>
                                 <div className='flex items-center gap-4'>
                                     <span className=''>{category.icon}</span>

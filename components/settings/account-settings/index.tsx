@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import AllActivities from '@/components/shared/AllActivities';
 import { useAppDispatch } from '@/hooks/redux-hooks';
 import { openSheet } from '@/redux/slices/modalSlice';
+import useRouteRole from '@/hooks/useRouteRole';
 
 
 
@@ -33,6 +34,7 @@ const AccountSettingsView = () => {
     const [confirmDeactivate, setConfirmDeactivate] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
+    const { isGiver } = useRouteRole()
 
 
     const form = useForm<AccountSettingsSchemaData>({
@@ -52,16 +54,16 @@ const AccountSettingsView = () => {
 
     return (
         <div className='p-4 md:p-6 rounded-lg border'>
-            <div className='grid hidden lg:block pb-6'>
+            <div className='grid hidden lg:block pb-6 border-b'>
                 <h4 className='text-md sm:text-[1.2rem] font-semibold text-[#222222]'>Account Settings</h4>
                 <p className='text-gray-500 text-sm'>Manage your account preferences, data, and connected services</p>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className='py-6 border-t-0 lg:border-t  border-b '>
+                    {isGiver && <div className='py-6 border-b '>
                         <h3 className="font-semibold text-[#222222] mb-8">Language & Regional Settings</h3>
 
-                        <div className='grid grid-cols-1 lg:grid-cols-2 items-baseline gap-8 md:gap-6'>
+                         <div className='grid grid-cols-1 lg:grid-cols-2 items-baseline gap-8 md:gap-6'>
                             <FormField
                                 control={form.control}
                                 name="displayLanguage"
@@ -109,13 +111,13 @@ const AccountSettingsView = () => {
                                 )}
                             />
                         </div>
-                    </div>
+                    </div>}
                     <div className='py-6 border-b'>
                         <h3 className="font-semibold text-[#222222] mb-8">Connected Social Media</h3>
                         <div className="grid gap-6">
                             <div className="bg-[#f9fafb] p-4 rounded-lg flex items-center  gap-4 justify-between">
                                 <div>
-                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Facebbook</h4>
+                                    <h4 className="font-semibold text-sm text-[#222222] mb-1">Facebook</h4>
                                     <p className="text-sm text-[#626262]">Not connected</p>
                                 </div>
                                 <Button className='w-auto md:w-28 cursor-pointer py-5 bg-white text-gray-600 shadow-none border hover:bg-white hover:text-gray-600'>Connect</Button>
@@ -212,10 +214,10 @@ const AccountSettingsView = () => {
                                 console.log('Account deleted');
                                 setConfirmDelete(false);
                                 setConsentDelete('');
-                                toast.success('Your account has been successfully deleted.');
+                                toast.success('Your account has been successfully deleted.', {id: 'account-deleted'});
                             }   
                             else {
-                                toast.error('Please type DELETE to confirm account deletion.');     
+                                toast.error('Please type DELETE to confirm account deletion.', {id: 'account-deletion-error'});     
                             }   
                         }}
                         className="py-6 text-white"
@@ -243,10 +245,10 @@ const AccountSettingsView = () => {
                                 console.log('Account deactivate');
                                 setConfirmDeactivate(false);
                                 setConsentDeactivate('');
-                                toast.success('Your account has been successfully deactivate.');
+                                toast.success('Your account has been successfully deactivate.', {id: 'account-deactivate'});
                             }   
                             else {
-                                toast.error('type DEACTIVATE to deactivate account.');     
+                                toast.error('type DEACTIVATE to deactivate account.', {id: 'account-deactivate-error'});     
                             }   
                         }}
                         className="py-6"

@@ -37,14 +37,14 @@ const settingsMenu = [
         href: "/receiver/dashboard/settings/security",
     },
     {
-        id: "account-settings",
-        title: "Account Settings",
-        href: "/receiver/dashboard/settings/account-settings",
-    },
-    {
         id: "help-and-support",
         title: "Help & Support",
         href: "/receiver/dashboard/settings/help-and-support",
+    },
+    {
+        id: "account-settings",
+        title: "Account Settings",
+        href: "/receiver/dashboard/settings/account-settings",
     },
     {
         id: "legal-and-compliance",
