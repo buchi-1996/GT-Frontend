@@ -5,6 +5,10 @@ import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import ResponsiveModal from '../modal/ResponsiveModal';
+import ReceiverTimeScheduler from './ReceiverTimeScheduler';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+import { showReceiverTimeSchedulerModal, showScheduleSuccessModal } from '@/redux/slices/modalSlice';
 
 
 interface RequestItemsProps {
@@ -116,7 +120,8 @@ const RequestView = () => {
     ])
 
     const [activeTab, setActiveTab] = useState("all")
-
+    const { receiverTimeSchedulerModalOpen, scheduleSuccessModalOpen } = useAppSelector((state) => state.modal);
+    const dispatch = useAppDispatch();
     const filteredItems = requestItems.filter((item) => {
         if (activeTab === "all") return true
         return item.status === activeTab
@@ -133,7 +138,7 @@ const RequestView = () => {
                 return (
                     <div className='grid grid-cols-2 w-full gap-3'>
                         <Button variant="secondary" className='py-5 w-full'>Message Giver</Button>
-                        <Button variant="primary" className='py-5 w-full'>Schedule Pickup</Button>
+                        <Button onClick={() => dispatch(showReceiverTimeSchedulerModal(true))} variant="primary" className='py-5 w-full'>Schedule Pickup</Button>
                     </div>
                 )
             case "completed":
@@ -142,7 +147,7 @@ const RequestView = () => {
                 )
             case "declined":
                 return (
-                    <Button variant="secondary" className='py-5 w-full'>View Message</Button> 
+                    <Button variant="secondary" className='py-5 w-full'>View Message</Button>
                 )
             case "pending":
                 return (
@@ -197,7 +202,7 @@ const RequestView = () => {
                             <div className='grid gap-2 border-b pb-3 my-3'>
                                 <div className="flex items-center gap-2">
                                     <span>
-                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#757575" strokeLinecap="round" stroke-linejoin="round" d="M10 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z"/><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M14.666 8A6.667 6.667 0 1 0 1.333 8a6.667 6.667 0 0 0 13.333 0Z"/><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M11.334 11.333a3.333 3.333 0 0 0-6.667 0"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M10 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M14.666 8A6.667 6.667 0 1 0 1.333 8a6.667 6.667 0 0 0 13.333 0Z" /><path stroke="#757575" strokeLinecap="round" strokeLinejoin="round" d="M11.334 11.333a3.333 3.333 0 0 0-6.667 0" /></svg>
                                     </span>
                                     <p className="text-xs text-gray-500">From {item.giver}</p>
                                 </div>
@@ -209,7 +214,7 @@ const RequestView = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="currentColor" d="M8 15.503A6.667 6.667 0 1 0 8 2.17a6.667 6.667 0 0 0 0 13.333ZM6.333 7.17l2.334 2.333m2-3.333L7.333 9.503"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path stroke="currentColor" d="M8 15.503A6.667 6.667 0 1 0 8 2.17a6.667 6.667 0 0 0 0 13.333ZM6.333 7.17l2.334 2.333m2-3.333L7.333 9.503" /></svg>
                                     </span>
                                     <p className="text-xs text-gray-500">Requested {item.requested}</p>
                                 </div>
@@ -222,7 +227,17 @@ const RequestView = () => {
                     </div>
                 ))}
             </div>
+            <ResponsiveModal open={receiverTimeSchedulerModalOpen} close={() => dispatch(showReceiverTimeSchedulerModal(false))} className="py-10 px-6">
+                <ReceiverTimeScheduler />
+            </ResponsiveModal>
 
+            <ResponsiveModal open={scheduleSuccessModalOpen} close={() => dispatch(showScheduleSuccessModal(false))} className="max-w-full md:max-w-[500px] py-10 px-6">
+                <h4 className='font-semibold text-3xl'>Thanks for your interest in this item 💛</h4>
+                <p className='text-gray-500'>We had multiple requests, and the giver has selected someone else this time.<br /><br /> Don&apos;t worry there are always more great items being shared every day!<br /><br />
+
+                Keep browsing and you might find your next favorite thing.</p>
+                    <Button variant="primary" className='py-6 w-44 mt-4'>Browse Items</Button>
+            </ResponsiveModal>
         </div>
     )
 }

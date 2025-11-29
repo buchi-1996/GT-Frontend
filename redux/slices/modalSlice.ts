@@ -27,7 +27,9 @@ interface ModalSliceState {
         giverDisputeRaisedModalOpen?: boolean,
         giverDisputeReasonModalOpen?: boolean,
         giverCounterDisputeModalOpen?: boolean,
-    }
+    },
+    receiverTimeSchedulerModalOpen?: boolean,
+    scheduleSuccessModalOpen?: boolean,
 
 
 }
@@ -59,7 +61,9 @@ const initialState: ModalSliceState =  {
         giverDisputeRaisedModalOpen: false,
         giverDisputeReasonModalOpen: false,
         giverCounterDisputeModalOpen: false,
-    }
+    },
+    receiverTimeSchedulerModalOpen: false,
+    scheduleSuccessModalOpen: false,
 
 
 }
@@ -135,7 +139,14 @@ const modalSlice = createSlice({
         },
         showGiverCounterDisputeModal: (state, action: PayloadAction<boolean>) => {
             state.dispute.giverCounterDisputeModalOpen = action.payload;
+        },
+        showReceiverTimeSchedulerModal: (state, action: PayloadAction<boolean>) => {
+            state.receiverTimeSchedulerModalOpen = action.payload;
+        },
+        showScheduleSuccessModal: (state, action: PayloadAction<boolean>) => {
+            state.scheduleSuccessModalOpen = action.payload;
         }
+
 
 
     },
@@ -161,6 +172,9 @@ export const
     showGiverCounterDisputeModal,
     showGiverDisputeRaisedModal,
     showGiverDisputeReasonModal,
+    showReceiverTimeSchedulerModal,
+    showScheduleSuccessModal
+
 
 } = modalSlice.actions
 
