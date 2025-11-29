@@ -1,9 +1,11 @@
 import ReceiverPickupView from '@/components/pickup/ReceiverPickup'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = () => {
   return (
-    <ReceiverPickupView />
+    <Suspense fallback="">
+      <ReceiverPickupView />
+    </Suspense>
   )
 }
 

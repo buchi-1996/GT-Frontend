@@ -1,9 +1,12 @@
 import RequestView from '@/components/requests'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = () => {
   return (
-    <RequestView />
+    <Suspense fallback="">
+
+      <RequestView />
+    </Suspense>
   )
 }
 

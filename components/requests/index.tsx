@@ -9,6 +9,7 @@ import ResponsiveModal from '../modal/ResponsiveModal';
 import ReceiverTimeScheduler from './ReceiverTimeScheduler';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
 import { showReceiverTimeSchedulerModal, showScheduleSuccessModal } from '@/redux/slices/modalSlice';
+import { useSearchParams } from 'next/navigation';
 
 
 interface RequestItemsProps {
@@ -120,8 +121,20 @@ const RequestView = () => {
     ])
 
     const [activeTab, setActiveTab] = useState("all")
+    const searchParams = useSearchParams()
     const { receiverTimeSchedulerModalOpen, scheduleSuccessModalOpen } = useAppSelector((state) => state.modal);
     const dispatch = useAppDispatch();
+
+
+     const tab = searchParams.get("tab") ?? "all";
+
+     console.log(tab)
+
+    React.useEffect(() => {
+        setActiveTab(tab);
+    }, [tab]);
+
+
     const filteredItems = requestItems.filter((item) => {
         if (activeTab === "all") return true
         return item.status === activeTab
@@ -235,8 +248,8 @@ const RequestView = () => {
                 <h4 className='font-semibold text-3xl'>Thanks for your interest in this item 💛</h4>
                 <p className='text-gray-500'>We had multiple requests, and the giver has selected someone else this time.<br /><br /> Don&apos;t worry there are always more great items being shared every day!<br /><br />
 
-                Keep browsing and you might find your next favorite thing.</p>
-                    <Button variant="primary" className='py-6 w-44 mt-4'>Browse Items</Button>
+                    Keep browsing and you might find your next favorite thing.</p>
+                <Button variant="primary" className='py-6 w-44 mt-4'>Browse Items</Button>
             </ResponsiveModal>
         </div>
     )

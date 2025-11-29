@@ -16,6 +16,7 @@ import { showGiverCounterDisputeModal, showGiverDisputeRaisedModal, showGiverDis
 import ResponsiveModal from '../modal/ResponsiveModal';
 import { ReceiverNoshowReasons } from '@/lib/data';
 import FeedbackReceivedAlert from './FeedbackReceivedAlert';
+import { useSearchParams } from 'next/navigation';
 
 
 interface PickupItemprops {
@@ -145,6 +146,7 @@ const ReceiverPickupView = () => {
         return pickupItems.filter((item) => item.status === tabId).length
     }
 
+    const searchParams = useSearchParams()
 
     const [confirmPickModal, setConfirmPickupModal] = useState(false)
     const [isConfirmed, setIsConfirmed] = useState(false)
@@ -207,10 +209,19 @@ const ReceiverPickupView = () => {
         dispatch(showRatingModal(true))
     }
 
+     const tab = searchParams.get("tab") ?? "all";
+
+    console.log(tab)
+
+  
+
+
     //    Open Giver dispute Modal on Load
     useEffect(() => {
+        setActiveTab(tab);
+
         dispatch(showGiverDisputeRaisedModal(true))
-    }, [dispatch])
+    }, [dispatch, tab])
 
 
     const handleSubmitDispute = () => {
