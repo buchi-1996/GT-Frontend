@@ -218,6 +218,7 @@ const ReceiverPickupView = () => {
 
     //    Open Giver dispute Modal on Load
     useEffect(() => {
+        // Set tab by route query
         setActiveTab(tab);
 
         dispatch(showGiverDisputeRaisedModal(true))
@@ -384,11 +385,11 @@ const ReceiverPickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto">
                     <RadioGroup
                         value={selectedValue}
                         onValueChange={setSelectedValue}
-                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4 scrollbar-hide'
+                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4'
                     >
                         {ReceiverNoshowReasons.map((option) => (
                             <div key={option.value} className={option.hasTextarea ? "w-full grid gap-2 items-start" : "flex items-center gap-3"}>
@@ -509,8 +510,8 @@ const ReceiverPickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto">
+                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4'>
                         <div className="flex items-center gap-3">
                             {/* Change the value for radio buttons to suit -- it was a duplicate */}
                             <RadioGroupItem value="receiver_pickup_in_person" className="ring ring-app-primary  text-app-primary" id="receiver_pickup_in_person" />

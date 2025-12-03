@@ -503,11 +503,11 @@ const PickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto">
                     <RadioGroup
                         value={selectedValue}
                         onValueChange={setSelectedValue}
-                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4 scrollbar-hide'
+                        className='py-1 grid gap-4 px-6 overflow-y-auto mb-4'
                     >
                         {GiverNoshowReasons.map((option) => (
                             <div key={option.value} className={option.hasTextarea ? "w-full grid gap-2 items-start" : "flex items-center gap-3"}>
@@ -569,8 +569,8 @@ const PickupView = () => {
                     </span>
                     <h4 className='text-xl md:text-2xl font-semibold'>Feedback Received</h4>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5 mb-6 md:mb-auto overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={doNextValue} onValueChange={setDoNextValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5 mb-6 md:mb-auto overflow-y-auto">
+                    <RadioGroup value={doNextValue} onValueChange={setDoNextValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4'>
                         <h4 className='font-semibold text-sm'>What would you like to do next?</h4>
                         <div className="flex items-start gap-3">
                             <RadioGroupItem value="reschedule with the same person" className="ring ring-app-primary  text-app-primary" id="reschedule" />
@@ -625,8 +625,8 @@ const PickupView = () => {
                         <div className="text-sm text-[#878686]">Picked up by Sarah Johnson</div>
                     </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5  mb-6 md:mb-auto md:h-64  overflow-y-auto">
+                    <RadioGroup value={selectedDisputeValue} onValueChange={setSelectedDisputeValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4'>
                         <div className="flex items-center gap-3">
                             <RadioGroupItem value="receiver_pickup_in_person" className="ring ring-app-primary  text-app-primary" id="receiver_pickup_in_person" />
                             <Label htmlFor="receiver_pickup_in_person" className="text-gray-500 ">The receiver picked it up in person</Label>

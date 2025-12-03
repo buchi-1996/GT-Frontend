@@ -134,6 +134,36 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+ @utility container {
+  margin-inline: auto;
+
+  /* Always keep spacing from screen edges */
+  padding-inline: 1rem;
+
+  /* Optional: grow into max-widths at breakpoints */
+  @variant sm {
+    max-width: 640px;
+  }
+
+  @variant md {
+    max-width: 768px;
+  }
+
+  @variant lg {
+    max-width: 1024px;
+  }
+
+  @variant xl {
+    max-width: 1280px;
+  }
+
+  @variant 2xl {
+    max-width: 1400px;
+  }
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

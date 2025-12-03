@@ -75,7 +75,7 @@ const GiverDisputeFlow = () => {
                 <RadioGroup
                     value={selectedValue}
                     onValueChange={setSelectedValue}
-                    className='h-96 overflow-y-auto mb-4 scrollbar-hide'
+                    className='h-96 overflow-y-auto mb-4'
                 >
                     {GiverNoshowReasons.map((option) => (
                         <Label
@@ -118,8 +118,8 @@ const GiverDisputeFlow = () => {
                     </span>
                     <h4 className='text-xl md:text-2xl font-semibold'>Feedback Received</h4>
                 </div>
-                <div className="bg-gray-50 rounded-lg pt-5 mb-6 md:mb-auto overflow-y-auto scrollbar-hide">
-                    <RadioGroup value={doNextValue} onValueChange={setDoNextValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4 scrollbar-hide'>
+                <div className="bg-gray-50 rounded-lg pt-5 mb-6 md:mb-auto overflow-y-auto">
+                    <RadioGroup value={doNextValue} onValueChange={setDoNextValue} className='py-1 grid gap-6 px-6 overflow-y-auto mb-4'>
                         <h4 className='font-semibold text-sm'>What would you like to do next?</h4>
                         <div className="flex items-start gap-3">
                             <RadioGroupItem value="reschedule with the same person" className="ring ring-app-primary  text-app-primary" id="reschedule" />

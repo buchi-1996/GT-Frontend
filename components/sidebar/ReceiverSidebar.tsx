@@ -219,8 +219,8 @@ const ReceiverSidebar = () => {
                                 <X className="w-4 h-4" />
                             </Button>
                             <CardContent className="px-3 sm:px-5">
-                                <h3 className="font-semibold text-[#222222] mb-1">Become a Receiver</h3>
-                                <p className="text-sm text-[#626262] mb-4">Receive items from others</p>
+                                <h3 className="font-semibold text-[#222222] mb-1">Become a Giver</h3>
+                                <p className="text-sm text-[#626262] mb-4">Give items to others</p>
                                 <Button variant="primary" className="w-full py-5">Get Started</Button>
                             </CardContent>
                         </Card>

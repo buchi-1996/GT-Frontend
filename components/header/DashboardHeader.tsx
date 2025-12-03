@@ -54,7 +54,7 @@ const DashboardHeader = () => {
           </svg>
         </Button>
         <h1 className={`${sidebarCollapsed && 'ml-auto md:ml-10'} text-[1rem] sm:text-xl font-semibold text-[#222222]`}>{pageTitle}</h1>
-        <Button className="ml-4 bg-green-bg text-green-text hover:bg-green-bg/90 cursor-pointer px-4 py-3 rounded-md items-center gap-2 shadow-none">
+        <Button className="transform hover:scale-[0.95] transition-all duration-200 ease-in-out ml-4 bg-green-bg text-green-text hover:bg-green-bg/90 cursor-pointer px-4 py-3 rounded-md items-center gap-2 shadow-none">
           Search Items
         </Button>
       </div>

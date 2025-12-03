@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 // import Providers from "@/context/Providers";
 
-import AuthScreenBanner from "@/components/auth/AuthScreenBanner";
+import LoggedoutFixedHeader from "@/components/header/frontpage-headers/LoggedoutFixedHeader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,15 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable}  antialiased`}
-      >
-        <div className="min-h-screen lg:grid grid-cols-5 items-stretch">
-          <AuthScreenBanner />
-          <main className="grid col-span-3 bg-white">
-            {children}
-          </main>
-        </div>
+      <body className={`${inter.variable} antialiased`}>
+        <LoggedoutFixedHeader />
+        {children}
       </body>
     </html>
   );

@@ -173,7 +173,7 @@ const UnmatchModalSequence = () => {
                 <RadioGroup
                     value={selectedValue}
                     onValueChange={setSelectedValue}
-                    className='h-96 overflow-y-auto mb-4 scrollbar-hide'
+                    className='h-96 overflow-y-auto mb-4'
                 >
                     {unmatchOptions.map((option) => (
                         <Label

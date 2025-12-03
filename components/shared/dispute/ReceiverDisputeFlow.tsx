@@ -64,7 +64,7 @@ const ReceiverDisputeFlow = () => {
                 <RadioGroup
                     value={selectedValue}
                     onValueChange={setSelectedValue}
-                    className='h-96 overflow-y-auto mb-4 scrollbar-hide'
+                    className='h-96 overflow-y-auto mb-4'
                 >
                     {ReceiverNoshowReasons.map((option) => (
                         <Label
